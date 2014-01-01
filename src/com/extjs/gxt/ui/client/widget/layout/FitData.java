@@ -1,0 +1,33 @@
+/*
+ * Sencha GXT 2.3.1 - Sencha for GWT
+ * Copyright(c) 2007-2013, Sencha, Inc.
+ * licensing@sencha.com
+ * 
+ * http://www.sencha.com/products/gxt/license/
+ */
+ package com.extjs.gxt.ui.client.widget.layout;
+
+import com.extjs.gxt.ui.client.util.Margins;
+
+/**
+ * Layout data for <code>FitLayout</code>
+ */
+public class FitData extends MarginData {
+
+  public FitData() {
+    super();
+  }
+
+  public FitData(int top, int right, int bottom, int left) {
+    super(top, right, bottom, left);
+  }
+
+  public FitData(int margin) {
+    super(margin);
+  }
+
+  public FitData(Margins margins) {
+    super(margins);
+  }
+
+}
