@@ -42,6 +42,7 @@ import com.extjs.gxt.ui.client.util.Rectangle;
 import com.extjs.gxt.ui.client.widget.BoxComponent;
 import com.extjs.gxt.ui.client.widget.treepanel.TreePanelView.TreeViewRenderMode;
 import com.google.gwt.dom.client.Document;
+import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.Element;
 import com.google.gwt.user.client.Event;
 import com.google.gwt.user.client.ui.AbstractImagePrototype;
@@ -1631,7 +1632,7 @@ public class TreePanel<M extends ModelData> extends BoxComponent implements Chec
     if (focusEl != null) {
       focusEl.removeFromParent();
     }
-    focusEl = new El(focusImpl.createFocusable());
+    focusEl = new El(DOM.asOld(focusImpl.createFocusable()));
     focusEl.dom.getStyle().setProperty("outline", "none");
     getElement().appendChild(focusEl.dom);
     if (focusEl.dom.hasChildNodes()) {
