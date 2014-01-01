@@ -6,6 +6,10 @@
     <inherits name="com.google.gwt.json.JSON"/>
     <inherits name='com.google.gwt.user.User'/>
     
+    <!-- Prefix all resources by gxt version so we can tell the browser to 
+         cache them forever -->
+    <stylesheet src="gxt231/css/gxt-all.css" />
+    
     <replace-with class="com.extjs.gxt.ui.client.widget.impl.PngImageImplIE6">
         <when-type-is class="com.extjs.gxt.ui.client.widget.impl.PngImageImpl"/>
         <when-property-is name="user.agent" value="ie6" />

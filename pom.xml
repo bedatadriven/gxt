@@ -12,22 +12,22 @@
 
   <licenses>
     <license>
-        <name>GNU GPL license v3</name>
-        <url>http://www.gnu.org/copyleft/gpl.html</url>
+      <name>GNU GPL license v3</name>
+      <url>http://www.gnu.org/copyleft/gpl.html</url>
     </license>
     <license>
-        <name>Commercial License</name>
-        <url>http://www.sencha.com/products/gxt/license/</url>
+      <name>Commercial License</name>
+      <url>http://www.sencha.com/products/gxt/license/</url>
     </license>
   </licenses>
 
   <developers>
     <developer>
-        <id>sencha-devs</id>
-        <name>Sencha GXT Developers</name>
+      <id>sencha-devs</id>
+      <name>Sencha GXT Developers</name>
     </developer>
   </developers>
-    
+
   <properties>
     <gwtVersion>2.6.0-rc3</gwtVersion>
   </properties>
@@ -60,8 +60,59 @@
           <encoding>UTF-8</encoding>
           <excludes>
             <exclude>**/emul/**/*.java</exclude>
+            <exclude>com/extjs/gxt/samples/**</exclude>
+            <exclude>com/extjs/gxt/desktop/**</exclude>
           </excludes>
         </configuration>
+      </plugin>
+      <plugin>
+        <artifactId>maven-resources-plugin</artifactId>
+        <version>2.6</version>
+        <executions>
+          <execution>
+            <id>copy-resources</id>
+            <phase>process-resources</phase>
+            <goals>
+              <goal>copy-resources</goal>
+            </goals>
+            <configuration>
+              <outputDirectory>${basedir}/target/classes/com/extjs/gxt/ui/public/gxt231</outputDirectory>
+              <resources>
+                <resource>
+                  <directory>${basedir}/resources</directory>
+                  <filtering>false</filtering>
+                  <includes>
+                    <include>css/gxt-all.css</include>
+                    <include>images/**</include>
+                  </includes>
+                  <excludes>
+                    <exclude>images/gray/**</exclude>
+                  </excludes>
+                </resource>
+              </resources>
+            </configuration>
+          </execution>
+          <execution>
+            <id>copy-chart-resources</id>
+            <phase>process-resources</phase>
+            <goals>
+              <goal>copy-resources</goal>
+            </goals>
+            <configuration>
+              <outputDirectory>${basedir}/target/classes/com/extjs/gxt/charts/public/gxt231</outputDirectory>
+              <resources>
+                <resource>
+                  <directory>${basedir}/resources</directory>
+                  <filtering>false</filtering>
+                  <includes>
+                    <include>chart/*.swf</include>
+                    <include>flash/*.js</include>
+                  </includes>
+                </resource>
+              </resources>
+            </configuration>
+          </execution>
+        </executions>
       </plugin>
       <plugin>
         <groupId>org.codehaus.mojo</groupId>

@@ -1,3 +1,6 @@
 <module>
   <inherits name='com.extjs.gxt.ui.GXT' />
+
+  <script src="gxt231/flash/swfobject.js"></script>
+  
 </module>
