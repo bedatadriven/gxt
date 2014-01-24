@@ -18,7 +18,7 @@ import java.util.Map;
 import java.util.Set;
 
 import com.extjs.gxt.ui.client.util.Util;
-import com.google.gwt.core.client.GWT;
+import com.google.gwt.core.shared.GWT;
 import com.google.gwt.core.client.JavaScriptObject;
 
 public class FastMap<V> extends AbstractMap<String, V> implements Serializable {
