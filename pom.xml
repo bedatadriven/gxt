@@ -46,6 +46,13 @@
     </snapshotRepository>
   </distributionManagement>
 
+  <scm>
+    <connection>scm:git:git@github.com:bedatadriven/activityinfo.git</connection>
+    <url>scm:git:git@github.com:bedatadriven/activityinfo.git</url>
+    <developerConnection>scm:git:git@github.com:bedatadriven/activityinfo.git</developerConnection>
+  </scm>
+
+
 
   <dependencies>
     <dependency>
