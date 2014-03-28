@@ -47,9 +47,9 @@
   </distributionManagement>
 
   <scm>
-    <connection>scm:git:git@github.com:bedatadriven/activityinfo.git</connection>
-    <url>scm:git:git@github.com:bedatadriven/activityinfo.git</url>
-    <developerConnection>scm:git:git@github.com:bedatadriven/activityinfo.git</developerConnection>
+    <connection>scm:git:git@github.com:bedatadriven/gxt.git</connection>
+    <url>scm:git:git@github.com:bedatadriven/gxt.git</url>
+    <developerConnection>scm:git:git@github.com:bedatadriven/gxt.git</developerConnection>
   </scm>
 
 
