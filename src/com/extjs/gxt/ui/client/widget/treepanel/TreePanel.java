@@ -1404,7 +1404,7 @@ public class TreePanel<M extends ModelData> extends BoxComponent implements Chec
         refresh(se.getParent());
       }
       // move focus element before removing child
-      moveFocus(view.getContainer(node));
+      moveFocus(view.getContainer(p));
     }
   }
 
