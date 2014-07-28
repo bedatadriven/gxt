@@ -1,0 +1,8 @@
+<module>
+    <!-- Prefix all resources by gxt version so we can tell the browser to 
+         cache them forever -->
+    <stylesheet src="gxt231/css/gxt-all.css" />
+    
+    <public path="assets"/>
+
+</module>
