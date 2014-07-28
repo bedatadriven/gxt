@@ -3,4 +3,6 @@
 
   <script src="gxt231/flash/swfobject.js"></script>
   
+  <public path="assets"/>
+
 </module>

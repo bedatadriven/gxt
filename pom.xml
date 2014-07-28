@@ -97,7 +97,7 @@
               <goal>copy-resources</goal>
             </goals>
             <configuration>
-              <outputDirectory>${basedir}/target/classes/com/extjs/gxt/ui/public/gxt231</outputDirectory>
+              <outputDirectory>${basedir}/target/classes/com/extjs/gxt/ui/assets/gxt231</outputDirectory>
               <resources>
                 <resource>
                   <directory>${basedir}/resources</directory>
@@ -120,7 +120,7 @@
               <goal>copy-resources</goal>
             </goals>
             <configuration>
-              <outputDirectory>${basedir}/target/classes/com/extjs/gxt/charts/public/gxt231</outputDirectory>
+              <outputDirectory>${basedir}/target/classes/com/extjs/gxt/charts/assets/gxt231</outputDirectory>
               <resources>
                 <resource>
                   <directory>${basedir}/resources</directory>
