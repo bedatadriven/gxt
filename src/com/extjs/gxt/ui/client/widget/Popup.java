@@ -301,6 +301,7 @@ public class Popup extends LayoutContainer {
    * Displays the popup.
    */
   public void show() {
+    if (!fireEvent(Events.BeforeShow, new ComponentEvent(this))) return;
     Point p = new Point((int) Window.getClientWidth() / 2, (int) Window.getClientHeight() / 2);
     showAt(p.x, p.y);
   }

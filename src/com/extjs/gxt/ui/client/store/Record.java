@@ -250,7 +250,6 @@ public class Record {
       store.afterReject(this);
     }
   }
-
   /**
    * Set the named field to the specified value.
    * 
@@ -258,26 +257,46 @@ public class Record {
    * @param value the value of the field to set
    */
   public void set(String name, Object value) {
+		set(name,value,false);
+	}
+
+	/**
+	 * Set the named field to the specified value.
+	 * 
+	 * @param name
+	 *            the name of the field to set
+	 * @param value
+	 *            the value of the field to set
+	 */
+	public void set(String name, Object value, boolean ignoreEqualsCheck)
+	{
     Object o = model.get(name);
-    if (Util.equalWithNull(o, value)) {
+		if (!ignoreEqualsCheck && Util.equalWithNull(o, value))
+		{
       return;
     }
     dirty = true;
     hasChange = true;
-    if (modified == null) {
+		if (modified == null)
+		{
       modified = new RpcMap();
     }
 
-    if (!modified.containsKey(name)) {
+		if (!modified.containsKey(name))
+		{
       modified.put(name, o);
-    } else {
+		} else
+		{
       Object origValue = modified.get(name);
-      if (Util.equalWithNull(origValue, value)) {
+			if (!ignoreEqualsCheck && Util.equalWithNull(origValue, value))
+			{
         modified.remove(name);
-        if (modified.size() == 0) {
+				if (modified.size() == 0)
+				{
           dirty = false;
         }
-        if (validMap != null) {
+				if (validMap != null)
+				{
           validMap.remove(name);
         }
       }
@@ -285,7 +304,8 @@ public class Record {
 
     model.set(name, value);
 
-    if (!editing && store != null) {
+		if (!editing && store != null)
+		{
       store.afterEdit(this);
     }
   }

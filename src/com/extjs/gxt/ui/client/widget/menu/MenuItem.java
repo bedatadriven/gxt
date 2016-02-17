@@ -21,6 +21,7 @@ import com.extjs.gxt.ui.client.widget.Component;
 import com.extjs.gxt.ui.client.widget.ComponentHelper;
 import com.extjs.gxt.ui.client.widget.IconSupport;
 import com.extjs.gxt.ui.client.widget.Layer;
+import com.google.gwt.i18n.client.LocaleInfo;
 import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.Element;
 import com.google.gwt.user.client.ui.AbstractImagePrototype;
@@ -100,7 +101,7 @@ public class MenuItem extends Item implements IconSupport {
   public void expandMenu() {
     if (isEnabled() && subMenu != null) {
       subMenu.setFocusOnShow(true);
-      subMenu.show(el().dom, "tl-tr?");
+      subMenu.show(el().dom, LocaleInfo.getCurrentLocale().isRTL()?"tr-tl?":"tl-tr?");
     }
   }
 
@@ -165,6 +166,14 @@ public class MenuItem extends Item implements IconSupport {
         Element e = icon.createElement().cast();
         El.fly(e).addStyleName("x-menu-item-icon");
         el().insertChild(e, 0);
+//        String align = null;
+//        if (LocaleInfo.getCurrentLocale().isRTL()) {
+//        	align = "r-r";
+//        } else {
+//        	align = "l-l";
+//        }
+//        int[] offset = null;
+//        El.fly(e).alignTo(el().dom, align, offset);
       }
     }
     this.icon = icon;

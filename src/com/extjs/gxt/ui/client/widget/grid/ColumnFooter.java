@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import com.extjs.gxt.ui.client.GXT;
 import com.extjs.gxt.ui.client.Style.HorizontalAlignment;
 import com.extjs.gxt.ui.client.core.El;
 import com.extjs.gxt.ui.client.core.FastMap;
@@ -18,6 +19,7 @@ import com.extjs.gxt.ui.client.data.ModelData;
 import com.extjs.gxt.ui.client.store.ListStore;
 import com.extjs.gxt.ui.client.widget.BoxComponent;
 import com.extjs.gxt.ui.client.widget.ComponentHelper;
+import com.google.gwt.i18n.client.LocaleInfo;
 import com.google.gwt.i18n.client.NumberFormat;
 import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.Element;
@@ -89,6 +91,9 @@ public class ColumnFooter extends BoxComponent {
 
       table = new FlexTable();
       table.setStyleName("x-grid3-row-table");
+      if(GXT.isChrome && LocaleInfo.getCurrentLocale().isRTL()) {
+        table.getElement().getStyle().setProperty("float","left");
+      }
       table.setCellPadding(0);
       table.setCellSpacing(0);
 
@@ -103,14 +108,25 @@ public class ColumnFooter extends BoxComponent {
         table.setWidget(0, i, f);
         table.getCellFormatter().setStyleName(0, i,
             "x-grid3-cell x-grid3-footer-cell x-grid3-td-" + cm.getColumnId(i) + " " + cellStyle);
-        HorizontalAlignment align = cm.getColumnAlignment(i);
-
-        if (align == HorizontalAlignment.RIGHT) {
-          table.getCellFormatter().setHorizontalAlignment(0, i, HasHorizontalAlignment.ALIGN_RIGHT);
-        } else if (align == HorizontalAlignment.CENTER) {
-          table.getCellFormatter().setHorizontalAlignment(0, i, HasHorizontalAlignment.ALIGN_CENTER);
-        } else {
-          table.getCellFormatter().setHorizontalAlignment(0, i, HasHorizontalAlignment.ALIGN_LEFT);
+        HorizontalAlignment align = com.extjs.gxt.ui.client.Style
+            .convertHorizontalAlignmentToStrict(cm
+                .getColumnAlignment(i));
+        if (align != null) {
+          switch (align) {
+            case LEFT:
+              table.getCellFormatter().setHorizontalAlignment(0, i, HasHorizontalAlignment.ALIGN_LEFT);
+              break;
+            case RIGHT:
+              table.getCellFormatter().setHorizontalAlignment(0, i, HasHorizontalAlignment.ALIGN_RIGHT);
+              break;
+            case CENTER: {
+              table.getCellFormatter().setHorizontalAlignment(0, i, HasHorizontalAlignment.ALIGN_CENTER);
+              break;
+            }
+            default:
+              table.getCellFormatter().setHorizontalAlignment(0, i, HasHorizontalAlignment.ALIGN_LEFT);
+              break;
+          }
         }
 
         if (cm.isHidden(i)) {

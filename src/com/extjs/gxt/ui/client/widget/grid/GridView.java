@@ -50,6 +50,7 @@ import com.extjs.gxt.ui.client.widget.menu.Menu;
 import com.extjs.gxt.ui.client.widget.menu.MenuItem;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.core.client.JavaScriptObject;
+import com.google.gwt.core.client.Scheduler;
 import com.google.gwt.dom.client.Element;
 import com.google.gwt.dom.client.EventTarget;
 import com.google.gwt.dom.client.Node;
@@ -57,6 +58,7 @@ import com.google.gwt.dom.client.NodeList;
 import com.google.gwt.dom.client.TableRowElement;
 import com.google.gwt.dom.client.TableSectionElement;
 import com.google.gwt.i18n.client.DateTimeFormat;
+import com.google.gwt.i18n.client.LocaleInfo;
 import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.Event;
 import com.google.gwt.user.client.ui.AbstractImagePrototype;
@@ -76,9 +78,9 @@ public class GridView extends BaseObservable {
    * Icons used by Grid which can be overridden as needed. s
    */
   public class GridViewImages {
-    private AbstractImagePrototype columns = GXT.IMAGES.grid_columns();
-    private AbstractImagePrototype sortAsc = GXT.IMAGES.grid_sortAsc();
-    private AbstractImagePrototype sortDesc = GXT.IMAGES.grid_sortDesc();
+    private AbstractImagePrototype columns = AbstractImagePrototype.create(GXT.IMAGES.grid_columns());
+    private AbstractImagePrototype sortAsc = AbstractImagePrototype.create(GXT.IMAGES.grid_sortAsc());
+    private AbstractImagePrototype sortDesc = AbstractImagePrototype.create(GXT.IMAGES.grid_sortDesc());
 
     public AbstractImagePrototype getColumns() {
       return columns;
@@ -1063,7 +1065,31 @@ public class GridView extends BaseObservable {
   }
 
   protected void focusGrid() {
-    focusEl.setFocus(true);
+    if (GXT.isIE) {
+      Scheduler.get().scheduleDeferred(new Scheduler.ScheduledCommand() {
+        @Override
+        public void execute() {
+          if (LocaleInfo.getCurrentLocale().isRTL()) {
+            // special fix for IE in RTL the change applied on the
+            // fliweight dom causes a reset on the scrollTop,
+            // scrollLeft
+            // so we need to reset them to their values before the
+            // focus occured.
+            int topBeforeFocus = scroller.getScrollTop();
+            int leftBeforeFocus = scroller.getScrollLeft();
+            focusEl.setFocus(true);
+            if (scroller.getScrollTop() != topBeforeFocus)
+              scroller.setScrollTop(topBeforeFocus);
+            if (scroller.getScrollLeft() != leftBeforeFocus)
+              scroller.setScrollLeft(leftBeforeFocus);
+          } else {
+            focusEl.setFocus(true);
+          }
+        }
+      });
+    } else {
+      focusEl.setFocus(true);
+    }
   }
 
   protected int getCellIndex(Element elem) {
@@ -1100,7 +1126,8 @@ public class GridView extends BaseObservable {
     }
     HorizontalAlignment align = cm.getColumnAlignment(colIndex);
     if (align != null) {
-      style += "text-align:" + align.name() + ";";
+      align = Style.convertHorizontalAlignmentToStrict(align);
+      style += "text-align:" + align.name().toLowerCase() + ";";
     }
     return style;
   }

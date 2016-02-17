@@ -96,14 +96,13 @@ public class El {
    * @return the value with units
    */
   public native static String addUnits(String v, String defaultUnit) /*-{
-		if (v === "" || v == "auto") {
+    if(v === "" || v == "auto"){
 			return v;
 		}
-		if (v === undefined) {
+    if(v === undefined){
 			return '';
 		}
-		if (typeof v == "number"
-				|| !/\d+(px|em|%|en|ex|pt|in|cm|mm|pc)$/i.test(v)) {
+    if(typeof v == "number" || !/\d+(px|em|%|en|ex|pt|in|cm|mm|pc)$/i.test(v)){
 			return v + (defaultUnit || 'px');
 		}
 		return v;
@@ -201,14 +200,11 @@ public class El {
 
   private native static void disableTextSelectInternal(Element e, boolean disable)/*-{
 		if (disable) {
-			e.ondrag = function(evt) {
+    e.ondrag = function (evt) {
 				var targ;
-				if (!evt)
-					evt = $wnd.event;
-				if (evt.target)
-					targ = evt.target;
-				else if (evt.srcElement)
-					targ = evt.srcElement;
+    if (!evt) evt = $wnd.event;
+    if (evt.target) targ = evt.target;
+    else if (evt.srcElement) targ = evt.srcElement;
 				if (targ.nodeType == 3) // defeat Safari bug
 					targ = targ.parentNode;
 				if (targ.tagName == 'INPUT' || targ.tagName == 'TEXTAREA') {
@@ -216,14 +212,11 @@ public class El {
 				}
 				return false;
 			};
-			e.onselectstart = function(evt) {
+    e.onselectstart = function (evt) { 
 				var targ;
-				if (!evt)
-					evt = $wnd.event;
-				if (evt.target)
-					targ = evt.target;
-				else if (evt.srcElement)
-					targ = evt.srcElement;
+    if (!evt) evt = $wnd.event;
+    if (evt.target) targ = evt.target;
+    else if (evt.srcElement) targ = evt.srcElement;
 				if (targ.nodeType == 3) // defeat Safari bug
 					targ = targ.parentNode;
 				if (targ.tagName == 'INPUT' || targ.tagName == 'TEXTAREA') {
@@ -393,7 +386,7 @@ public class El {
   public native El applyStyles(String styles) /*-{
 		var re = /\s?([a-z\-]*)\:\s?([^;]*);?/gi;
 		var matches;
-		while ((matches = re.exec(styles)) != null) {
+    while ((matches = re.exec(styles)) != null){
 			this.@com.extjs.gxt.ui.client.core.El::setStyleAttribute(Ljava/lang/String;Ljava/lang/Object;)(matches[1], matches[2]);
 		}
 		return this;
@@ -508,10 +501,9 @@ public class El {
   public native El clearOpacity() /*-{
 		var dom = this.@com.extjs.gxt.ui.client.core.El::dom;
 		var style = dom.style;
-		if (@com.extjs.gxt.ui.client.GXT::isIE) {
-			dom.style.filter = (dom.style.filter || '').replace(
-					/alpha\([^\)]*\)/gi, "");
-		} else {
+    if(@com.extjs.gxt.ui.client.GXT::isIE){
+      dom.style.filter = (dom.style.filter || '').replace(/alpha\([^\)]*\)/gi,"");
+    }else{
 			style.opacity = style['-moz-opacity'] = style['-khtml-opacity'] = '';
 		}
 		return this;
@@ -526,10 +518,10 @@ public class El {
 		var dom = this.@com.extjs.gxt.ui.client.core.El::dom;
 		if (dom.click) {
 			dom.click();
-		} else {
+    }
+    else {
 			var event = $doc.createEvent("MouseEvents");
-			event.initEvent('click', true, true, $wnd, 0, 0, 0, 0, 0, false,
-					false, false, false, 1, dom);
+    event.initEvent('click', true, true, $wnd, 0, 0, 0, 0, 0, false, false, false, false, 1, dom);
 			dom.dispatchEvent(event);
 		}
 		return this;
@@ -609,9 +601,7 @@ public class El {
    */
   public native El disableContextMenu(boolean disable) /*-{
 		var e = this.@com.extjs.gxt.ui.client.core.El::dom;
-		e.oncontextmenu = disable ? function() {
-			return false
-		} : null;
+    e.oncontextmenu = disable ? function() {return false} : null;
 		return this;
   }-*/;
 
@@ -1127,7 +1117,7 @@ public class El {
    * @return the width
    */
   public int getFrameWidth(String sides) {
-    double frameWidth = 0;
+    int frameWidth = 0;
     List<String> list = new ArrayList<String>();
     if (sides.contains("l")) {
       list.add("paddingLeft");
@@ -1147,9 +1137,9 @@ public class El {
     }
     FastMap<String> map = getStyleAttribute(list);
     for (String s : map.keySet()) {
-      frameWidth += Util.parseFloat(map.get(s), 0);
+      frameWidth += Util.parseInt(map.get(s), 0);
     }
-    return (int) Math.round(frameWidth);
+    return frameWidth;
   }
 
   /**
@@ -1172,7 +1162,7 @@ public class El {
     if (content) {
       h -= getFrameWidth("tb");
     }
-    return Math.max(0, h);
+    return Math.max(0,h);
   }
 
   /**
@@ -1252,7 +1242,7 @@ public class El {
    * @return the margins
    */
   public int getMargins(String sides) {
-    double margin = 0;
+    int margin = 0;
     List<String> list = new ArrayList<String>();
     if (sides.contains("l")) {
       list.add("marginLeft");
@@ -1268,9 +1258,9 @@ public class El {
     }
     FastMap<String> map = getStyleAttribute(list);
     for (String s : map.keySet()) {
-      margin += Util.parseFloat(map.get(s), 0);
+      margin += Util.parseInt(map.get(s), 0);
     }
-    return (int) Math.round(margin);
+    return margin;
   }
 
   /**
@@ -1304,7 +1294,7 @@ public class El {
    * @return the width of the sides passed added together
    */
   public int getPadding(String sides) {
-    double padding = 0;
+    int padding = 0;
     List<String> list = new ArrayList<String>();
     if (sides.contains("l")) {
       list.add("paddingLeft");
@@ -1320,9 +1310,9 @@ public class El {
     }
     FastMap<String> map = getStyleAttribute(list);
     for (String s : map.keySet()) {
-      padding += Util.parseFloat(map.get(s), 0);
+      padding += Util.parseInt(map.get(s), 0);
     }
-    return (int) Math.round(padding);
+    return padding;
   }
 
   /**
@@ -1382,9 +1372,17 @@ public class El {
    * @return the scroll position
    */
   public int getScrollLeft() {
-    return DOM.getElementPropertyInt(dom, "scrollLeft");
+	  return dom.getScrollLeft();
+//    return DOM.getElementPropertyInt(dom, "scrollLeft");
   }
-
+  /**
+   * Returns the horizontal scroll width.
+   * 
+   * @return the scroll position
+   */
+  public int getScrollWidth() {
+	  return dom.getScrollWidth();
+  }
   /**
    * Returns the current vertical scroll position.
    * 
@@ -1417,7 +1415,7 @@ public class El {
       w -= frameWidth.width;
       h -= frameWidth.height;
     }
-    return new Size(Math.max(0, w), Math.max(0, h));
+    return new Size(Math.max(0,w),Math.max(0,h));
   }
 
   public FastMap<String> getStyleAttribute(List<String> attr) {
@@ -1525,11 +1523,11 @@ public class El {
       String wid = map.get("width");
       if (wid != null) {
         w = Util.parseInt(wid, Style.DEFAULT);
-        if (offsetWidth == 0 && isBorderBox && contentOnly && w != Style.DEFAULT && !GXT.isIE) {
+        if (offsetWidth == 0 &&isBorderBox  && contentOnly && w != Style.DEFAULT && !GXT.isIE) {
           w -= getFrameWidth("lr");
-        } else if (GXT.isIE && isBorderBox && w != Style.DEFAULT && contentOnly) {
-          w -= getFrameWidth("lr");
-        } else if (offsetWidth == 0 && !isBorderBox && !contentOnly && w != Style.DEFAULT) {
+        } else if(GXT.isIE && isBorderBox && w != Style.DEFAULT && contentOnly){
+          w-= getFrameWidth("lr");
+        } else if(offsetWidth == 0 && !isBorderBox && !contentOnly && w != Style.DEFAULT){
           w += getFrameWidth("lr");
         }
       }
@@ -1538,10 +1536,10 @@ public class El {
         h = Util.parseInt(hei, Style.DEFAULT);
         if (offsetHeight == 0 && isBorderBox && contentOnly && h != Style.DEFAULT && !GXT.isIE) {
           h -= getFrameWidth("tb");
-        } else if (GXT.isIE && isBorderBox && h != Style.DEFAULT && contentOnly) {
-          h -= getFrameWidth("tb");
-        } else if (offsetHeight == 0 && !isBorderBox && !contentOnly && h != Style.DEFAULT) {
-          h += getFrameWidth("tb");
+        } else if(GXT.isIE && isBorderBox && h != Style.DEFAULT && contentOnly){
+          h-= getFrameWidth("tb");
+        } else if(offsetHeight == 0 && !isBorderBox && !contentOnly && h != Style.DEFAULT ){
+          h+= getFrameWidth("tb");
         }
       }
     }
@@ -1640,7 +1638,7 @@ public class El {
     if (content) {
       w -= getFrameWidth("lr");
     }
-    return Math.max(0, w);
+    return Math.max(0,w);
   }
 
   /**
@@ -2211,6 +2209,7 @@ public class El {
    */
   public El removeStyleName(String... styleNames) {
     for (String s : styleNames) {
+    	if (hasStyleName(s))
       removeStyleName(s);
     }
     return this;
@@ -2224,13 +2223,12 @@ public class El {
    */
   public native El removeStyleName(String styleName) /*-{
 		var dom = this.@com.extjs.gxt.ui.client.core.El::dom;
-		if (!@com.extjs.gxt.ui.client.core.El::removeStyleNameReCache) {
+    if(!@com.extjs.gxt.ui.client.core.El::removeStyleNameReCache){
 			@com.extjs.gxt.ui.client.core.El::removeStyleNameReCache = {};
 		}
-		if (styleName && dom.className) {
-			var s = @com.extjs.gxt.ui.client.core.El::removeStyleNameReCache[styleName] = @com.extjs.gxt.ui.client.core.El::removeStyleNameReCache[styleName]
-					|| new RegExp('(?:^|\\s+)' + styleName + '(?:\\s+|$)', "g");
-			dom.className = dom.className.replace(s, " ");
+    if(styleName && dom.className){
+      var s = @com.extjs.gxt.ui.client.core.El::removeStyleNameReCache[styleName] = @com.extjs.gxt.ui.client.core.El::removeStyleNameReCache[styleName] || new RegExp('(?:^|\\s+)' + styleName + '(?:\\s+|$)', "g"); 
+      dom.className = dom.className.replace(s," ");
 		}
 		return this;
   }-*/;
@@ -2524,7 +2522,8 @@ public class El {
 			} else {
 				dom.blur();
 			}
-		} catch (err) {
+    } 
+    catch(err) {
 		}
 		return this;
   }-*/;
@@ -2695,7 +2694,8 @@ public class El {
    * @return this
    */
   public El setScrollLeft(int left) {
-    DOM.setElementPropertyInt(dom, "scrollLeft", left);
+	  dom.setScrollLeft(left);
+//    DOM.setElementPropertyInt(dom, "scrollLeft", left);
     return this;
   }
 
@@ -2706,7 +2706,8 @@ public class El {
    * @return this
    */
   public El setScrollTop(int top) {
-    DOM.setElementPropertyInt(dom, "scrollTop", top);
+	  dom.setScrollTop(top);
+//    DOM.setElementPropertyInt(dom, "scrollTop", top);
     return this;
   }
 
@@ -2828,7 +2829,8 @@ public class El {
    * @return this
    */
   public El setTabIndex(int index) {
-    DOM.setElementPropertyInt(dom, "tabIndex", index);
+	  dom.setTabIndex(index);
+//    DOM.setElementPropertyInt(dom, "tabIndex", index);
     return null;
   }
 
@@ -2919,15 +2921,26 @@ public class El {
   /**
    * Sets the elements's width.
    * 
-   * @param width the new width
-   * @param adjust <code>true</code> to adjust for box model issues
+	 * @param width
+	 *            the new width
+	 * @param adjust
+	 *            <code>true</code> to adjust for box model issues
    * @return this
    */
-  public El setWidth(int width, boolean adjust) {
-    if (adjust && !isBorderBox()) {
+	public El setWidth(int width, boolean adjust)
+	{
+		if (adjust && !isBorderBox())
+		{
+			boolean notNegative = width >= 0;
       width -= getFrameWidth("lr");
+			// fix for negative width by vtysh
+			if (notNegative && width < 0)
+			{
+				width = 0;
     }
-    if (width >= 0) {
+		}
+		if (width >= 0)
+		{
       dom.getStyle().setPropertyPx("width", width);
     }
     return this;
@@ -2940,7 +2953,8 @@ public class El {
    * @return this
    */
   public El setWidth(String width) {
-    DOM.setStyleAttribute(dom, "width", addUnits(width, "px"));
+	  dom.setPropertyString("width", addUnits(width, "px"));
+//    DOM.setStyleAttribute(dom, "width", addUnits(width, "px"));
     return this;
   }
 
@@ -3098,7 +3112,12 @@ public class El {
     t = t != -11234 ? t : (relative ? 0 : dom.getOffsetTop());
 
     Point o = getXY();
-    return new Point(p.x - o.x + l, p.y - o.y + t);
+    Point result = new Point(p.x - o.x + l, p.y - o.y + t);
+    
+    if (result.x < 0 && GXT.isIE)
+    	result.x = 0;
+    
+    return result;
   }
 
   /**
@@ -3220,16 +3239,6 @@ public class El {
     if (elem == XDOM.getBody()) {
       vw = XDOM.getViewportSize().width;
       vh = XDOM.getViewportSize().height;
-
-      if (!GXT.isIE && !fly(elem.getParentElement(), "_internal").isStyleAttribute("overflowY", "hidden")
-          && fly(elem.getParentElement(), "_internal").isScrollableY()) {
-        vw -= (XDOM.getScrollBarWidth());
-      }
-      if (!GXT.isIE && !fly(elem.getParentElement(), "_internal").isStyleAttribute("overflowX", "hidden")
-          && fly(elem.getParentElement(), "_internal").isScrollableX()) {
-        vh -= (XDOM.getScrollBarWidth());
-      }
-
     } else {
       vw = fly(elem, "_internal").getWidth();
       vh = fly(elem, "_internal").getHeight();
@@ -3250,6 +3259,7 @@ public class El {
     }
     if ((y + h) > vb) {
       y = vb - h;
+
     }
 
     // then make sure top/left isn't negative
@@ -3264,9 +3274,8 @@ public class El {
   }
 
   private native boolean isLeftorRight(String s) /*-{
-		if (@com.extjs.gxt.ui.client.core.El::leftRightTest == null) {
-			@com.extjs.gxt.ui.client.core.El::leftRightTest = new RegExp(
-					"Left|Right");
+    if(@com.extjs.gxt.ui.client.core.El::leftRightTest == null){
+    @com.extjs.gxt.ui.client.core.El::leftRightTest = new RegExp("Left|Right");
 		}
 		return @com.extjs.gxt.ui.client.core.El::leftRightTest.test(s);
   }-*/;

@@ -13,6 +13,7 @@ import com.extjs.gxt.ui.client.util.Size;
 import com.extjs.gxt.ui.client.util.Util;
 import com.extjs.gxt.ui.client.widget.BoxComponent;
 import com.extjs.gxt.ui.client.widget.Container;
+import com.google.gwt.i18n.client.LocaleInfo;
 
 /**
  * Lays out it's children in a horizontal row.
@@ -108,8 +109,11 @@ public class HBoxLayout extends BoxLayout {
     int totalWidth = 0;
     int maxHeight = 0;
 
-    for (int i = 0; i < container.getItemCount(); i++) {
-      BoxComponent c = (BoxComponent) container.getItem(i);
+		int count=container.getItemCount();
+		boolean isRTL=LocaleInfo.getCurrentLocale().isRTL();
+		for (int i = 0; i < count; i++) {
+			BoxComponent c = (BoxComponent) container.getItem(isRTL ? 
+					count - i - 1 : i);
       c.el().setStyleAttribute("margin", "0px");
       callLayout(c, false);
       HBoxLayoutData layoutData = null;
@@ -147,8 +151,9 @@ public class HBoxLayout extends BoxLayout {
       l += extraWidth;
     }
 
-    for (int i = 0; i < container.getItemCount(); i++) {
-      BoxComponent c = (BoxComponent) container.getItem(i);
+		for (int i = 0; i < count; i++) {
+			BoxComponent c = (BoxComponent) container.getItem(isRTL ? 
+					count - i - 1 : i);
       HBoxLayoutData layoutData = null;
       LayoutData d = getLayoutData(c);
       if (d != null && d instanceof HBoxLayoutData) {

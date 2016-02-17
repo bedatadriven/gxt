@@ -372,10 +372,10 @@ public class DateWrapper {
 
   /**
    * Returns a new instance with the time portion
-   * (hours/minutes/seconds/milliseconds) reseted to 12pm. This keeps the date
+   * (hours/minutes/seconds/milliseconds) reseted to 12am. This keeps the date
    * the same also during daylight saving times.
    * 
-   * @return a new instance with the time portion reseted to 12pm
+   * @return a new instance with the time portion reseted to 12am
    */
   public DateWrapper resetTime() {
     Date date = asDate();
@@ -384,7 +384,7 @@ public class DateWrapper {
     msec = (msec / 1000) * 1000;
     date.setTime(msec);
 
-    // reset time to 12pm
+    // reset time to 12am
     date.setHours(12);
     date.setMinutes(0);
     date.setSeconds(0);

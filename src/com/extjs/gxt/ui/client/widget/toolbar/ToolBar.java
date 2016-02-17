@@ -20,6 +20,7 @@ import com.extjs.gxt.ui.client.widget.Component;
 import com.extjs.gxt.ui.client.widget.Container;
 import com.extjs.gxt.ui.client.widget.button.Button;
 import com.extjs.gxt.ui.client.widget.layout.ToolBarLayout;
+import com.google.gwt.i18n.client.LocaleInfo;
 import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.Element;
 import com.google.gwt.user.client.Event;
@@ -96,7 +97,7 @@ import com.google.gwt.user.client.ui.Accessibility;
  */
 public class ToolBar extends Container<Component> {
 
-  private HorizontalAlignment alignment = HorizontalAlignment.LEFT;
+	private HorizontalAlignment alignment = HorizontalAlignment.START;
   private int minButtonWidth = Style.DEFAULT;
   private boolean enableOverflow = true;
   private int spacing = 0;
@@ -205,7 +206,7 @@ public class ToolBar extends Container<Component> {
    */
   public void setAlignment(HorizontalAlignment alignment) {
     assertPreRender();
-    this.alignment = alignment;
+		this.alignment = Style.convertHorizontalAlignmentToRelative(alignment);
   }
 
   /**
@@ -275,11 +276,20 @@ public class ToolBar extends Container<Component> {
     addStyleName("x-small-editor");
     if (alignment.equals(HorizontalAlignment.CENTER)) {
       addStyleName("x-panel-btns-center");
-    } else if (alignment.equals(HorizontalAlignment.RIGHT)) {
-      if (getItemCount() == 0 || (getItemCount() > 0 && !(getItem(0) instanceof FillToolItem))) {
+    } else {
+      if (getItemCount() == 0 || (getItemCount() > 0
+          && !(getItem(0) instanceof FillToolItem)))
+      {
         boolean state = layoutOnChange;
         layoutOnChange = false;
-        insert(new FillToolItem(), 0);
+        boolean isRTL = LocaleInfo.getCurrentLocale().isRTL();
+        if ((alignment.equals(HorizontalAlignment.END) && !isRTL)
+            ||
+            (alignment.equals(HorizontalAlignment.START) && isRTL)
+            )
+        {
+          insert(new FillToolItem(), 0);
+        }
         layoutOnChange = state;
       }
     }

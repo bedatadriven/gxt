@@ -9,6 +9,8 @@
 
 import java.util.Comparator;
 
+import com.google.gwt.i18n.client.LocaleInfo;
+
 /**
  * Defines GXT public constants and enumerations.
  */
@@ -18,7 +20,7 @@ public class Style {
    * Horizontal alignment enumeration.
    */
   public enum HorizontalAlignment {
-    LEFT, CENTER, RIGHT
+		START, CENTER, END, LEFT, RIGHT
   }
 
   /**
@@ -85,6 +87,7 @@ public class Style {
       @Override
       public <X> Comparator<X> comparator(final Comparator<X> c) {
         return new Comparator<X>() {
+					@Override
           public int compare(X o1, X o2) {
             return c.compare(o1, o2);
           }
@@ -96,6 +99,7 @@ public class Style {
       @Override
       public <X> Comparator<X> comparator(final Comparator<X> c) {
         return new Comparator<X>() {
+					@Override
           public int compare(X o1, X o2) {
             return c.compare(o2, o1);
           }
@@ -198,7 +202,7 @@ public class Style {
    * ButtonIconAlign enum.
    */
   public enum IconAlign {
-    RIGHT, BOTTOM, TOP, LEFT
+		END, BOTTOM, TOP, START
   }
 
   /**
@@ -215,5 +219,53 @@ public class Style {
    * Constant for marking a string as undefined rather than null.
    */
   public static final String UNDEFINED = "undefined";
+
+	public static HorizontalAlignment convertHorizontalAlignmentToStrict(
+			HorizontalAlignment alignment)
+	{
+		if (alignment != null)
+		{
+			switch (alignment)
+			{
+				case START:
+					if (LocaleInfo.getCurrentLocale().isRTL())
+						alignment = HorizontalAlignment.RIGHT;
+					else
+						alignment = HorizontalAlignment.LEFT;
+				break;
+				case END:
+					if (LocaleInfo.getCurrentLocale().isRTL())
+						alignment = HorizontalAlignment.LEFT;
+					else
+						alignment = HorizontalAlignment.RIGHT;
+				break;
+			}
+		}
+		return alignment;
+	}
+
+	public static HorizontalAlignment convertHorizontalAlignmentToRelative(
+			HorizontalAlignment alignment)
+	{
+		if (alignment != null)
+		{
+			switch (alignment)
+			{
+				case LEFT:
+					if (LocaleInfo.getCurrentLocale().isRTL())
+						alignment = HorizontalAlignment.END;
+					else
+						alignment = HorizontalAlignment.START;
+				break;
+				case RIGHT:
+					if (LocaleInfo.getCurrentLocale().isRTL())
+						alignment = HorizontalAlignment.START;
+					else
+						alignment = HorizontalAlignment.END;
+				break;
+			}
+		}
+		return alignment;
+	}
 
 }

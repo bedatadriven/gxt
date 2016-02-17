@@ -34,6 +34,7 @@ import com.extjs.gxt.ui.client.widget.layout.CardLayout;
 import com.extjs.gxt.ui.client.widget.menu.Menu;
 import com.extjs.gxt.ui.client.widget.menu.MenuItem;
 import com.google.gwt.event.dom.client.KeyCodes;
+import com.google.gwt.i18n.client.LocaleInfo;
 import com.google.gwt.user.client.Command;
 import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.DeferredCommand;
@@ -464,13 +465,33 @@ public class TabPanel extends Container<TabItem> {
       El target = ce.getTargetEl();
       if (target.is(".x-tab-scroller-left")) {
         ce.cancelBubble();
+				if (!target.is(".x-tab-scroller-left-disabled"))
         onScrollLeft();
       }
       if (target.is(".x-tab-scroller-right")) {
         ce.cancelBubble();
+				if (!target.is(".x-tab-scroller-right-disabled"))
         onScrollRight();
       }
     }
+		if (ce.getEventTypeInt() == Event.ONMOUSEOVER || ce.getEventTypeInt() == Event.ONMOUSEOUT) {
+			// the scrollTo is a workaround an IE problem. IE resets position of the layout when the flywhight object is accessed.
+			Element target = ce.getTarget();
+			int beforeEventHandle = stripWrap.getScrollLeft();
+			if (target != null && !fly(target).getStyleName().equals("x-tab-strip-close")) {
+				if (scrollLeft != null && scrollLeft.dom.getId().equals(target.getId())) {
+					fly(target).setStyleName("x-tab-scroller-left-over", ce.getEventTypeInt() == Event.ONMOUSEOVER);
+
+					if (GXT.isIE && stripWrap.getScrollLeft() != beforeEventHandle)
+						stripWrap.scrollTo("left", beforeEventHandle);
+				}
+				if (scrollRight != null && scrollRight.dom.getId().equals(target.getId())) {
+					fly(target).setStyleName("x-tab-scroller-right-over", ce.getEventTypeInt() == Event.ONMOUSEOVER);
+					if (GXT.isIE && stripWrap.getScrollLeft() != beforeEventHandle)
+						stripWrap.scrollTo("left", beforeEventHandle);
+				}
+			}
+		}
     if (ce.getEventTypeInt() == Event.ONBLUR && GXT.isFocusManagerEnabled()) {
       onBlur(ce);
     } else if (ce.getEventTypeInt() == Event.ONFOCUS && GXT.isFocusManagerEnabled()) {
@@ -539,10 +560,14 @@ public class TabPanel extends Container<TabItem> {
   public void scrollToTab(TabItem item, boolean animate) {
     if (item == null) return;
     int pos = getScollPos();
+		if(LocaleInfo.getCurrentLocale().isRTL()) {
+			pos=-pos;
+		}
     int area = getScrollArea();
     El itemEl = item.header.el();
     int left = itemEl.getOffsetsTo(stripWrap.dom).x + pos;
-    int right = left + itemEl.getWidth();
+		int right = left + itemEl.getWidth() + itemEl.getMargins("r");
+		left -= itemEl.getMargins("l");
     if (left < pos) {
       scrollTo(left, animate);
     } else if (right > (pos + area)) {
@@ -933,11 +958,25 @@ public class TabPanel extends Container<TabItem> {
   protected void onKeyPress(ComponentEvent ce) {
     int code = ce.getKeyCode();
     switch (code) {
-      case KeyCodes.KEY_RIGHT:
+			case KeyCodes.KEY_RIGHT: {
+				if (LocaleInfo.getCurrentLocale().isRTL()) {
+					onLeft(ce);
+					break;
+				}
+				onRight(ce);
+				break;
+			}
       case KeyCodes.KEY_PAGEDOWN:
         onRight(ce);
         break;
-      case KeyCodes.KEY_LEFT:
+			case KeyCodes.KEY_LEFT: {
+				if (LocaleInfo.getCurrentLocale().isRTL()) {
+					onRight(ce);
+					break;
+				}
+				onLeft(ce);
+				break;
+			}
       case KeyCodes.KEY_PAGEUP:
         onLeft(ce);
         break;
@@ -1012,8 +1051,7 @@ public class TabPanel extends Container<TabItem> {
     }
 
     String pos = tabPosition == TabPosition.BOTTOM ? "bottom" : "top";
-    stripWrap = bar.createChild("<div class=x-tab-strip-wrap><ul class='x-tab-strip x-tab-strip-" + pos
-        + "' role='tablist'></ul>");
+		stripWrap = bar.createChild("<div class=x-tab-strip-wrap></div>");
     Accessibility.setRole(stripWrap.dom, "presentation");
 
     if (tabPosition == TabPosition.TOP) {
@@ -1021,7 +1059,7 @@ public class TabPanel extends Container<TabItem> {
     } else {
       bar.insertFirst("<div class=x-tab-strip-spacer></div>");
     }
-    strip = stripWrap.firstChild();
+		strip = stripWrap.createChild("<ul class='x-tab-strip x-tab-strip-" + pos + "' role='tablist'></ul>");
     edge = strip.createChild("<li class=x-tab-edge role='presentation'></li>");
     strip.createChild("<div class='x-clear' role='presentation'></div>");
 
@@ -1098,10 +1136,25 @@ public class TabPanel extends Container<TabItem> {
     Element target = ce.getTarget();
     if (fly(target).getStyleName().equals("x-tab-strip-close")) {
       close(item);
-    } else if (item != activeItem) {
+		} else if (item != activeItem) {
       setSelection(item);
+			if (GXT.isIE) {
+				int scrollLeftBefore = stripWrap.getScrollLeft();
+				focusTab(item, true);
+				if (stripWrap.getScrollLeft() != scrollLeftBefore) 
+					stripWrap.setScrollLeft(scrollLeftBefore);
+			}
+			else
       focusTab(item, true);
-    } else if (item == activeItem) {
+		}
+		else if (item == activeItem) {
+			if (GXT.isIE) {
+				int scrollLeftBefore = stripWrap.getScrollLeft();
+				focusTab(item, true);
+				if (stripWrap.getScrollLeft() != scrollLeftBefore)
+					stripWrap.setScrollLeft(scrollLeftBefore);
+			}
+			else
       focusTab(item, true);
     }
   }
@@ -1135,20 +1188,25 @@ public class TabPanel extends Container<TabItem> {
 
   }
 
+	/**
+	 * determine if we need to place scroll arrows.
+	 */
   private void autoScrollTabs() {
+    // number of items
     int count = getItemCount();
     int tw = bar.getClientWidth();
-
     int cw = stripWrap.getWidth();
-    int pos = getScollPos();
-    int l = edge.getOffsetsTo(stripWrap.dom).x + pos;
 
     if (!getTabScroll() || count < 1 || cw < 20) {
       return;
     }
 
-    if (l <= tw) {
+    int barLeft = bar.dom.getAbsoluteLeft();
+    int visibleEdgePosition = barLeft + tw;
 
+    // if the edge of the tabs is inside the visible area then we don't need to scroll.
+    if (barLeft <= edge.dom.getAbsoluteLeft() && edge.dom.getAbsoluteLeft() <= visibleEdgePosition
+        && (getScrollWidth() + barLeft) <= visibleEdgePosition) {
       stripWrap.setWidth(tw);
       if (scrolling) {
         stripWrap.setScrollLeft(0);
@@ -1172,15 +1230,11 @@ public class TabPanel extends Container<TabItem> {
         }
       }
       scrolling = true;
-      if (pos > (l - tw)) {
-        stripWrap.setScrollLeft(l - tw);
-      } else {
-        scrollToTab(activeItem, false);
-      }
-      updateScrollButtons();
+
+      scrollToTab(activeItem, false);
+      //updateScrollButtons();
     }
   }
-
   private void autoSizeTabs() {
     int count = getItemCount();
     if (count == 0) return;
@@ -1199,12 +1253,12 @@ public class TabPanel extends Container<TabItem> {
   private void createScrollers() {
     int h = stripWrap.getHeight();
     scrollLeft = bar.insertFirst("<div class='x-tab-scroller-left'></div>");
-    addStyleOnOver(scrollLeft.dom, "x-tab-scroller-left-over");
     scrollLeft.setHeight(h);
+		scrollLeft.setVisible(true);
 
     scrollRight = bar.insertFirst("<div class='x-tab-scroller-right'></div>");
-    addStyleOnOver(scrollRight.dom, "x-tab-scroller-right-over");
     scrollRight.setHeight(h);
+		scrollRight.setVisible(true);
   }
 
   private void delegateUpdates() {
@@ -1224,10 +1278,40 @@ public class TabPanel extends Container<TabItem> {
       FocusFrame.get().frame(this);
     }
   }
-
+  
+	private int getScrollWidth() {
+		if (LocaleInfo.getCurrentLocale().isRTL()) {
+			return strip.getWidth() + strip.dom.getAbsoluteLeft()
+					- getEdgePosition() + 2;
+		} else {
+			return edge.dom.getAbsoluteLeft() - strip.dom.getAbsoluteLeft() + 2;
+		}
+	}
+  
+	/**
+	 * returns the position of the edge
+	 * 
+	 * @return
+	 */
+	private int getEdgePosition() {
+		return edge.dom.getAbsoluteLeft()
+				+ (LocaleInfo.getCurrentLocale().isRTL() ? edge.getWidth() : 0);
+	}
+  
+	private int getScrollableWidth() {
+		return getScrollWidth() - getScrollArea();
+	}
+  
   private int getScollPos() {
+		if(LocaleInfo.getCurrentLocale().isRTL())
+		{
+			return strip.getWidth() + strip.dom.getAbsoluteLeft()
+			- getScrollArea() - stripWrap.dom.getAbsoluteLeft();
+		}else
+		{
     return stripWrap.getScrollLeft();
   }
+	}
 
   private int getScrollArea() {
     return Math.max(0, stripWrap.getClientWidth());
@@ -1237,24 +1321,35 @@ public class TabPanel extends Container<TabItem> {
     return scrollIncrement;
   }
 
-  private int getScrollWidth() {
-    return edge.getOffsetsTo(stripWrap.dom).x + getScollPos();
-  }
-
   private void onScrollLeft() {
     int pos = getScollPos();
-    int s = Math.max(0, pos - getScrollIncrement());
-    if (s != pos) {
-      scrollTo(s, getAnimScroll());
+    if(LocaleInfo.getCurrentLocale().isRTL()) {
+      int sw = getScrollWidth() - getScrollArea();
+      int s = Math.min(sw, pos + getScrollIncrement());
+      if (s != pos) {
+        scrollTo(-s, getAnimScroll());
+      }
+    } else {
+      int s = Math.max(0, pos - getScrollIncrement());
+      if (s != pos) {
+        scrollTo(s, getAnimScroll());
+      }
     }
   }
 
   private void onScrollRight() {
-    int sw = getScrollWidth() - getScrollArea();
     int pos = getScollPos();
-    int s = Math.min(sw, pos + getScrollIncrement());
-    if (s != pos) {
-      scrollTo(s, getAnimScroll());
+    if(LocaleInfo.getCurrentLocale().isRTL()) {
+      int s = Math.max(0, pos - getScrollIncrement());
+      if (s != pos) {
+        scrollTo(-s, getAnimScroll());
+      }
+    } else {
+      int sw = getScrollWidth() - getScrollArea();
+      int s = Math.min(sw, pos + getScrollIncrement());
+      if (s != pos) {
+        scrollTo(s, getAnimScroll());
+      }
     }
   }
 
@@ -1293,10 +1388,25 @@ public class TabPanel extends Container<TabItem> {
       updateScrollButtons();
     }
   }
-
   private void updateScrollButtons() {
     int pos = getScollPos();
-    scrollLeft.setStyleName("x-tab-scroller-left-disabled", pos == 0);
-    scrollRight.setStyleName("x-tab-scroller-right-disabled", pos >= (getScrollWidth() - getScrollArea() - 2));
+    if(LocaleInfo.getCurrentLocale().isRTL()) {
+      if (GXT.isIE) {
+        // this is an IE hack. For some reason ie resets the scrollLeft after changing the style. We fix the position manually
+        int beforeStyleChange = stripWrap.getScrollLeft();
+        scrollLeft.setStyleName("x-tab-scroller-left-disabled", pos >= (getScrollWidth() - getScrollArea() - 1));
+        scrollRight.setStyleName("x-tab-scroller-right-disabled", pos <= 0);
+        if (stripWrap.getScrollLeft() != beforeStyleChange) {
+          stripWrap.scrollTo("left", beforeStyleChange);
+        }
+      }
+      else {
+        scrollLeft.setStyleName("x-tab-scroller-left-disabled", pos >= (getScrollWidth() - getScrollArea() - 1));
+        scrollRight.setStyleName("x-tab-scroller-right-disabled", pos <= 0);
+      }
+    } else {
+      scrollLeft.setStyleName("x-tab-scroller-left-disabled", pos == 0);
+      scrollRight.setStyleName("x-tab-scroller-right-disabled", pos >= (getScrollWidth() - getScrollArea() - 1));
+    }
   }
 }

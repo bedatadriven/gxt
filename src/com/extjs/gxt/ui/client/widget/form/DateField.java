@@ -22,6 +22,7 @@ import com.extjs.gxt.ui.client.widget.DatePicker;
 import com.extjs.gxt.ui.client.widget.menu.DateMenu;
 import com.google.gwt.event.dom.client.KeyCodes;
 import com.google.gwt.i18n.client.DateTimeFormat;
+import com.google.gwt.i18n.client.LocaleInfo;
 import com.google.gwt.user.client.Command;
 import com.google.gwt.user.client.DeferredCommand;
 import com.google.gwt.user.client.Element;
@@ -267,7 +268,11 @@ public class DateField extends TriggerField<Date> {
     // handle case when down arrow is opening menu
     DeferredCommand.addCommand(new Command() {
       public void execute() {
-        menu.show(el().dom, "tl-bl?");
+				if (LocaleInfo.getCurrentLocale().isRTL()) {
+          menu.show(el().dom, "tr-br?");
+        } else {
+          menu.show(el().dom, "tl-bl?");
+        }
         menu.getDatePicker().focus();
       }
     });

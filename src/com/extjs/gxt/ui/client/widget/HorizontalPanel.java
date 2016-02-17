@@ -63,7 +63,7 @@ public class HorizontalPanel extends LayoutContainer {
 
   private String tableWidth;
   private String tableHeight;
-  private HorizontalAlignment horizontalAlign = HorizontalAlignment.LEFT;
+  private HorizontalAlignment horizontalAlign = HorizontalAlignment.START;
   private VerticalAlignment verticalAlign = VerticalAlignment.TOP;
   private int spacing = 0;
   private TableRowLayout layout;

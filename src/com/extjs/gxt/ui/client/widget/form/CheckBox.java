@@ -13,6 +13,7 @@ import com.extjs.gxt.ui.client.core.El;
 import com.extjs.gxt.ui.client.core.XDOM;
 import com.extjs.gxt.ui.client.event.ComponentEvent;
 import com.google.gwt.dom.client.InputElement;
+import com.google.gwt.i18n.client.LocaleInfo;
 import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.Element;
 import com.google.gwt.user.client.Timer;
@@ -176,14 +177,20 @@ public class CheckBox extends Field<Boolean> {
             input.alignTo(getElement(), "c-c", null);
           }
         } else {
-          input.alignTo(getElement(), "l-l", new int[] {0, 0});
+          String alignTo = "l-l";
+          String boxAlignTo = "l-r";
+          if (LocaleInfo.getCurrentLocale().isRTL()) {
+            alignTo = "r-r";
+            boxAlignTo = "r-l";
+          }
+          input.alignTo(getElement(), alignTo, new int[] {0, 0});
           if (GXT.isIE || GXT.isOpera) {
-            input.alignTo(getElement(), "l-l", new int[] {0, 0});
+            input.alignTo(getElement(), alignTo, new int[] {0, 0});
           }
 
-          boxLabelEl.alignTo(input.dom, "l-r", new int[] {5, GXT.isIE ? -1 : 0});
+          boxLabelEl.alignTo(input.dom, boxAlignTo, new int[] {5, GXT.isIE ? -1 : 0});
           if (GXT.isIE || GXT.isOpera) {
-            boxLabelEl.alignTo(input.dom, "l-r", new int[] {5, GXT.isIE ? -1 : 0});
+            boxLabelEl.alignTo(input.dom, boxAlignTo, new int[] {5, GXT.isIE ? -1 : 0});
           }
         }
         el().repaint();

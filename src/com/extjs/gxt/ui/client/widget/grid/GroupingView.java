@@ -41,7 +41,7 @@ import com.google.gwt.user.client.ui.AbstractImagePrototype;
 public class GroupingView extends GridView {
 
   public class GroupingViewImages extends GridViewImages {
-    private AbstractImagePrototype groupBy = GXT.IMAGES.grid_groupBy();
+    private AbstractImagePrototype groupBy = AbstractImagePrototype.create(GXT.IMAGES.grid_groupBy());
 
     public AbstractImagePrototype getGroupBy() {
       return groupBy;
@@ -416,6 +416,7 @@ public class GroupingView extends GridView {
 
     GridSelectionModel<ModelData> sm = grid.getSelectionModel();
     sm.addListener(Events.BeforeSelect, new Listener<SelectionEvent<ModelData>>() {
+      @Override
       public void handleEvent(SelectionEvent<ModelData> be) {
         onBeforeRowSelect(be);
       }

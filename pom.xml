@@ -104,12 +104,9 @@
                   <directory>${basedir}/resources</directory>
                   <filtering>false</filtering>
                   <includes>
-                    <include>css/gxt-all.css</include>
+                    <include>css/*.css</include>
                     <include>images/**</include>
                   </includes>
-                  <excludes>
-                    <exclude>images/gray/**</exclude>
-                  </excludes>
                 </resource>
               </resources>
             </configuration>

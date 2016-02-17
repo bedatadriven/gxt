@@ -42,6 +42,7 @@ import com.google.gwt.dom.client.Document;
 import com.google.gwt.dom.client.ImageElement;
 import com.google.gwt.dom.client.NodeList;
 import com.google.gwt.dom.client.Style;
+import com.google.gwt.i18n.client.LocaleInfo;
 import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.Element;
 import com.google.gwt.user.client.Event;
@@ -79,20 +80,30 @@ public class ColumnHeader extends BoxComponent {
     protected void onDragEnd(DragEvent e) {
       dragging = false;
       headerDisabled = false;
-      setStyleAttribute("borderLeft", "none");
       el().setStyleAttribute("opacity", "0");
       el().setWidth(splitterWidth);
       bar.el().setVisibility(false);
 
       int endX = e.getX();
-      int diff = endX - startX;
+			int diff;
+			if (LocaleInfo.getCurrentLocale().isRTL()) {
+				setStyleAttribute("borderRight", "none");
+				diff = startX - endX;
+			} else {
+				setStyleAttribute("borderLeft", "none");
+				diff = endX - startX;
+			}
       onColumnSplitterMoved(colIndex, cm.getColumnWidth(colIndex) + diff);
     }
 
     protected void onDragStart(DragEvent e) {
       headerDisabled = true;
       dragging = true;
-      setStyleAttribute("borderLeft", "1px solid black");
+			if (LocaleInfo.getCurrentLocale().isRTL()) {
+        setStyleAttribute("borderRight", "1px solid black");
+      } else {
+        setStyleAttribute("borderLeft", "1px solid black");
+      }
       setStyleAttribute("cursor", "default");
       el().setStyleAttribute("opacity", "1");
       el().setWidth(1);
@@ -105,17 +116,34 @@ public class ColumnHeader extends BoxComponent {
         Element hd = getHead(i).getElement();
         if (hd != null) {
           Region rr = El.fly(hd).getRegion();
-          if (startX > rr.right - 5 && startX < rr.right + 5) {
-            colIndex = heads.indexOf(getHead(i));
-            if (colIndex != -1) break;
+          if (LocaleInfo.getCurrentLocale().isRTL()) {
+            if (startX < rr.left + 5 && startX > rr.left - 5) {
+              colIndex = heads.indexOf(getHead(i));
+              if (colIndex != -1) {
+                break;
+              }
+            }
+          } else {
+            if (startX > rr.right - 5 && startX < rr.right + 5) {
+              colIndex = heads.indexOf(getHead(i));
+              if (colIndex != -1) {
+                break;
+              }
+            }
           }
         }
       }
       if (colIndex > -1) {
         Element c = getHead(colIndex).getElement();
         int x = startX;
-        int minx = x - fly((com.google.gwt.user.client.Element) c).getX() - minColumnWidth;
-        int maxx = (container.el().getX() + container.el().getWidth()) - e.getEvent().getClientX();
+				int minx, maxx;
+				if (LocaleInfo.getCurrentLocale().isRTL()) {
+					maxx = fly((com.google.gwt.user.client.Element) c).getWidth() - minColumnWidth;
+					minx = (container.el().getX() + container.el().getWidth()) - e.getEvent().getClientX();
+				} else {
+					minx = x - fly((com.google.gwt.user.client.Element) c).getX() - minColumnWidth;
+					maxx = (container.el().getX() + container.el().getWidth()) - e.getEvent().getClientX();
+				}
         d.setXConstraint(minx, maxx);
       }
     }
@@ -460,6 +488,9 @@ public class ColumnHeader extends BoxComponent {
   public ColumnHeader(BoxComponent container, ColumnModel cm) {
     this.container = container;
     this.cm = cm;
+		if(GXT.isChrome && LocaleInfo.getCurrentLocale().isRTL()) {
+			setStyleAttribute("float","left");
+		}
     disableTextSelection(true);
   }
 
@@ -667,14 +698,21 @@ public class ColumnHeader extends BoxComponent {
 
       cf.setStyleName(row, i, "x-grid3-header x-grid3-hd x-grid3-cell x-grid3-td-" + cm.getColumnId(i));
 
-      HorizontalAlignment align = cm.getColumnAlignment(i);
+			HorizontalAlignment align = com.extjs.gxt.ui.client.Style
+					.convertHorizontalAlignmentToStrict(cm.getColumnAlignment(i));
+			boolean isRTL = LocaleInfo.getCurrentLocale().isRTL();
       if (align == HorizontalAlignment.RIGHT) {
         table.getCellFormatter().setHorizontalAlignment(row, i, HasHorizontalAlignment.ALIGN_RIGHT);
-        table.getCellFormatter().getElement(row, i).getFirstChildElement().getStyle().setPropertyPx("paddingRight", 16);
+				if(!isRTL) {
+          table.getCellFormatter().getElement(row, i).getFirstChildElement().getStyle().setPropertyPx("paddingRight", 16);
+				}
       } else if (align == HorizontalAlignment.CENTER) {
         table.getCellFormatter().setHorizontalAlignment(row, i, HasHorizontalAlignment.ALIGN_CENTER);
       } else {
         table.getCellFormatter().setHorizontalAlignment(row, i, HasHorizontalAlignment.ALIGN_LEFT);
+				if(isRTL) {
+					table.getCellFormatter().getElement(row, i).getFirstChildElement().getStyle().setPropertyPx("paddingLeft", 16);
+				}
       }
 
     }
@@ -745,15 +783,23 @@ public class ColumnHeader extends BoxComponent {
             HeaderGroupConfig s = cm.getGroup(start.row - 1, start.column);
             if ((g == null && s == null) || (g != null && g.equals(s))) {
               active = h;
-              boolean before = de.getClientX() < active.getAbsoluteLeft() + active.getWidth() / 2;
+							boolean before;
+							boolean isRTL = LocaleInfo.getCurrentLocale().isRTL();
+							if(isRTL) {
+								before = de.getClientX() > active.getAbsoluteLeft() + active.getWidth() / 2;
+							} else {
+								before = de.getClientX() < active.getAbsoluteLeft() + active.getWidth() / 2;
+							}
               showStatusIndicator(true);
 
+							char beforeAlign = isRTL ? 'r' : 'l';
+							char afterAlign = isRTL ? 'l' : 'r';
               if (before) {
-                statusIndicatorTop.alignTo(active.el().dom, "b-tl", new int[] {-1, 0});
-                statusIndicatorBottom.alignTo(active.el().dom, "t-bl", new int[] {-1, 0});
+								statusIndicatorTop.alignTo(active.el().dom, "b-t" + beforeAlign, new int[] {-1, 0});
+								statusIndicatorBottom.alignTo(active.el().dom, "t-b" + beforeAlign, new int[] {-1, 0});
               } else {
-                statusIndicatorTop.alignTo(active.el().dom, "b-tr", new int[] {1, 0});
-                statusIndicatorBottom.alignTo(active.el().dom, "t-br", new int[] {1, 0});
+								statusIndicatorTop.alignTo(active.el().dom, "b-t" + afterAlign, new int[] {1, 0});
+								statusIndicatorBottom.alignTo(active.el().dom, "t-b" + afterAlign, new int[] {1, 0});
               }
 
               int i = active.column;
@@ -945,7 +991,11 @@ public class ColumnHeader extends BoxComponent {
           }
         }
       });
-      menu.show(h.getTrigger(), "tl-bl?");
+			if (LocaleInfo.getCurrentLocale().isRTL()) {
+        menu.show(h.getTrigger(), "tr-br?");
+      } else {
+        menu.show(h.getTrigger(), "tl-bl?");
+      }
     }
   }
 

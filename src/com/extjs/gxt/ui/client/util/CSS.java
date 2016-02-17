@@ -56,7 +56,9 @@ public class CSS {
         String tag = child.getTagName();
         if (tag != null && child.getTagName().equalsIgnoreCase("link")) {
           String href = child.getAttribute("href");
-          if (href.length() != 0 && href.indexOf("gxt-all.css") != -1) {
+          if (href.length() != 0 && (
+        		  href.indexOf("gxt-all.css") != -1 ||
+        		  href.indexOf("gxt-all-rtl.css") != -1)) {
             all = child;
             break;
           }

@@ -12,9 +12,11 @@ import com.extjs.gxt.ui.client.core.XDOM;
 import com.extjs.gxt.ui.client.event.IconButtonEvent;
 import com.extjs.gxt.ui.client.event.SelectionListener;
 import com.extjs.gxt.ui.client.util.Point;
+import com.extjs.gxt.ui.client.util.Size;
 import com.extjs.gxt.ui.client.util.Util;
 import com.extjs.gxt.ui.client.widget.ContentPanel;
 import com.extjs.gxt.ui.client.widget.button.ToolButton;
+import com.google.gwt.i18n.client.LocaleInfo;
 import com.google.gwt.user.client.Element;
 import com.google.gwt.user.client.ui.Accessibility;
 import com.google.gwt.user.client.ui.RootPanel;
@@ -116,6 +118,15 @@ public class Tip extends ContentPanel {
    * @param y the y coordinate
    */
   public void showAt(int x, int y) {
+	  showAt(x,y,false);
+  }
+  /**
+   * Shows this tip at the specified position.
+   * 
+   * @param x the x coordinate
+   * @param y the y coordinate
+   */
+  public void showAt(int x, int y, boolean adjustRTL) {
     setStyleAttribute("visibility", "hidden");
     if (!isAttached()) {
       RootPanel.get().add(this);
@@ -126,6 +137,10 @@ public class Tip extends ContentPanel {
     updateContent();
 
     doAutoWidth();
+    if (adjustRTL && LocaleInfo.getCurrentLocale().isRTL()) {
+      Size size = getSize();
+      x = x - size.width;
+    }
     Point p = new Point(x, y);
     if (constrainPosition) {
       p = el().adjustForConstraints(p);
@@ -140,8 +155,8 @@ public class Tip extends ContentPanel {
    * 
    * @param point the position
    */
-  public void showAt(Point point) {
-    showAt(point.x, point.y);
+  public void showAt(Point point, boolean adjustRTL) {
+    showAt(point.x, point.y, adjustRTL);
   }
 
   protected void doAutoWidth() {

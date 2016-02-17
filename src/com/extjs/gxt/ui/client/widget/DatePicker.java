@@ -36,8 +36,8 @@ import com.google.gwt.dom.client.NodeList;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.i18n.client.DateTimeFormat;
+import com.google.gwt.i18n.client.DateTimeFormatInfo;
 import com.google.gwt.i18n.client.LocaleInfo;
-import com.google.gwt.i18n.client.constants.DateTimeConstants;
 import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.Element;
 import com.google.gwt.user.client.Event;
@@ -332,7 +332,7 @@ public class DatePicker extends BoxComponent {
 
   protected DateWrapper activeDate, value;
   private Element[] cells;
-  protected DateTimeConstants constants;
+  protected DateTimeFormatInfo constants;
   private Grid days, grid;
   private int firstDOW;
   private com.google.gwt.user.client.ui.HorizontalPanel footer;
@@ -358,7 +358,7 @@ public class DatePicker extends BoxComponent {
   public DatePicker() {
     baseStyle = "x-date-picker";
     messages = new DatePickerMessages();
-    constants = LocaleInfo.getCurrentLocale().getDateTimeConstants();
+    constants = LocaleInfo.getCurrentLocale().getDateTimeFormatInfo();
   }
 
   @Override
@@ -682,8 +682,8 @@ public class DatePicker extends BoxComponent {
     days.setCellSpacing(0);
     days.setBorderWidth(0);
 
-    String[] dn = constants.narrowWeekdays();
-    String[] longdn = constants.weekdays();
+    String[] dn = constants.weekdaysNarrow();
+    String[] longdn = constants.weekdaysFull();
     
     firstDOW = getCalculatedStartDay();
 
@@ -850,7 +850,7 @@ public class DatePicker extends BoxComponent {
   private void createMonthPicker() {
     StringBuffer buf = new StringBuffer();
     buf.append("<table border=0 cellspacing=0>");
-    String[] monthNames = constants.shortMonths();
+    String[] monthNames = constants.monthsShort();
     for (int i = 0; i < 6; i++) {
       buf.append("<tr><td class=x-date-mp-month><a href=#>");
       buf.append(monthNames[i]);
@@ -891,7 +891,7 @@ public class DatePicker extends BoxComponent {
   }
 
   private int getCalculatedStartDay() {
-    return startDay != Integer.MIN_VALUE ? startDay : Integer.parseInt(constants.firstDayOfTheWeek()) - 1;
+    return startDay != Integer.MIN_VALUE ? startDay : constants.firstDayOfTheWeek() - 1;
   }
 
   private void handleDateClick(El target, String dt) {

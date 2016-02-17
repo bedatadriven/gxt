@@ -45,6 +45,7 @@ import com.extjs.gxt.ui.client.widget.toolbar.PagingToolBar;
 import com.google.gwt.dom.client.Document;
 import com.google.gwt.dom.client.InputElement;
 import com.google.gwt.event.dom.client.KeyCodes;
+import com.google.gwt.i18n.client.LocaleInfo;
 import com.google.gwt.user.client.Command;
 import com.google.gwt.user.client.DeferredCommand;
 import com.google.gwt.user.client.Element;
@@ -219,7 +220,7 @@ public class ComboBox<D extends ModelData> extends TriggerField<D> implements Se
   private String lastSelectionText;
   private boolean lazyRender = true, initialized;
   private LayoutContainer list;
-  private String listAlign = "tl-bl?";
+  private String listAlign = LocaleInfo.getCurrentLocale().isRTL() ? "tr-br?" : "tl-bl?";
   private String listStyle = "x-combo-list";
   private ListView<D> listView;
   private int maxHeight = 300;

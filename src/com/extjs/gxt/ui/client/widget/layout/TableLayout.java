@@ -10,6 +10,7 @@
 import java.util.ArrayList;
 import java.util.List;
 
+import com.extjs.gxt.ui.client.Style;
 import com.extjs.gxt.ui.client.Style.HorizontalAlignment;
 import com.extjs.gxt.ui.client.Style.VerticalAlignment;
 import com.extjs.gxt.ui.client.core.El;
@@ -296,9 +297,10 @@ public class TableLayout extends Layout {
     }
 
     if (data.horizontalAlign != null) {
-      td.setAlign(data.horizontalAlign.name());
-    } else if (cellHorizontalAlign != null) {
-      td.setAlign(cellHorizontalAlign.name());
+		td.setAlign(Style.convertHorizontalAlignmentToStrict(data.horizontalAlign).name());
+    } 
+    else if (cellHorizontalAlign != null) {
+    	td.setAlign(Style.convertHorizontalAlignmentToStrict(cellHorizontalAlign).name());
     }
 
     if (data.verticalAlign != null) {

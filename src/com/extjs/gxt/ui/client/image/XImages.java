@@ -7,8 +7,10 @@
  */
  package com.extjs.gxt.ui.client.image;
 
-import com.google.gwt.user.client.ui.AbstractImagePrototype;
-import com.google.gwt.user.client.ui.ImageBundle;
+import com.google.gwt.resources.client.ClientBundle;
+import com.google.gwt.resources.client.ImageResource;
+import com.google.gwt.resources.client.ImageResource.ImageOptions;
+
 
 /**
  * Defines the icons used by the Ext GWT library.
@@ -20,138 +22,150 @@ import com.google.gwt.user.client.ui.ImageBundle;
  * <pre>
  * public interface CustomImages extends XImages {
  *   @Resource("youimage.gif") 
- *   public AbstractImagePrototype toolbar_more(); 
+ *   public ImageResource toolbar_more(); 
  * } </pre>
  * 
  */
-@SuppressWarnings("deprecation")
-public interface XImages extends ImageBundle {
-  @Resource("hmenu-asc.gif")
-  AbstractImagePrototype grid_sortAsc();
+public interface XImages extends ClientBundle {
+	@Source("hmenu-asc.gif")
+	ImageResource grid_sortAsc();
 
-  @Resource("hmenu-desc.gif")
-  AbstractImagePrototype grid_sortDesc();
+	@Source("hmenu-desc.gif")
+	ImageResource grid_sortDesc();
 
-  @Resource("columns.gif")
-  AbstractImagePrototype grid_columns();
+	@Source("columns.gif")
+	ImageResource grid_columns();
 
-  @Resource("group-by.gif")
-  AbstractImagePrototype grid_groupBy();
+	@Source("group-by.gif")
+	ImageResource grid_groupBy();
 
-  @Resource("checked.gif")
-  AbstractImagePrototype checked();
+	@Source("checked.gif")
+	ImageResource checked();
 
-  @Resource("unchecked.gif")
-  AbstractImagePrototype unchecked();
+	@Source("unchecked.gif")
+	ImageResource unchecked();
 
-  @Resource("group-checked.gif")
-  AbstractImagePrototype group_checked();
+	@Source("group-checked.gif")
+	ImageResource group_checked();
 
-  @Resource("exclamation.gif")
-  AbstractImagePrototype field_invalid();
+	@Source("exclamation.gif")
+	ImageResource field_invalid();
 
-  @Resource("tb-bold.gif")
-  AbstractImagePrototype editor_bold();
+	@Source("tb-bold.gif")
+	ImageResource editor_bold();
 
-  @Resource("tb-font-color.gif")
-  AbstractImagePrototype editor_font_color();
+	@Source("tb-font-color.gif")
+	ImageResource editor_font_color();
 
-  @Resource("tb-font-decrease.gif")
-  AbstractImagePrototype editor_font_decrease();
+	@Source("tb-font-decrease.gif")
+	ImageResource editor_font_decrease();
 
-  @Resource("tb-font-highlight.gif")
-  AbstractImagePrototype editor_font_highlight();
+	@Source("tb-font-highlight.gif")
+	ImageResource editor_font_highlight();
 
-  @Resource("tb-font-increase.gif")
-  AbstractImagePrototype editor_font_increase();
+	@Source("tb-font-increase.gif")
+	ImageResource editor_font_increase();
 
-  @Resource("tb-italic.gif")
-  AbstractImagePrototype editor_italic();
+	@Source("tb-italic.gif")
+	ImageResource editor_italic();
 
-  @Resource("tb-justify-center.gif")
-  AbstractImagePrototype editor_justify_center();
+	@Source("tb-justify-center.gif")
+	ImageResource editor_justify_center();
 
-  @Resource("tb-justify-left.gif")
-  AbstractImagePrototype editor_justify_left();
+	@Source("tb-justify-left.gif")
+	ImageResource editor_justify_left();
 
-  @Resource("tb-justify-right.gif")
-  AbstractImagePrototype editor_justify_right();
+	@Source("tb-justify-right.gif")
+	ImageResource editor_justify_right();
 
-  @Resource("tb-link.gif")
-  AbstractImagePrototype editor_link();
+	@Source("tb-link.gif")
+	ImageResource editor_link();
 
-  @Resource("tb-ol.gif")
-  AbstractImagePrototype editor_ol();
+	@Source("tb-ol.gif")
+	ImageResource editor_ol();
 
-  @Resource("tb-ul.gif")
-  AbstractImagePrototype editor_ul();
+	@Source("tb-ul.gif")
+	ImageResource editor_ul();
 
-  @Resource("tb-source.gif")
-  AbstractImagePrototype editor_source();
+	@Source("tb-source.gif")
+	ImageResource editor_source();
 
-  @Resource("tb-underline.gif")
-  AbstractImagePrototype editor_underline();
+	@Source("tb-underline.gif")
+	ImageResource editor_underline();
 
-  @Resource("page-prev.gif")
-  AbstractImagePrototype paging_toolbar_prev();
+	@Source("page-prev.gif")
+	@ImageOptions(flipRtl=true)
+	ImageResource paging_toolbar_prev();
 
-  @Resource("page-prev-disabled.gif")
-  AbstractImagePrototype paging_toolbar_prev_disabled();
+	@Source("page-prev-disabled.gif")
+	@ImageOptions(flipRtl=true)
+	ImageResource paging_toolbar_prev_disabled();
 
-  @Resource("page-next.gif")
-  AbstractImagePrototype paging_toolbar_next();
+	@Source("page-next.gif")
+	@ImageOptions(flipRtl=true)
+	ImageResource paging_toolbar_next();
 
-  @Resource("page-next-disabled.gif")
-  AbstractImagePrototype paging_toolbar_next_disabled();
+	@Source("page-next-disabled.gif")
+	@ImageOptions(flipRtl=true)
+	ImageResource paging_toolbar_next_disabled();
 
-  @Resource("page-first.gif")
-  AbstractImagePrototype paging_toolbar_first();
+	@Source("page-first.gif")
+	@ImageOptions(flipRtl=true)
+	ImageResource paging_toolbar_first();
 
-  @Resource("page-first-disabled.gif")
-  AbstractImagePrototype paging_toolbar_first_disabled();
+	@Source("page-first-disabled.gif")
+	@ImageOptions(flipRtl=true)
+	ImageResource paging_toolbar_first_disabled();
 
-  @Resource("page-last.gif")
-  AbstractImagePrototype paging_toolbar_last();
+	@Source("page-last.gif")
+	@ImageOptions(flipRtl=true)
+	ImageResource paging_toolbar_last();
 
-  @Resource("page-last-disabled.gif")
-  AbstractImagePrototype paging_toolbar_last_disabled();
+	@Source("page-last-disabled.gif")
+	@ImageOptions(flipRtl=true)
+	ImageResource paging_toolbar_last_disabled();
 
-  @Resource("refresh.png")
-  AbstractImagePrototype paging_toolbar_refresh();
+	@Source("refresh.png")
+	ImageResource paging_toolbar_refresh();
 
-  @Resource("more.gif")
-  AbstractImagePrototype toolbar_more();
+	@Source("more.gif")
+	@ImageOptions(flipRtl=true)
+	ImageResource toolbar_more();
 
-  @Resource("folder.png")
-  AbstractImagePrototype tree_folder();
+	@Source("folder.png")
+	ImageResource tree_folder();
 
-  @Resource("folder-closed.png")
-  AbstractImagePrototype tree_folder_closed();
+	@Source("folder-closed.png")
+	ImageResource tree_folder_closed();
 
-  @Resource("tree-collapsed.png")
-  AbstractImagePrototype tree_collapsed();
+	@Source("tree-collapsed.png")
+	@ImageOptions(flipRtl=true)
+	ImageResource tree_collapsed();
 
-  @Resource("tree-collapsed-over.png")
-  AbstractImagePrototype tree_collapsed_over();
+	@Source("tree-collapsed-over.png")
+	@ImageOptions(flipRtl=true)
+	ImageResource tree_collapsed_over();
 
-  @Resource("tree-expanded.png")
-  AbstractImagePrototype tree_expanded();
+	@Source("tree-expanded.png")
+	@ImageOptions(flipRtl=true)
+	ImageResource tree_expanded();
 
-  @Resource("tree-expanded-over.png")
-  AbstractImagePrototype tree_expanded_over();
+	@Source("tree-expanded-over.png")
+	@ImageOptions(flipRtl=true)
+	ImageResource tree_expanded_over();
 
-  @Resource("wait.gif")
-  AbstractImagePrototype icon_wait();
+	@Source("wait.gif")
+	ImageResource icon_wait();
   
-  @Resource("less_than.png")
-  AbstractImagePrototype grid_filter_lessThan();
+	@Source("less_than.png")
+	ImageResource grid_filter_lessThan();
   
-  @Resource("greater_than.png")
-  AbstractImagePrototype grid_filter_greaterThan();
+	@Source("greater_than.png")
+	ImageResource grid_filter_greaterThan();
   
-  @Resource("equals.png")
-  AbstractImagePrototype grid_filter_equal();
+	@Source("equals.png")
+	ImageResource grid_filter_equal();
   
-  @Resource("find.png")
-  AbstractImagePrototype grid_filter_find();
+	@Source("find.png")
+	ImageResource grid_filter_find();
 }

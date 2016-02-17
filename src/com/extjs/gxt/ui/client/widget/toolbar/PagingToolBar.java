@@ -28,6 +28,7 @@ import com.extjs.gxt.ui.client.widget.button.Button;
 import com.google.gwt.event.dom.client.KeyCodes;
 import com.google.gwt.event.dom.client.KeyDownEvent;
 import com.google.gwt.event.dom.client.KeyDownHandler;
+import com.google.gwt.i18n.client.LocaleInfo;
 import com.google.gwt.user.client.Command;
 import com.google.gwt.user.client.DeferredCommand;
 import com.google.gwt.user.client.Element;
@@ -58,97 +59,163 @@ import com.google.gwt.user.client.ui.TextBox;
  * </dl>
  */
 @SuppressWarnings("deprecation")
-public class PagingToolBar extends ToolBar {
+public class PagingToolBar extends ToolBar
+{
 
   /**
    * PagingToolBar images.
    */
-  public static class PagingToolBarImages {
-    private AbstractImagePrototype first = GXT.isHighContrastMode
-        ? IconHelper.create("gxt/themes/access/images/grid/page-first.gif") : GXT.IMAGES.paging_toolbar_first();
-    private AbstractImagePrototype firstDisabled = GXT.IMAGES.paging_toolbar_first_disabled();
-    private AbstractImagePrototype last = GXT.isHighContrastMode
-        ? IconHelper.create("gxt/themes/access/images/grid/page-last.gif") : GXT.IMAGES.paging_toolbar_last();
-    private AbstractImagePrototype lastDisabled = GXT.IMAGES.paging_toolbar_last_disabled();
-    private AbstractImagePrototype next = GXT.isHighContrastMode
-        ? IconHelper.create("gxt/themes/access/images/grid/page-next.gif") : GXT.IMAGES.paging_toolbar_next();
+	public static class PagingToolBarImages
+	{
+		private AbstractImagePrototype first;
+		private AbstractImagePrototype firstDisabled;
+		private AbstractImagePrototype last;
+		private AbstractImagePrototype lastDisabled;
+		private AbstractImagePrototype next;
+		private AbstractImagePrototype nextDisabled;
+		private AbstractImagePrototype prev;
+		private AbstractImagePrototype prevDisabled;
+		private AbstractImagePrototype refresh;
 
-    private AbstractImagePrototype nextDisabled = GXT.IMAGES.paging_toolbar_next_disabled();
-    private AbstractImagePrototype prev = GXT.isHighContrastMode
-        ? IconHelper.create("gxt/themes/access/images/grid/page-prev.gif") : GXT.IMAGES.paging_toolbar_prev();
-    private AbstractImagePrototype prevDisabled = GXT.IMAGES.paging_toolbar_prev_disabled();
-    private AbstractImagePrototype refresh = GXT.isHighContrastMode
-        ? IconHelper.create("gxt/themes/access/images/grid/refresh.gif") : GXT.IMAGES.paging_toolbar_refresh();
+		public PagingToolBarImages()
+		{
+			if (GXT.isHighContrastMode)
+			{
+				boolean isRTL = LocaleInfo.getCurrentLocale().isRTL();
+				if (isRTL)
+				{
+					last = IconHelper
+							.create("gxt/themes/access/images/grid/page-first.gif");
+					first = IconHelper
+							.create("gxt/themes/access/images/grid/page-last.gif");
+					prev = IconHelper
+							.create("gxt/themes/access/images/grid/page-next.gif");
+					next = IconHelper
+							.create("gxt/themes/access/images/grid/page-prev.gif");
+				} else
+				{
+					first = IconHelper
+							.create("gxt/themes/access/images/grid/page-first.gif");
+					last = IconHelper
+							.create("gxt/themes/access/images/grid/page-last.gif");
+					next = IconHelper
+							.create("gxt/themes/access/images/grid/page-next.gif");
+					prev = IconHelper
+							.create("gxt/themes/access/images/grid/page-prev.gif");
+				}
+			} else
+			{
+				first = AbstractImagePrototype.create(GXT.IMAGES
+						.paging_toolbar_first());
+				last = AbstractImagePrototype.create(GXT.IMAGES
+						.paging_toolbar_last());
+				next = AbstractImagePrototype.create(GXT.IMAGES
+						.paging_toolbar_next());
 
-    public AbstractImagePrototype getFirst() {
+				prev = AbstractImagePrototype.create(GXT.IMAGES
+						.paging_toolbar_prev());
+			}
+			firstDisabled = AbstractImagePrototype.create(GXT.IMAGES
+					.paging_toolbar_first_disabled());
+			lastDisabled = AbstractImagePrototype.create(GXT.IMAGES
+					.paging_toolbar_last_disabled());
+			nextDisabled = AbstractImagePrototype.create(GXT.IMAGES
+					.paging_toolbar_next_disabled());
+			prevDisabled = AbstractImagePrototype.create(GXT.IMAGES
+					.paging_toolbar_prev_disabled());
+			refresh = GXT.isHighContrastMode ? IconHelper
+					.create("gxt/themes/access/images/grid/refresh.gif")
+					: AbstractImagePrototype.create(GXT.IMAGES
+							.paging_toolbar_refresh());
+		}
+
+		public AbstractImagePrototype getFirst()
+		{
       return first;
     }
 
-    public AbstractImagePrototype getFirstDisabled() {
+		public AbstractImagePrototype getFirstDisabled()
+		{
       return firstDisabled;
     }
 
-    public AbstractImagePrototype getLast() {
+		public AbstractImagePrototype getLast()
+		{
       return last;
     }
 
-    public AbstractImagePrototype getLastDisabled() {
+		public AbstractImagePrototype getLastDisabled()
+		{
       return lastDisabled;
     }
 
-    public AbstractImagePrototype getNext() {
+		public AbstractImagePrototype getNext()
+		{
       return next;
     }
 
-    public AbstractImagePrototype getNextDisabled() {
+		public AbstractImagePrototype getNextDisabled()
+		{
       return nextDisabled;
     }
 
-    public AbstractImagePrototype getPrev() {
+		public AbstractImagePrototype getPrev()
+		{
       return prev;
     }
 
-    public AbstractImagePrototype getPrevDisabled() {
+		public AbstractImagePrototype getPrevDisabled()
+		{
       return prevDisabled;
     }
 
-    public AbstractImagePrototype getRefresh() {
+		public AbstractImagePrototype getRefresh()
+		{
       return refresh;
     }
 
-    public void setFirst(AbstractImagePrototype first) {
+		public void setFirst(AbstractImagePrototype first)
+		{
       this.first = first;
     }
 
-    public void setFirstDisabled(AbstractImagePrototype firstDisabled) {
+		public void setFirstDisabled(AbstractImagePrototype firstDisabled)
+		{
       this.firstDisabled = firstDisabled;
     }
 
-    public void setLast(AbstractImagePrototype last) {
+		public void setLast(AbstractImagePrototype last)
+		{
       this.last = last;
     }
 
-    public void setLastDisabled(AbstractImagePrototype lastDisabled) {
+		public void setLastDisabled(AbstractImagePrototype lastDisabled)
+		{
       this.lastDisabled = lastDisabled;
     }
 
-    public void setNext(AbstractImagePrototype next) {
+		public void setNext(AbstractImagePrototype next)
+		{
       this.next = next;
     }
 
-    public void setNextDisabled(AbstractImagePrototype nextDisabled) {
+		public void setNextDisabled(AbstractImagePrototype nextDisabled)
+		{
       this.nextDisabled = nextDisabled;
     }
 
-    public void setPrev(AbstractImagePrototype prev) {
+		public void setPrev(AbstractImagePrototype prev)
+		{
       this.prev = prev;
     }
 
-    public void setPrevDisabled(AbstractImagePrototype prevDisabled) {
+		public void setPrevDisabled(AbstractImagePrototype prevDisabled)
+		{
       this.prevDisabled = prevDisabled;
     }
 
-    public void setRefresh(AbstractImagePrototype refresh) {
+		public void setRefresh(AbstractImagePrototype refresh)
+		{
       this.refresh = refresh;
     }
 
@@ -157,9 +224,11 @@ public class PagingToolBar extends ToolBar {
   /**
    * PagingToolBar messages.
    */
-  public static class PagingToolBarMessages {
+	public static class PagingToolBarMessages
+	{
     private String afterPageText;
-    private String beforePageText = GXT.MESSAGES.pagingToolBar_beforePageText();
+		private String beforePageText = GXT.MESSAGES
+				.pagingToolBar_beforePageText();
     private String displayMsg;
     private String emptyMsg = GXT.MESSAGES.pagingToolBar_emptyMsg();
     private String firstText = GXT.MESSAGES.pagingToolBar_firstText();
@@ -173,7 +242,8 @@ public class PagingToolBar extends ToolBar {
      * 
      * @return the after page text
      */
-    public String getAfterPageText() {
+		public String getAfterPageText()
+		{
       return afterPageText;
     }
 
@@ -182,7 +252,8 @@ public class PagingToolBar extends ToolBar {
      * 
      * @return the before page text
      */
-    public String getBeforePageText() {
+		public String getBeforePageText()
+		{
       return beforePageText;
     }
 
@@ -191,7 +262,8 @@ public class PagingToolBar extends ToolBar {
      * 
      * @return the display message.
      */
-    public String getDisplayMsg() {
+		public String getDisplayMsg()
+		{
       return displayMsg;
     }
 
@@ -200,11 +272,13 @@ public class PagingToolBar extends ToolBar {
      * 
      * @return the empty message
      */
-    public String getEmptyMsg() {
+		public String getEmptyMsg()
+		{
       return emptyMsg;
     }
 
-    public String getFirstText() {
+		public String getFirstText()
+		{
       return firstText;
     }
 
@@ -213,7 +287,8 @@ public class PagingToolBar extends ToolBar {
      * 
      * @return the last text
      */
-    public String getLastText() {
+		public String getLastText()
+		{
       return lastText;
     }
 
@@ -222,7 +297,8 @@ public class PagingToolBar extends ToolBar {
      * 
      * @return the next ext
      */
-    public String getNextText() {
+		public String getNextText()
+		{
       return nextText;
     }
 
@@ -231,7 +307,8 @@ public class PagingToolBar extends ToolBar {
      * 
      * @return the previous text
      */
-    public String getPrevText() {
+		public String getPrevText()
+		{
       return prevText;
     }
 
@@ -240,75 +317,93 @@ public class PagingToolBar extends ToolBar {
      * 
      * @return the refresh text
      */
-    public String getRefreshText() {
+		public String getRefreshText()
+		{
       return refreshText;
     }
 
     /**
      * Customizable piece of the default paging text (defaults to "of {0}").
      * 
-     * @param afterPageText the after page text
+		 * @param afterPageText
+		 *            the after page text
      */
-    public void setAfterPageText(String afterPageText) {
+		public void setAfterPageText(String afterPageText)
+		{
       this.afterPageText = afterPageText;
     }
 
     /**
      * Customizable piece of the default paging text (defaults to "Page").
      * 
-     * @param beforePageText the before page text
+		 * @param beforePageText
+		 *            the before page text
      */
-    public void setBeforePageText(String beforePageText) {
+		public void setBeforePageText(String beforePageText)
+		{
       this.beforePageText = beforePageText;
     }
 
     /**
-     * The paging status message to display (defaults to "Displaying {0} - {1}
-     * of {2}"). Note that this string is formatted using the braced numbers 0-2
-     * as tokens that are replaced by the values for start, end and total
-     * respectively. These tokens should be preserved when overriding this
-     * string if showing those values is desired.
+		 * The paging status message to display (defaults to "Displaying {0} -
+		 * {1} of {2}"). Note that this string is formatted using the braced
+		 * numbers 0-2 as tokens that are replaced by the values for start, end
+		 * and total respectively. These tokens should be preserved when
+		 * overriding this string if showing those values is desired.
      * 
-     * @param displayMsg the display message
+		 * @param displayMsg
+		 *            the display message
      */
-    public void setDisplayMsg(String displayMsg) {
+		public void setDisplayMsg(String displayMsg)
+		{
       this.displayMsg = displayMsg;
     }
 
     /**
-     * The message to display when no records are found (defaults to "No data to
-     * display").
+		 * The message to display when no records are found (defaults to "No
+		 * data to display").
      * 
-     * @param emptyMsg the empty message
+		 * @param emptyMsg
+		 *            the empty message
      */
-    public void setEmptyMsg(String emptyMsg) {
+		public void setEmptyMsg(String emptyMsg)
+		{
       this.emptyMsg = emptyMsg;
     }
 
     /**
-     * Customizable piece of the default paging text (defaults to "First Page").
+		 * Customizable piece of the default paging text (defaults to
+		 * "First Page").
      * 
-     * @param firstText the first text
+		 * @param firstText
+		 *            the first text
      */
-    public void setFirstText(String firstText) {
+		public void setFirstText(String firstText)
+		{
       this.firstText = firstText;
     }
 
     /**
-     * Customizable piece of the default paging text (defaults to "Last Page").
+		 * Customizable piece of the default paging text (defaults to
+		 * "Last Page").
      * 
-     * @param lastText the last text
+		 * @param lastText
+		 *            the last text
      */
-    public void setLastText(String lastText) {
+		public void setLastText(String lastText)
+		{
       this.lastText = lastText;
     }
 
     /**
-     * Customizable piece of the default paging text (defaults to "Next Page").
+		 * Customizable piece of the default paging text (defaults to
+		 * "Next Page").
      * 
-     * @param nextText the next text
+		 * @param nextText
+		 *            the next text
      */
-    public void setNextText(String nextText) {
+		public void setNextText(String nextText)
+		{
       this.nextText = nextText;
     }
 
@@ -316,18 +411,23 @@ public class PagingToolBar extends ToolBar {
      * Customizable piece of the default paging text (defaults to "Previous
      * Page").
      * 
-     * @param prevText the prev text
+		 * @param prevText
+		 *            the prev text
      */
-    public void setPrevText(String prevText) {
+		public void setPrevText(String prevText)
+		{
       this.prevText = prevText;
     }
 
     /**
-     * Customizable piece of the default paging text (defaults to "Refresh").
+		 * Customizable piece of the default paging text (defaults to
+		 * "Refresh").
      * 
-     * @param refreshText the refresh text
+		 * @param refreshText
+		 *            the refresh text
      */
-    public void setRefreshText(String refreshText) {
+		public void setRefreshText(String refreshText)
+		{
       this.refreshText = refreshText;
     }
 
@@ -340,28 +440,41 @@ public class PagingToolBar extends ToolBar {
   protected LabelToolItem displayText;
   protected Button first, prev, next, last, refresh;
   protected PagingToolBarImages images;
-  protected Listener<ComponentEvent> listener = new Listener<ComponentEvent>() {
+	protected Listener<ComponentEvent> listener = new Listener<ComponentEvent>()
+	{
 
-    public void handleEvent(ComponentEvent be) {
+		@Override
+		public void handleEvent(ComponentEvent be)
+		{
       Component c = be.getComponent();
-      if (be.getType() == Events.Disable) {
-        if (c == first) {
+			if (be.getType() == Events.Disable)
+			{
+				if (c == first)
+				{
           first.setIcon(getImages().getFirstDisabled());
-        } else if (c == prev) {
+				} else if (c == prev)
+				{
           prev.setIcon(getImages().getPrevDisabled());
-        } else if (c == next) {
+				} else if (c == next)
+				{
           next.setIcon(getImages().getNextDisabled());
-        } else if (c == last) {
+				} else if (c == last)
+				{
           last.setIcon(getImages().getLastDisabled());
         }
-      } else {
-        if (c == first) {
+			} else
+			{
+				if (c == first)
+				{
           first.setIcon(getImages().getFirst());
-        } else if (c == prev) {
+				} else if (c == prev)
+				{
           prev.setIcon(getImages().getPrev());
-        } else if (c == next) {
+				} else if (c == next)
+				{
           next.setIcon(getImages().getNext());
-        } else if (c == last) {
+				} else if (c == last)
+				{
           last.setIcon(getImages().getLast());
         }
       }
@@ -381,16 +494,21 @@ public class PagingToolBar extends ToolBar {
   /**
    * Creates a new paging tool bar with the given page size.
    * 
-   * @param pageSize the page size
+	 * @param pageSize
+	 *            the page size
    */
-  public PagingToolBar(final int pageSize) {
+	public PagingToolBar(final int pageSize)
+	{
     this.pageSize = pageSize;
 
     first = new Button();
     first.addListener(Events.Disable, listener);
     first.addListener(Events.Enable, listener);
-    first.addSelectionListener(new SelectionListener<ButtonEvent>() {
-      public void componentSelected(ButtonEvent ce) {
+		first.addSelectionListener(new SelectionListener<ButtonEvent>()
+		{
+			@Override
+			public void componentSelected(ButtonEvent ce)
+			{
         first();
       }
     });
@@ -398,8 +516,11 @@ public class PagingToolBar extends ToolBar {
     prev = new Button();
     prev.addListener(Events.Disable, listener);
     prev.addListener(Events.Enable, listener);
-    prev.addSelectionListener(new SelectionListener<ButtonEvent>() {
-      public void componentSelected(ButtonEvent ce) {
+		prev.addSelectionListener(new SelectionListener<ButtonEvent>()
+		{
+			@Override
+			public void componentSelected(ButtonEvent ce)
+			{
         previous();
       }
     });
@@ -407,8 +528,11 @@ public class PagingToolBar extends ToolBar {
     next = new Button();
     next.addListener(Events.Disable, listener);
     next.addListener(Events.Enable, listener);
-    next.addSelectionListener(new SelectionListener<ButtonEvent>() {
-      public void componentSelected(ButtonEvent ce) {
+		next.addSelectionListener(new SelectionListener<ButtonEvent>()
+		{
+			@Override
+			public void componentSelected(ButtonEvent ce)
+			{
         next();
       }
     });
@@ -416,15 +540,21 @@ public class PagingToolBar extends ToolBar {
     last = new Button();
     last.addListener(Events.Disable, listener);
     last.addListener(Events.Enable, listener);
-    last.addSelectionListener(new SelectionListener<ButtonEvent>() {
-      public void componentSelected(ButtonEvent ce) {
+		last.addSelectionListener(new SelectionListener<ButtonEvent>()
+		{
+			@Override
+			public void componentSelected(ButtonEvent ce)
+			{
         last();
       }
     });
 
     refresh = new Button();
-    refresh.addSelectionListener(new SelectionListener<ButtonEvent>() {
-      public void componentSelected(ButtonEvent ce) {
+		refresh.addSelectionListener(new SelectionListener<ButtonEvent>()
+		{
+			@Override
+			public void componentSelected(ButtonEvent ce)
+			{
         refresh();
       }
     });
@@ -435,10 +565,15 @@ public class PagingToolBar extends ToolBar {
     afterText = new LabelToolItem();
     afterText.setStyleName("my-paging-text");
     pageText = new TextBox();
-    if (GXT.isAriaEnabled()) pageText.setTitle("Page");
-    pageText.addKeyDownHandler(new KeyDownHandler() {
-      public void onKeyDown(KeyDownEvent event) {
-        if (event.getNativeKeyCode() == KeyCodes.KEY_ENTER) {
+		if (GXT.isAriaEnabled())
+			pageText.setTitle("Page");
+		pageText.addKeyDownHandler(new KeyDownHandler()
+		{
+			@Override
+			public void onKeyDown(KeyDownEvent event)
+			{
+				if (event.getNativeKeyCode() == KeyCodes.KEY_ENTER)
+				{
           onPageChange();
         }
       }
@@ -472,24 +607,37 @@ public class PagingToolBar extends ToolBar {
   /**
    * Binds the toolbar to the loader.
    * 
-   * @param loader the loader
+	 * @param loader
+	 *            the loader
    */
-  public void bind(PagingLoader<?> loader) {
-    if (this.loader != null) {
+	public void bind(PagingLoader<?> loader)
+	{
+		if (this.loader != null)
+		{
       this.loader.removeLoadListener(loadListener);
     }
     this.loader = loader;
-    if (loader != null) {
+		if (loader != null)
+		{
       loader.setLimit(pageSize);
-      if (loadListener == null) {
-        loadListener = new LoadListener() {
-          public void loaderBeforeLoad(final LoadEvent le) {
+			if (loadListener == null)
+			{
+				loadListener = new LoadListener()
+				{
+					@Override
+					public void loaderBeforeLoad(final LoadEvent le)
+					{
             savedEnableState = isEnabled();
             setEnabled(false);
-            refresh.setIcon(IconHelper.createStyle("x-tbar-loading"));
-            DeferredCommand.addCommand(new Command() {
-              public void execute() {
-                if (le.isCancelled()) {
+						refresh.setIcon(IconHelper
+								.createStyle("x-tbar-loading"));
+						DeferredCommand.addCommand(new Command()
+						{
+							@Override
+							public void execute()
+							{
+								if (le.isCancelled())
+								{
                   refresh.setIcon(getImages().getRefresh());
                   setEnabled(savedEnableState);
                 }
@@ -497,13 +645,17 @@ public class PagingToolBar extends ToolBar {
             });
           }
 
-          public void loaderLoad(LoadEvent le) {
+					@Override
+					public void loaderLoad(LoadEvent le)
+					{
             refresh.setIcon(getImages().getRefresh());
             setEnabled(savedEnableState);
             onLoad(le);
           }
 
-          public void loaderLoadException(LoadEvent le) {
+					@Override
+					public void loaderLoadException(LoadEvent le)
+					{
             refresh.setIcon(getImages().getRefresh());
             setEnabled(savedEnableState);
           }
@@ -516,8 +668,10 @@ public class PagingToolBar extends ToolBar {
   /**
    * Clears the current toolbar text.
    */
-  public void clear() {
-    if (rendered) {
+	public void clear()
+	{
+		if (rendered)
+		{
       pageText.setText("");
       afterText.setHtml("");
       displayText.setHtml("");
@@ -527,7 +681,8 @@ public class PagingToolBar extends ToolBar {
   /**
    * Moves to the first page.
    */
-  public void first() {
+	public void first()
+	{
     doLoadRequest(0, pageSize);
   }
 
@@ -536,12 +691,15 @@ public class PagingToolBar extends ToolBar {
    * 
    * @return the active page
    */
-  public int getActivePage() {
+	public int getActivePage()
+	{
     return activePage;
   }
 
-  public PagingToolBarImages getImages() {
-    if (images == null) {
+	public PagingToolBarImages getImages()
+	{
+		if (images == null)
+		{
       images = new PagingToolBarImages();
     }
     return images;
@@ -552,7 +710,8 @@ public class PagingToolBar extends ToolBar {
    * 
    * @return the messages
    */
-  public PagingToolBarMessages getMessages() {
+	public PagingToolBarMessages getMessages()
+	{
     return msgs;
   }
 
@@ -561,7 +720,8 @@ public class PagingToolBar extends ToolBar {
    * 
    * @return the page size
    */
-  public int getPageSize() {
+	public int getPageSize()
+	{
     return pageSize;
   }
 
@@ -570,7 +730,8 @@ public class PagingToolBar extends ToolBar {
    * 
    * @return the
    */
-  public int getTotalPages() {
+	public int getTotalPages()
+	{
     return pages;
   }
 
@@ -579,7 +740,8 @@ public class PagingToolBar extends ToolBar {
    * 
    * @return the reuse config state
    */
-  public boolean isReuseConfig() {
+	public boolean isReuseConfig()
+	{
     return reuseConfig;
   }
 
@@ -588,17 +750,21 @@ public class PagingToolBar extends ToolBar {
    * 
    * @return the show tooltip state
    */
-  public boolean isShowToolTips() {
+	public boolean isShowToolTips()
+	{
     return showToolTips;
   }
 
   /**
    * Moves to the last page.
    */
-  public void last() {
-    if (totalLength > 0) {
+	public void last()
+	{
+		if (totalLength > 0)
+		{
       int extra = totalLength % pageSize;
-      int lastStart = extra > 0 ? (totalLength - extra) : totalLength - pageSize;
+			int lastStart = extra > 0 ? (totalLength - extra) : totalLength
+					- pageSize;
       doLoadRequest(lastStart, pageSize);
     }
   }
@@ -606,71 +772,89 @@ public class PagingToolBar extends ToolBar {
   /**
    * Moves to the last page.
    */
-  public void next() {
+	public void next()
+	{
     doLoadRequest(start + pageSize, pageSize);
   }
 
   /**
    * Moves the the previous page.
    */
-  public void previous() {
+	public void previous()
+	{
     doLoadRequest(Math.max(0, start - pageSize), pageSize);
   }
 
   /**
    * Refreshes the data using the current configuration.
    */
-  public void refresh() {
+	public void refresh()
+	{
     doLoadRequest(start, pageSize);
   }
 
   /**
    * Sets the active page (1 to page count inclusive).
    * 
-   * @param page the page
+	 * @param page
+	 *            the page
    */
-  public void setActivePage(int page) {
-    if (page > pages) {
+	public void setActivePage(int page)
+	{
+		if (page > pages)
+		{
       last();
       return;
     }
-    if (page != activePage && page > 0 && page <= pages) {
+		if (page != activePage && page > 0 && page <= pages)
+		{
       doLoadRequest(--page * pageSize, pageSize);
-    } else {
+		} else
+		{
       pageText.setText(String.valueOf((int) activePage));
     }
   }
 
-  public void setImages(PagingToolBarImages images) {
+	public void setImages(PagingToolBarImages images)
+	{
     this.images = images;
     refresh.setIcon(getImages().getRefresh());
-    last.setIcon(last.isEnabled() ? getImages().getLast() : getImages().getLastDisabled());
-    first.setIcon(first.isEnabled() ? getImages().getFirst() : getImages().getFirstDisabled());
-    prev.setIcon(prev.isEnabled() ? getImages().getPrev() : getImages().getPrevDisabled());
-    next.setIcon(next.isEnabled() ? getImages().getNext() : getImages().getNextDisabled());
+		last.setIcon(last.isEnabled() ? getImages().getLast() : getImages()
+				.getLastDisabled());
+		first.setIcon(first.isEnabled() ? getImages().getFirst() : getImages()
+				.getFirstDisabled());
+		prev.setIcon(prev.isEnabled() ? getImages().getPrev() : getImages()
+				.getPrevDisabled());
+		next.setIcon(next.isEnabled() ? getImages().getNext() : getImages()
+				.getNextDisabled());
   }
 
   /**
    * Sets the tool bar's messages.
    * 
-   * @param messages the messages
+	 * @param messages
+	 *            the messages
    */
-  public void setMessages(PagingToolBarMessages messages) {
+	public void setMessages(PagingToolBarMessages messages)
+	{
     msgs = messages;
-    if (showToolTips) {
+		if (showToolTips)
+		{
       first.setToolTip(msgs.getFirstText());
       prev.setToolTip(msgs.getPrevText());
       next.setToolTip(msgs.getNextText());
       last.setToolTip(msgs.getLastText());
       refresh.setToolTip(msgs.getRefreshText());
-    } else {
+		} else
+		{
       first.removeToolTip();
       prev.removeToolTip();
       next.removeToolTip();
       last.removeToolTip();
       refresh.removeToolTip();
     }
-    if (GXT.isAriaEnabled()) {
+		if (GXT.isAriaEnabled())
+		{
       first.getAriaSupport().setLabel(msgs.getFirstText());
       prev.getAriaSupport().setLabel(msgs.getPrevText());
       next.getAriaSupport().setLabel(msgs.getNextText());
@@ -681,22 +865,26 @@ public class PagingToolBar extends ToolBar {
   }
 
   /**
-   * Sets the current page size. This method does not effect the data currently
-   * being displayed. The new page size will not be used until the next load
-   * request.
+	 * Sets the current page size. This method does not effect the data
+	 * currently being displayed. The new page size will not be used until the
+	 * next load request.
    * 
-   * @param pageSize the new page size
+	 * @param pageSize
+	 *            the new page size
    */
-  public void setPageSize(int pageSize) {
+	public void setPageSize(int pageSize)
+	{
     this.pageSize = pageSize;
   }
 
   /**
    * True to reuse the previous load config (defaults to true).
    * 
-   * @param reuseConfig true to reuse the load config
+	 * @param reuseConfig
+	 *            true to reuse the load config
    */
-  public void setReuseConfig(boolean reuseConfig) {
+	public void setReuseConfig(boolean reuseConfig)
+	{
     this.reuseConfig = reuseConfig;
   }
 
@@ -704,25 +892,32 @@ public class PagingToolBar extends ToolBar {
    * Sets if the button tool tips should be displayed (defaults to true,
    * pre-render).
    * 
-   * @param showToolTips true to show tool tips
+	 * @param showToolTips
+	 *            true to show tool tips
    */
-  public void setShowToolTips(boolean showToolTips) {
+	public void setShowToolTips(boolean showToolTips)
+	{
     this.showToolTips = showToolTips;
   }
 
-  protected void doLoadRequest(int offset, int limit) {
-    if (reuseConfig && config != null) {
+	protected void doLoadRequest(int offset, int limit)
+	{
+		if (reuseConfig && config != null)
+		{
       config.setOffset(offset);
       config.setLimit(pageSize);
       loader.load(config);
-    } else {
+		} else
+		{
       loader.setLimit(pageSize);
       loader.load(offset, limit);
     }
   }
 
-  protected void onLoad(LoadEvent event) {
-    if (!rendered) {
+	protected void onLoad(LoadEvent event)
+	{
+		if (!rendered)
+		{
       renderEvent = event;
       return;
     }
@@ -731,13 +926,15 @@ public class PagingToolBar extends ToolBar {
     start = result.getOffset();
     totalLength = result.getTotalLength();
     activePage = (int) Math.ceil((double) (start + pageSize) / pageSize);
+		pages = totalLength < pageSize ? 1 : (int) Math
+				.ceil((double) totalLength / pageSize);
 
-    pages = totalLength < pageSize ? 1 : (int) Math.ceil((double) totalLength / pageSize);
-
-    if (activePage > pages && totalLength > 0) {
+		if (activePage > pages && totalLength > 0)
+		{
       last();
       return;
-    } else if (activePage > pages) {
+		} else if (activePage > pages)
+		{
       start = 0;
       activePage = 1;
     }
@@ -745,9 +942,11 @@ public class PagingToolBar extends ToolBar {
     pageText.setText(String.valueOf((int) activePage));
 
     String after = null, display = null;
-    if (msgs.getAfterPageText() != null) {
+		if (msgs.getAfterPageText() != null)
+		{
       after = Format.substitute(msgs.getAfterPageText(), "" + pages);
-    } else {
+		} else
+		{
       after = GXT.MESSAGES.pagingToolBar_afterPageText(pages);
     }
 
@@ -760,23 +959,31 @@ public class PagingToolBar extends ToolBar {
 
     int temp = activePage == pages ? totalLength : start + pageSize;
 
-    if (msgs.getDisplayMsg() != null) {
-      String[] params = new String[] {"" + (start + 1), "" + temp, "" + totalLength};
-      display = Format.substitute(msgs.getDisplayMsg(), (Object[]) params);
-    } else {
-      display = GXT.MESSAGES.pagingToolBar_displayMsg(start + 1, (int) temp, (int) totalLength);
+		if (msgs.getDisplayMsg() != null)
+		{
+			String[] params = new String[]
+			{ "" + (start + 1), "" + temp, "" + totalLength };
+			display = Format
+					.substitute(msgs.getDisplayMsg(), (Object[]) params);
+		} else
+		{
+			display = GXT.MESSAGES.pagingToolBar_displayMsg(start + 1,
+					(int) temp, (int) totalLength);
     }
 
     String msg = display;
-    if (totalLength == 0) {
+		if (totalLength == 0)
+		{
       msg = msgs.getEmptyMsg();
     }
     displayText.setHtml(msg);
   }
 
-  protected void onPageChange() {
+	protected void onPageChange()
+	{
     String value = pageText.getText();
-    if (value.equals("") || !Util.isInteger(value)) {
+		if (value.equals("") || !Util.isInteger(value))
+		{
       pageText.setText(String.valueOf((int) activePage));
       return;
     }
@@ -785,15 +992,18 @@ public class PagingToolBar extends ToolBar {
   }
 
   @Override
-  protected void onRender(Element target, int index) {
+	protected void onRender(Element target, int index)
+	{
     super.onRender(target, index);
 
-    if (renderEvent != null) {
+		if (renderEvent != null)
+		{
       onLoad(renderEvent);
       renderEvent = null;
     }
 
-    if (GXT.isAriaEnabled()) {
+		if (GXT.isAriaEnabled())
+		{
       getAriaSupport().setDescribedBy(displayText.getId());
     }
   }

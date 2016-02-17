@@ -104,20 +104,20 @@ import com.google.gwt.user.client.ui.impl.RichTextAreaImpl;
 public class HtmlEditor extends Field<String> {
 
   public class HtmlEditorImages extends FieldImages {
-    private AbstractImagePrototype bold = GXT.IMAGES.editor_bold();
-    private AbstractImagePrototype fontColor = GXT.IMAGES.editor_font_color();
-    private AbstractImagePrototype fontDecrease = GXT.IMAGES.editor_font_decrease();
-    private AbstractImagePrototype fontHighlight = GXT.IMAGES.editor_font_highlight();
-    private AbstractImagePrototype fontIncrease = GXT.IMAGES.editor_font_increase();
-    private AbstractImagePrototype italic = GXT.IMAGES.editor_italic();
-    private AbstractImagePrototype justifyCenter = GXT.IMAGES.editor_justify_center();
-    private AbstractImagePrototype justifyLeft = GXT.IMAGES.editor_justify_left();
-    private AbstractImagePrototype justifyRight = GXT.IMAGES.editor_justify_right();
-    private AbstractImagePrototype link = GXT.IMAGES.editor_link();
-    private AbstractImagePrototype ol = GXT.IMAGES.editor_ol();
-    private AbstractImagePrototype source = GXT.IMAGES.editor_source();
-    private AbstractImagePrototype ul = GXT.IMAGES.editor_ul();
-    private AbstractImagePrototype underline = GXT.IMAGES.editor_underline();
+    private AbstractImagePrototype bold = AbstractImagePrototype.create(GXT.IMAGES.editor_bold());
+    private AbstractImagePrototype fontColor = AbstractImagePrototype.create(GXT.IMAGES.editor_font_color());
+    private AbstractImagePrototype fontDecrease = AbstractImagePrototype.create(GXT.IMAGES.editor_font_decrease());
+    private AbstractImagePrototype fontHighlight = AbstractImagePrototype.create(GXT.IMAGES.editor_font_highlight());
+    private AbstractImagePrototype fontIncrease = AbstractImagePrototype.create(GXT.IMAGES.editor_font_increase());
+    private AbstractImagePrototype italic = AbstractImagePrototype.create(GXT.IMAGES.editor_italic());
+    private AbstractImagePrototype justifyCenter = AbstractImagePrototype.create(GXT.IMAGES.editor_justify_center());
+    private AbstractImagePrototype justifyLeft = AbstractImagePrototype.create(GXT.IMAGES.editor_justify_left());
+    private AbstractImagePrototype justifyRight = AbstractImagePrototype.create(GXT.IMAGES.editor_justify_right());
+    private AbstractImagePrototype link = AbstractImagePrototype.create(GXT.IMAGES.editor_link());
+    private AbstractImagePrototype ol = AbstractImagePrototype.create(GXT.IMAGES.editor_ol());
+    private AbstractImagePrototype source = AbstractImagePrototype.create(GXT.IMAGES.editor_source());
+    private AbstractImagePrototype ul = AbstractImagePrototype.create(GXT.IMAGES.editor_ul());
+    private AbstractImagePrototype underline = AbstractImagePrototype.create(GXT.IMAGES.editor_underline());
 
     public AbstractImagePrototype getBold() {
       return bold;
@@ -939,7 +939,6 @@ public class HtmlEditor extends Field<String> {
     if (GXT.isIE6) {
       getElement().getStyle().setProperty("position", "relative");
     }
- 
     rte = new rte();
 
     textarea = new El(DOM.createTextArea());
