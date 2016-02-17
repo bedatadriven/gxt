@@ -813,7 +813,7 @@ public class ListView<M extends ModelData> extends BoxComponent {
       Element original = all.getElement(index);
       if (original != null) {
         List list = Util.createList(model);
-        Element node = bufferRender(list).getItem(0);
+        Element node = (Element) bufferRender(list).getItem(0);
         all.replaceElement(original, node);
         original.getParentElement().replaceChild(node, original);
       }
