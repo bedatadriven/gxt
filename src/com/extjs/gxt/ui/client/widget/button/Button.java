@@ -30,6 +30,7 @@ import com.extjs.gxt.ui.client.widget.BoxComponent;
 import com.extjs.gxt.ui.client.widget.IconSupport;
 import com.extjs.gxt.ui.client.widget.menu.Menu;
 import com.google.gwt.event.dom.client.KeyCodes;
+import com.google.gwt.i18n.client.LocaleInfo;
 import com.google.gwt.user.client.Command;
 import com.google.gwt.user.client.DeferredCommand;
 import com.google.gwt.user.client.Element;
@@ -91,8 +92,8 @@ public class Button extends BoxComponent implements IconSupport {
   protected String html;
   private ButtonArrowAlign arrowAlign = ButtonArrowAlign.RIGHT;
   private boolean handleMouseEvents = true;
-  private IconAlign iconAlign = IconAlign.LEFT;
-  private String menuAlign = "tl-bl?";
+	private IconAlign iconAlign = IconAlign.START;
+	private String menuAlign = LocaleInfo.getCurrentLocale().isRTL()?"tr-br?":"tl-bl?";
   private Listener<MenuEvent> menuListener;
   private int minWidth = Style.DEFAULT;
   private BaseEventPreview preview;
@@ -520,13 +521,23 @@ public class Button extends BoxComponent implements IconSupport {
         align = "b-b";
       } else if (iconAlign == IconAlign.TOP) {
         align = "t-t";
-      } else if (iconAlign == IconAlign.LEFT) {
-        align = "l-l";
-      } else if (iconAlign == IconAlign.RIGHT) {
-        align = "r-r";
+      }  else if (iconAlign == IconAlign.START) {
+        // for RTL we need to reverse this
+        if (LocaleInfo.getCurrentLocale().isRTL()) {
+          align = "r-r";
+        } else {
+          align = "l-l";
+        }
+      } else if (iconAlign == IconAlign.END) {
+        // for RTL we need to reverse this
+        if (LocaleInfo.getCurrentLocale().isRTL()) {
+          align = "l-l";
+        } else {
+          align = "r-r";
+        }
       }
       int[] offset = null;
-      if (GXT.isIE8 && GXT.isStrict && (iconAlign == IconAlign.LEFT || iconAlign == IconAlign.RIGHT)
+			if (GXT.isIE8 && GXT.isStrict && (iconAlign == IconAlign.START || iconAlign == IconAlign.END)
           && (scale == ButtonScale.LARGE || scale == ButtonScale.MEDIUM)) {
         if (scale == ButtonScale.LARGE) {
           offset = new int[] {0, -8};

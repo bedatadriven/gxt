@@ -17,11 +17,11 @@ import com.google.gwt.user.client.ui.AbstractImagePrototype;
  */
 public class TreeStyle {
 
-  private AbstractImagePrototype jointCollapsedIcon = GXT.IMAGES.tree_collapsed();
-  private AbstractImagePrototype jointExpandedIcon = GXT.IMAGES.tree_expanded();
+  private AbstractImagePrototype jointCollapsedIcon = AbstractImagePrototype.create(GXT.IMAGES.tree_collapsed());
+  private AbstractImagePrototype jointExpandedIcon = AbstractImagePrototype.create(GXT.IMAGES.tree_expanded());
   private AbstractImagePrototype leafIcon = null;
-  private AbstractImagePrototype nodeOpenIcon = GXT.IMAGES.tree_folder();
-  private AbstractImagePrototype nodeCloseIcon = GXT.IMAGES.tree_folder_closed();
+  private AbstractImagePrototype nodeOpenIcon = AbstractImagePrototype.create(GXT.IMAGES.tree_folder());
+  private AbstractImagePrototype nodeCloseIcon = AbstractImagePrototype.create(GXT.IMAGES.tree_folder_closed());
 
   /**
    * @return the jointExpandedIcon

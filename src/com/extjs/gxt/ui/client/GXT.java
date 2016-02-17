@@ -21,6 +21,7 @@ import com.extjs.gxt.ui.client.util.Theme;
 import com.extjs.gxt.ui.client.util.ThemeManager;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Document;
+import com.google.gwt.i18n.client.LocaleInfo;
 import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.Element;
 import com.google.gwt.user.client.Timer;
@@ -293,7 +294,6 @@ public class GXT {
         isIE7 = !isOpera && ua.indexOf("msie 7") != -1;
       }
     }
-
     isChrome = !isIE && ua.indexOf("chrome") != -1;
 
     isWebKit = ua.indexOf("webkit") != -1;
@@ -377,17 +377,27 @@ public class GXT {
     if ((defaultTheme != null && forceTheme) || (theme == null && defaultTheme != null)) {
       theme = defaultTheme.asMap();
     }
+    
     if (theme != null) {
       final String themeId = String.valueOf(theme.get("id"));
       Theme t = ThemeManager.findTheme(themeId);
       if (t != null) {
         t.init();
         String fileName = theme.get("file").toString();
-        if (!fileName.contains("gxt-all.css")) {
+	      if (!fileName.contains("gxt-all.css") && !fileName.contains("gxt-all-rtl.css")) {
+	    	  if(LocaleInfo.getCurrentLocale().isRTL())
+	    	  {
+	    		  int p=fileName.lastIndexOf(".css");
+	    		  if(p!=-1)
+	    		  {
+	    			  fileName=fileName.substring(0,p)+"-rtl.css";
+	    		  }
+	    	  }
           CSS.addStyleSheet(themeId, fileName);
         }
         bodyEl.addStyleName("x-theme-" + themeId);
       }
+
       StateManager.get().set(GWT.getModuleBaseURL() + "theme", theme);
     }
 
@@ -423,8 +433,7 @@ public class GXT {
   }
 
   /**
-   * True to enable ARIA functionality. Enabling ARIA will also cause the focus
-   * manager to enabled.
+   * True to enable ARIA functionality. Enabling ARIA will also cause the focus manager to enabled.
    * 
    * @param enable true to enable
    */
@@ -433,6 +442,7 @@ public class GXT {
     Accessibility.setRole(XDOM.getBody(), enable ? "application" : "");
     setFocusManagerEnabled(enable);
   }
+
 
   /**
    * Sets the auto id prefix which is prepended to the auto id counter when
@@ -495,13 +505,12 @@ public class GXT {
 			}
 		}
 		return false;
-  }-*/;
+}-*/;
 
   private native static void removeBackgroundFlicker() /*-{
-		try {
+    try{
 			$doc.execCommand("BackgroundImageCache", false, true);
-		} catch (e) {
-		}
+    }catch(e){}
   }-*/;
 
 }

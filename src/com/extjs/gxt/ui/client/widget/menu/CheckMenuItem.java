@@ -15,6 +15,7 @@ import com.extjs.gxt.ui.client.event.MenuEvent;
 import com.extjs.gxt.ui.client.util.Util;
 import com.extjs.gxt.ui.client.widget.Component;
 import com.google.gwt.user.client.Element;
+import com.google.gwt.user.client.ui.AbstractImagePrototype;
 import com.google.gwt.user.client.ui.Accessibility;
 
 /**
@@ -143,11 +144,11 @@ public class CheckMenuItem extends MenuItem {
     if (supressEvent || fireEvent(Events.BeforeCheckChange, me)) {
 
       if (getGroup() == null) {
-        setIcon(state ? GXT.IMAGES.checked() : GXT.IMAGES.unchecked());
+				setIcon(state ? AbstractImagePrototype.create(GXT.IMAGES.checked()) : AbstractImagePrototype.create(GXT.IMAGES.unchecked()));
         el().setStyleName("x-menu-checked", state);
       } else {
         el().addStyleName("x-menu-item-radio");
-        setIcon(state ? GXT.IMAGES.group_checked() : null);
+				setIcon(state ? AbstractImagePrototype.create(GXT.IMAGES.group_checked()) : null);
         el().setStyleName("x-menu-radio-sel", state);
       }
       checked = state;

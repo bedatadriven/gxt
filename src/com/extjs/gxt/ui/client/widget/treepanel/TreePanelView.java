@@ -170,8 +170,8 @@ public class TreePanelView<M extends ModelData> {
       sb.append(jointElement == null ? "<img src=\"" + GXT.BLANK_IMAGE_URL
           + "\" style=\"width: 16px\" class=\"x-tree3-node-joint\" />" : DOM.toString(jointElement));
       if (checkable) {
-        Element e = (Element) (checked ? GXT.IMAGES.checked().createElement().cast()
-            : GXT.IMAGES.unchecked().createElement().cast());
+        Element e = (Element) (checked ? AbstractImagePrototype.create(GXT.IMAGES.checked()).createElement().cast()
+            : AbstractImagePrototype.create(GXT.IMAGES.unchecked()).createElement().cast());
         El.fly(e).addStyleName("x-tree3-node-check");
         sb.append(DOM.toString(e));
       } else {
@@ -229,9 +229,9 @@ public class TreePanelView<M extends ModelData> {
       Element e;
       if (checkable) {
         if (check) {
-          e = (Element) GXT.IMAGES.checked().createElement().cast();
+          e = (Element) AbstractImagePrototype.create(GXT.IMAGES.checked()).createElement().cast();
         } else {
-          e = (Element) GXT.IMAGES.unchecked().createElement().cast();
+          e = (Element) AbstractImagePrototype.create(GXT.IMAGES.unchecked()).createElement().cast();
         }
       } else {
         e = DOM.createSpan();

@@ -24,6 +24,7 @@ import com.extjs.gxt.ui.client.util.Util;
 import com.extjs.gxt.ui.client.widget.Component;
 import com.google.gwt.dom.client.EventTarget;
 import com.google.gwt.event.dom.client.KeyCodes;
+import com.google.gwt.i18n.client.LocaleInfo;
 import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.Element;
 import com.google.gwt.user.client.Event;
@@ -194,11 +195,11 @@ public class ToolTip extends Tip {
       origAnchor = toolTipConfig.getAnchor();
       // pre-show it off screen so that the el will have dimensions
       // for positioning calcs when getting xy next
-      showAt(-1000, -1000);
+      showAt(-1000, -1000, false);
       origConstrainPosition = this.constrainPosition;
       constrainPosition = false;
     }
-    showAt(getTargetXY(0));
+    showAt(getTargetXY(0), toolTipConfig.getAnchor() == null);
 
     if (toolTipConfig.getAnchor() != null) {
       anchorEl.show();
@@ -211,11 +212,11 @@ public class ToolTip extends Tip {
   }
 
   @Override
-  public void showAt(int x, int y) {
+  public void showAt(int x, int y, boolean adjustRTL) {
     if (disabled) return;
     lastActive = new Date();
     clearTimers();
-    super.showAt(x, y);
+    super.showAt(x, y, adjustRTL);
     if (toolTipConfig.getAnchor() != null) {
       anchorEl.show();
       syncAnchor();
@@ -508,10 +509,15 @@ public class ToolTip extends Tip {
       return new Point(axy[0], axy[1]);
 
     } else {
+    	int[] mouseOffset = toolTipConfig.getMouseOffset();
+    	if (LocaleInfo.getCurrentLocale().isRTL()) {
+    		int x = targetXY.x - mouseOffset[0];
+    		int y = targetXY.y + mouseOffset[1];
+    		return new Point(x, y);
+    	}
       int x = targetXY.x;
       int y = targetXY.y;
 
-      int[] mouseOffset = toolTipConfig.getMouseOffset();
       if (mouseOffset != null) {
         x += mouseOffset[0];
         y += mouseOffset[1];

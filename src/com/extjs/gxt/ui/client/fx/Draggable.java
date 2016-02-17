@@ -7,6 +7,7 @@
  */
  package com.extjs.gxt.ui.client.fx;
 
+import com.extjs.gxt.ui.client.GXT;
 import com.extjs.gxt.ui.client.Style;
 import com.extjs.gxt.ui.client.core.El;
 import com.extjs.gxt.ui.client.core.XDOM;
@@ -21,10 +22,11 @@ import com.extjs.gxt.ui.client.util.BaseEventPreview;
 import com.extjs.gxt.ui.client.util.Rectangle;
 import com.extjs.gxt.ui.client.widget.Component;
 import com.extjs.gxt.ui.client.widget.Shim;
+import com.google.gwt.core.client.Scheduler;
+import com.google.gwt.core.client.Scheduler.ScheduledCommand;
 import com.google.gwt.event.dom.client.KeyCodes;
-import com.google.gwt.user.client.Command;
+import com.google.gwt.i18n.client.LocaleInfo;
 import com.google.gwt.user.client.DOM;
-import com.google.gwt.user.client.DeferredCommand;
 import com.google.gwt.user.client.Element;
 import com.google.gwt.user.client.Event;
 import com.google.gwt.user.client.Window;
@@ -54,7 +56,8 @@ import com.google.gwt.user.client.Window;
  * <li>draggable : this</li>
  * <li>component : drag component</li>
  * <li>event : the dom event</li>
- * </ul></dd>
+ * </ul>
+ * </dd>
  * 
  * <dd><b>DragCancel</b> : DragEvent(draggable, component, event)<br>
  * <div>Fires after a drag has been cancelled.</div>
@@ -75,7 +78,6 @@ import com.google.gwt.user.client.Window;
  * </dd>
  * </dl>
  */
-@SuppressWarnings("deprecation")
 public class Draggable extends BaseObservable {
 
   protected int conX, conY, conWidth, conHeight;
@@ -659,7 +661,13 @@ public class Draggable extends BaseObservable {
       dragging = true;
       XDOM.getBodyEl().addStyleName("x-unselectable");
       XDOM.getBodyEl().addStyleName("x-dd-cursor");
+      if (!LocaleInfo.getCurrentLocale().isRTL()) {
+    	  dragWidget.el().makePositionable();
+      }
+      else {
+    	  if (!GXT.isIE)
       dragWidget.el().makePositionable();
+      }
 
       event.preventDefault();
 
@@ -720,12 +728,13 @@ public class Draggable extends BaseObservable {
         }
         proxyEl.setVisibility(false);
         proxyEl.disableTextSelection(false);
-        DeferredCommand.addCommand(new Command() {
-          public void execute() {
-            if (proxyEl != null) {
+        Scheduler.get().scheduleDeferred(new ScheduledCommand()
+    	{
+    		@Override
+    		public void execute()
+    		{
               proxyEl.remove();
             }
-          }
         });
       }
       DragEvent de = new DragEvent(this);

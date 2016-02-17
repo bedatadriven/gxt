@@ -20,6 +20,7 @@ import com.extjs.gxt.ui.client.widget.HorizontalPanel;
 import com.extjs.gxt.ui.client.widget.LayoutContainer;
 import com.extjs.gxt.ui.client.widget.VerticalPanel;
 import com.extjs.gxt.ui.client.widget.layout.TableData;
+import com.google.gwt.i18n.client.LocaleInfo;
 import com.google.gwt.user.client.Element;
 import com.google.gwt.user.client.Event;
 
@@ -303,6 +304,9 @@ public class MultiField<D> extends Field<D> {
       if (vertical && !last && spacing > 0) {
         style += "paddingBottom:" + spacing + "px;";
       } else if (!vertical && !last && spacing > 0) {
+			  if (LocaleInfo.getCurrentLocale().isRTL())
+				  style += "paddingLeft:" + spacing + "px;";
+			  else
         style += "paddingRight:" + spacing + "px;";
       }
       data.setStyle(style);

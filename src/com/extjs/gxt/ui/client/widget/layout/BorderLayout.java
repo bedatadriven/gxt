@@ -34,6 +34,7 @@ import com.extjs.gxt.ui.client.widget.Layout;
 import com.extjs.gxt.ui.client.widget.LayoutContainer;
 import com.extjs.gxt.ui.client.widget.SplitBar;
 import com.extjs.gxt.ui.client.widget.button.ToolButton;
+import com.google.gwt.i18n.client.LocaleInfo;
 
 /**
  * This is a multi-pane, application-oriented UI layout style that supports
@@ -272,10 +273,15 @@ public class BorderLayout extends Layout {
 
     north = getRegionWidget(LayoutRegion.NORTH);
     south = getRegionWidget(LayoutRegion.SOUTH);
-    west = getRegionWidget(LayoutRegion.WEST);
-    east = getRegionWidget(LayoutRegion.EAST);
     center = getRegionWidget(LayoutRegion.CENTER);
-
+    if (LocaleInfo.getCurrentLocale().isRTL()) {
+      east = getRegionWidget(LayoutRegion.WEST);
+      west = getRegionWidget(LayoutRegion.EAST);
+    }
+    else {
+      west = getRegionWidget(LayoutRegion.WEST);
+      east = getRegionWidget(LayoutRegion.EAST);
+    }
     if (north != null) {
       BorderLayoutData data = (BorderLayoutData) getLayoutData(north);
       north.setVisible(!data.isHidden());

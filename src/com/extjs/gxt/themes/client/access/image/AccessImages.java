@@ -8,83 +8,121 @@
  package com.extjs.gxt.themes.client.access.image;
 
 import com.extjs.gxt.ui.client.image.XImages;
-import com.google.gwt.user.client.ui.AbstractImagePrototype;
+import com.google.gwt.resources.client.ImageResource;
+import com.google.gwt.resources.client.ImageResource.ImageOptions;
 
-@SuppressWarnings("deprecation")
 public interface AccessImages extends XImages {
   
-  @Resource("tree-collapsed.png")
-  AbstractImagePrototype tree_collapsed();
+	@Override
+	@Source("tree-collapsed.png")
+	@ImageOptions(flipRtl=true)
+	ImageResource tree_collapsed();
 
-  @Resource("tree-collapsed.png")
-  AbstractImagePrototype tree_collapsed_over();
+	@Override
+	@Source("tree-collapsed.png")
+	@ImageOptions(flipRtl=true)
+	ImageResource tree_collapsed_over();
 
-  @Resource("tree-expanded.png")
-  AbstractImagePrototype tree_expanded();
+	@Override
+	@Source("tree-expanded.png")
+	@ImageOptions(flipRtl=true)
+	ImageResource tree_expanded();
 
-  @Resource("tree-expanded.png")
-  AbstractImagePrototype tree_expanded_over();
-  
-  @Resource("more.gif")
-  AbstractImagePrototype toolbar_more();
-  
-  @Resource("tb-bold.gif")
-  AbstractImagePrototype editor_bold();
+	@Override
+	@Source("tree-expanded.png")
+	@ImageOptions(flipRtl=true)
+	ImageResource tree_expanded_over();
 
-  @Resource("tb-font-color.gif")
-  AbstractImagePrototype editor_font_color();
+	@Override
+	@Source("more.gif")
+	@ImageOptions(flipRtl=true)
+	ImageResource toolbar_more();
 
-  @Resource("tb-font-decrease.gif")
-  AbstractImagePrototype editor_font_decrease();
+	@Override
+	@Source("tb-bold.gif")
+	ImageResource editor_bold();
 
-  @Resource("tb-font-highlight.gif")
-  AbstractImagePrototype editor_font_highlight();
+	@Override
+	@Source("tb-font-color.gif")
+	ImageResource editor_font_color();
 
-  @Resource("tb-font-increase.gif")
-  AbstractImagePrototype editor_font_increase();
+	@Override
+	@Source("tb-font-decrease.gif")
+	ImageResource editor_font_decrease();
 
-  @Resource("tb-italic.gif")
-  AbstractImagePrototype editor_italic();
+	@Override
+	@Source("tb-font-highlight.gif")
+	ImageResource editor_font_highlight();
 
-  @Resource("tb-justify-center.gif")
-  AbstractImagePrototype editor_justify_center();
+	@Override
+	@Source("tb-font-increase.gif")
+	ImageResource editor_font_increase();
 
-  @Resource("tb-justify-left.gif")
-  AbstractImagePrototype editor_justify_left();
+	@Override
+	@Source("tb-italic.gif")
+	ImageResource editor_italic();
 
-  @Resource("tb-justify-right.gif")
-  AbstractImagePrototype editor_justify_right();
-  
-  @Resource("tb-underline.gif")
-  AbstractImagePrototype editor_underline();
-  
-  @Resource("group-checked.gif")
-  AbstractImagePrototype group_checked();
-  
-  @Resource("page-prev.gif")
-  AbstractImagePrototype paging_toolbar_prev();
+	@Override
+	@Source("tb-justify-center.gif")
+	ImageResource editor_justify_center();
 
-  @Resource("page-prev-disabled.gif")
-  AbstractImagePrototype paging_toolbar_prev_disabled();
+	@Override
+	@Source("tb-justify-left.gif")
+	ImageResource editor_justify_left();
 
-  @Resource("page-next.gif")
-  AbstractImagePrototype paging_toolbar_next();
+	@Override
+	@Source("tb-justify-right.gif")
+	ImageResource editor_justify_right();
 
-  @Resource("page-next-disabled.gif")
-  AbstractImagePrototype paging_toolbar_next_disabled();
+	@Override
+	@Source("tb-underline.gif")
+	ImageResource editor_underline();
 
-  @Resource("page-first.gif")
-  AbstractImagePrototype paging_toolbar_first();
+	@Override
+	@Source("group-checked.gif")
+	ImageResource group_checked();
 
-  @Resource("page-first-disabled.gif")
-  AbstractImagePrototype paging_toolbar_first_disabled();
+	@Override
+	@Source("page-prev.gif")
+	@ImageOptions(flipRtl=true)
+	ImageResource paging_toolbar_prev();
 
-  @Resource("page-last.gif")
-  AbstractImagePrototype paging_toolbar_last();
+	@Override
+	@Source("page-prev-disabled.gif")
+	@ImageOptions(flipRtl=true)
+	ImageResource paging_toolbar_prev_disabled();
 
-  @Resource("page-last-disabled.gif")
-  AbstractImagePrototype paging_toolbar_last_disabled();
-  
-  @Resource("refresh.gif")
-  AbstractImagePrototype paging_toolbar_refresh();
+	@Override
+	@Source("page-next.gif")
+	@ImageOptions(flipRtl=true)
+	ImageResource paging_toolbar_next();
+
+	@Override
+	@Source("page-next-disabled.gif")
+	@ImageOptions(flipRtl=true)
+	ImageResource paging_toolbar_next_disabled();
+
+	@Override
+	@Source("page-first.gif")
+	@ImageOptions(flipRtl=true)
+	ImageResource paging_toolbar_first();
+
+	@Override
+	@Source("page-first-disabled.gif")
+	@ImageOptions(flipRtl=true)
+	ImageResource paging_toolbar_first_disabled();
+
+	@Override
+	@Source("page-last.gif")
+	@ImageOptions(flipRtl=true)
+	ImageResource paging_toolbar_last();
+
+	@Override
+	@Source("page-last-disabled.gif")
+	@ImageOptions(flipRtl=true)
+	ImageResource paging_toolbar_last_disabled();
+
+	@Override
+	@Source("refresh.gif")
+	ImageResource paging_toolbar_refresh();
 }

@@ -159,15 +159,15 @@ public class RangeMenu extends Menu {
 
       switch (item) {
         case LESSTHAN:
-          icon = GXT.IMAGES.grid_filter_lessThan();
+          icon = AbstractImagePrototype.create(GXT.IMAGES.grid_filter_lessThan());
           lt = field;
           break;
         case GREATERTHAN:
-          icon = GXT.IMAGES.grid_filter_greaterThan();
+          icon = AbstractImagePrototype.create(GXT.IMAGES.grid_filter_greaterThan());
           gt = field;
           break;
         case EQUAL:
-          icon = GXT.IMAGES.grid_filter_equal();
+          icon = AbstractImagePrototype.create(GXT.IMAGES.grid_filter_equal());
           eq = field;
           break;
       }

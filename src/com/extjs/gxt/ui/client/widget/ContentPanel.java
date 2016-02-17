@@ -8,6 +8,7 @@
  package com.extjs.gxt.ui.client.widget;
 
 import com.extjs.gxt.ui.client.GXT;
+import com.extjs.gxt.ui.client.Style;
 import com.extjs.gxt.ui.client.Style.Direction;
 import com.extjs.gxt.ui.client.Style.HorizontalAlignment;
 import com.extjs.gxt.ui.client.core.DomHelper;
@@ -155,7 +156,7 @@ public class ContentPanel extends LayoutContainer implements IconSupport {
   private boolean bodyBorder = true;
   private String bodyStyle, bodyStyleName;
   private Component bottomComponent;
-  private HorizontalAlignment buttonAlign = HorizontalAlignment.RIGHT;
+	private HorizontalAlignment buttonAlign = HorizontalAlignment.END;
   private ToolButton collapseBtn;
   private boolean collapsed, hideCollapseTool;
   private boolean collapsible;
@@ -584,8 +585,8 @@ public class ContentPanel extends LayoutContainer implements IconSupport {
    */
   public void setButtonAlign(HorizontalAlignment buttonAlign) {
     assertPreRender();
-    this.buttonAlign = buttonAlign;
-    fbar.setAlignment(buttonAlign);
+		this.buttonAlign = Style.convertHorizontalAlignmentToRelative(buttonAlign);
+		fbar.setAlignment(this.buttonAlign);
   }
 
   /**

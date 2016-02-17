@@ -7,6 +7,7 @@
  */
  package com.extjs.gxt.ui.client.widget.layout;
 
+import com.extjs.gxt.ui.client.Style;
 import com.extjs.gxt.ui.client.core.El;
 import com.extjs.gxt.ui.client.widget.Component;
 import com.extjs.gxt.ui.client.widget.Container;
@@ -38,9 +39,9 @@ public class TableRowLayout extends TableLayout {
     td.dom.setAttribute("role", "presentation");
 
     if (data.horizontalAlign != null) {
-      td.dom.setPropertyString("align", data.horizontalAlign.name());
+      td.dom.setPropertyString("align", Style.convertHorizontalAlignmentToStrict(data.horizontalAlign).name());
     } else if (cellHorizontalAlign != null) {
-      td.dom.setPropertyString("align", cellHorizontalAlign.name());
+      td.dom.setPropertyString("align", Style.convertHorizontalAlignmentToStrict(cellHorizontalAlign).name());
     }
 
     if (data.verticalAlign != null) {

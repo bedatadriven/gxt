@@ -16,6 +16,7 @@ import com.extjs.gxt.ui.client.util.Format;
 import com.extjs.gxt.ui.client.util.Params;
 import com.extjs.gxt.ui.client.util.Point;
 import com.extjs.gxt.ui.client.util.Size;
+import com.google.gwt.i18n.client.LocaleInfo;
 import com.google.gwt.user.client.Element;
 import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.ui.Accessibility;
@@ -199,7 +200,9 @@ public class Info extends ContentPanel {
 
   protected Point position() {
     Size s = XDOM.getViewportSize();
-    int left = s.width - config.width - 10 + XDOM.getBodyScrollLeft();
+    int left = LocaleInfo.getCurrentLocale().isRTL()?
+    		10:
+    		s.width - config.width - 10 + XDOM.getBodyScrollLeft();
     int top = s.height - config.height - 10 - (level * (config.height + 10))
         + XDOM.getBodyScrollTop();
     return new Point(left, top);

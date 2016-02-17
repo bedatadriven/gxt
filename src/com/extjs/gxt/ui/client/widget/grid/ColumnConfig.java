@@ -31,7 +31,7 @@ public class ColumnConfig extends BaseObservable {
   protected boolean ariaIgnore;
 
   private GridCellRenderer<ModelData> renderer;
-  private HorizontalAlignment alignment;
+  private HorizontalAlignment alignment = HorizontalAlignment.START;
   private String toolTip;
   private String style;
   private String dataIndex;

@@ -366,7 +366,7 @@ public class FieldSet extends LayoutContainer {
     if (GXT.isFocusManagerEnabled()) {
       if (checkboxToggle && checkbox != null) {
         checkbox.focus();
-      } else if (collapseBtn != null) {
+      } else if(collapseBtn != null) {
         collapseBtn.focus();
       }
     }
@@ -462,7 +462,7 @@ public class FieldSet extends LayoutContainer {
   }
 
   private native void doNotify(Component c, boolean show) /*-{
-		if (show) {
+    if(show){
 			c.@com.extjs.gxt.ui.client.widget.Component::notifyShow()()
 		} else {
 			c.@com.extjs.gxt.ui.client.widget.Component::notifyHide()();

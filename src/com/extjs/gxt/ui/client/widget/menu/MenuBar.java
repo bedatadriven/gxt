@@ -18,6 +18,7 @@ import com.extjs.gxt.ui.client.util.KeyNav;
 import com.extjs.gxt.ui.client.widget.Container;
 import com.google.gwt.dom.client.EventTarget;
 import com.google.gwt.event.dom.client.KeyCodes;
+import com.google.gwt.i18n.client.LocaleInfo;
 import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.Element;
 import com.google.gwt.user.client.Event;
@@ -39,6 +40,7 @@ public class MenuBar extends Container<MenuBarItem> {
 
     listener = new Listener<MenuEvent>() {
 
+			@Override
       public void handleEvent(MenuEvent be) {
         EventType type = be.getType();
         if (type == Events.Hide) {
@@ -158,6 +160,9 @@ public class MenuBar extends Container<MenuBarItem> {
 
   protected void expand(MenuBarItem item, boolean selectFirst) {
     item.menu.setFocusOnShow(false);
+		if (LocaleInfo.getCurrentLocale().isRTL())
+			item.menu.show(item.getElement(), "tr-br", new int[] {0, 1});
+		else
     item.menu.show(item.getElement(), "tl-bl", new int[] {0, 1});
     item.expanded = true;
     if (item.menu.getItemCount() > 0 && selectFirst) {

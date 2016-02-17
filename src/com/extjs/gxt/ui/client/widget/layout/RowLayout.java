@@ -16,6 +16,7 @@ import com.extjs.gxt.ui.client.widget.Component;
 import com.extjs.gxt.ui.client.widget.Container;
 import com.extjs.gxt.ui.client.widget.Layout;
 import com.extjs.gxt.ui.client.widget.ScrollContainer;
+import com.google.gwt.i18n.client.LocaleInfo;
 
 /**
  * This layout positions the container's children in a single horizontal or
@@ -96,13 +97,15 @@ public class RowLayout extends Layout {
 
     int count = container.getItemCount();
 
+    boolean isRTL=LocaleInfo.getCurrentLocale().isRTL();
     // some columns can be percentages while others are fixed
     // so we need to make 2 passes
     for (int i = 0; i < count; i++) {
-      Component c = container.getItem(i);
-      // if(!c.isVisible(false)){
-      // continue;
-      // }
+		Component c = container.getItem(isRTL ? 
+				count - 1 - i : i);
+//      if(!c.isVisible(false)){
+//        continue;
+//      }
       c.el().makePositionable(true);
       c.el().setStyleAttribute("margin", "0px");
 
@@ -133,10 +136,11 @@ public class RowLayout extends Layout {
     int sTop = target.getPadding("t");
 
     for (int i = 0; i < count; i++) {
-      Component c = container.getItem(i);
-      // if(!c.isVisible(false)){
-      // continue;
-      // }
+        Component c = container.getItem(isRTL ?
+        		count - 1 - i : i);
+//      if(!c.isVisible(false)){
+//        continue;
+//      }
       RowData data = null;
       LayoutData d = getLayoutData(c);
       if (d != null && d instanceof RowData) {
@@ -197,9 +201,9 @@ public class RowLayout extends Layout {
     // so we need to make 2 passes
     for (int i = 0; i < count; i++) {
       Component c = container.getItem(i);
-      // if(!c.isVisible(false)){
-      // continue;
-      // }
+//      if(!c.isVisible(false)){
+//        continue;
+//      }
       RowData data = null;
       LayoutData d = getLayoutData(c);
       if (d != null && d instanceof RowData) {
@@ -223,9 +227,9 @@ public class RowLayout extends Layout {
 
     for (int i = 0; i < count; i++) {
       Component c = container.getItem(i);
-      // if(!c.isVisible(false)){
-      // continue;
-      // }
+//      if(!c.isVisible(false)){
+//        continue;
+//      }
       RowData data = null;
       LayoutData d = getLayoutData(c);
       if (d != null && d instanceof RowData) {

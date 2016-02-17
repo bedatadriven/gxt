@@ -26,6 +26,7 @@ import com.extjs.gxt.ui.client.widget.ComponentHelper;
 import com.extjs.gxt.ui.client.widget.WidgetComponent;
 import com.extjs.gxt.ui.client.widget.layout.FormLayout;
 import com.google.gwt.dom.client.InputElement;
+import com.google.gwt.i18n.client.LocaleInfo;
 import com.google.gwt.user.client.Command;
 import com.google.gwt.user.client.DeferredCommand;
 import com.google.gwt.user.client.Element;
@@ -113,7 +114,7 @@ import com.google.gwt.user.client.ui.AbstractImagePrototype;
 public abstract class Field<D> extends BoxComponent {
 
   public class FieldImages {
-    private AbstractImagePrototype invalid = GXT.IMAGES.field_invalid();
+    private AbstractImagePrototype invalid = AbstractImagePrototype.create(GXT.IMAGES.field_invalid());
 
     public AbstractImagePrototype getInvalid() {
       return invalid;
@@ -1014,6 +1015,9 @@ public abstract class Field<D> extends BoxComponent {
   protected void alignErrorIcon() {
     DeferredCommand.addCommand(new Command() {
       public void execute() {
+    	  if (LocaleInfo.getCurrentLocale().isRTL())
+    		  errorIcon.el().alignTo(getElement(), "tr-tl", new int[] {-2, 3});
+    	  else
         errorIcon.el().alignTo(getElement(), "tl-tr", new int[] {2, 3});
       }
     });

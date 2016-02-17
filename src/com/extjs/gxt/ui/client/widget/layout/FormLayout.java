@@ -15,9 +15,10 @@ import com.extjs.gxt.ui.client.widget.Component;
 import com.extjs.gxt.ui.client.widget.Container;
 import com.extjs.gxt.ui.client.widget.form.AdapterField;
 import com.extjs.gxt.ui.client.widget.form.Field;
+import com.extjs.gxt.ui.client.widget.form.FormPanel.LabelAlign;
 import com.extjs.gxt.ui.client.widget.form.HiddenField;
 import com.extjs.gxt.ui.client.widget.form.LabelField;
-import com.extjs.gxt.ui.client.widget.form.FormPanel.LabelAlign;
+import com.google.gwt.i18n.client.LocaleInfo;
 
 /**
  * Layout for form fields and their labels. FormLayout will only render Field
@@ -241,15 +242,24 @@ public class FormLayout extends AnchorLayout {
   protected void onLayout(Container<?> container, El target) {
     if (hideLabels) {
       labelStyle = "display:none";
+      if (LocaleInfo.getCurrentLocale().isRTL())
+    	  elementStyle = "padding-right:0;";
+      else
       elementStyle = "padding-left:0;";
       labelAdjust = 0;
     } else {
       int pad = labelPad != 0 ? labelPad : 5;
       labelAdjust = labelWidth + pad;
       labelStyle = "width:" + (labelWidth) + "px";
+      if (LocaleInfo.getCurrentLocale().isRTL())
+    	  elementStyle = "padding-right:" + (labelWidth + pad) + "px";
+      else
       elementStyle = "padding-left:" + (labelWidth + pad) + "px";
       if (labelAlign == LabelAlign.TOP) {
         labelStyle = "width:auto;";
+        if (LocaleInfo.getCurrentLocale().isRTL())
+        	elementStyle = "padding-right:0;";
+        else
         elementStyle = "padding-left:0;";
         labelAdjust = 0;
       }

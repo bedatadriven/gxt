@@ -33,6 +33,7 @@ import com.extjs.gxt.ui.client.widget.layout.MenuLayout;
 import com.google.gwt.dom.client.EventTarget;
 import com.google.gwt.dom.client.NodeList;
 import com.google.gwt.event.dom.client.KeyCodes;
+import com.google.gwt.i18n.client.LocaleInfo;
 import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.Element;
 import com.google.gwt.user.client.Event;
@@ -186,6 +187,11 @@ public class Menu extends Container<Component> {
       }
     };
     eventPreview.setAutoHide(false);
+		// i18n stuff
+		if (LocaleInfo.getCurrentLocale().isRTL()) {
+			subMenuAlign = "tr-tl?";
+			defaultAlign = "tr-bl?";
+		}
   }
 
   /**
@@ -251,6 +257,7 @@ public class Menu extends Container<Component> {
   /**
    * Hides the menu.
    */
+	@Override
   public void hide() {
     hide(false);
   }
@@ -559,6 +566,11 @@ public class Menu extends Container<Component> {
       onShow();
       el().updateZIndex(0);
 
+			if (LocaleInfo.getCurrentLocale().isRTL()) {
+				Size size = getSize();
+				x = x - size.width;
+			}
+
       showing = true;
       doAutoSize();
 
@@ -582,16 +594,17 @@ public class Menu extends Container<Component> {
       fireEvent(Events.Show, me);
     }
   }
-
   @Override
   protected void afterRender() {
     super.afterRender();
 
     keyNav = new KeyNav<ComponentEvent>(this) {
+			@Override
       public void onDown(ComponentEvent ce) {
         onKeyDown(ce);
       }
 
+			@Override
       public void onEnter(ComponentEvent be) {
         if (activeItem != null) {
           be.cancelBubble();
@@ -599,6 +612,7 @@ public class Menu extends Container<Component> {
         }
       }
 
+			@Override
       public void onLeft(ComponentEvent be) {
         hide();
         if (parentItem != null) {
@@ -615,6 +629,7 @@ public class Menu extends Container<Component> {
         }
       }
 
+			@Override
       public void onRight(ComponentEvent be) {
         if (activeItem != null) {
           activeItem.expandMenu(true);
@@ -632,12 +647,12 @@ public class Menu extends Container<Component> {
         menu.fireEvent(Events.Maximize);
       }
 
+			@Override
       public void onUp(ComponentEvent ce) {
         onKeyUp(ce);
       }
     };
   }
-
   protected void constrainScroll(int y) {
     int full = ul.setHeight("auto").getHeight();
 
@@ -669,6 +684,7 @@ public class Menu extends Container<Component> {
   protected void createScrollers() {
     if (el().select(".x-menu-scroller").getLength() == 0) {
       Listener<ClickRepeaterEvent> listener = new Listener<ClickRepeaterEvent>() {
+				@Override
         public void handleEvent(ClickRepeaterEvent be) {
           onScroll(be);
         }
@@ -708,10 +724,30 @@ public class Menu extends Container<Component> {
       Accessibility.setState(getElement(), "aria-activedescendant", "");
     }
   }
-
+	/*
+	 * This whole method is one big hack for IE's weird sizing issues when attaching a div to the root panel.
+	 * We can't no the right width size so we guess, according to the inner text. If the figure we get does not make sense for
+	 * a menu we try to stick with the original size IE calculated.
+	 */
+	private int getMaxTextWidth() {
+		int maxWidth = getMinWidth();
+		for (Component item : this.getItems()) {
+			int textWidth = item.el().getTextWidth() + 36; // added place for images, checkbox or whatever + some margin
+			if (maxWidth < textWidth)
+				maxWidth = textWidth;
+		}
+		return maxWidth > 500 ? getLayoutTarget().getWidth() : maxWidth;
+	}
   protected void doAutoSize() {
     if (showing && width == null) {
-      int width = getLayoutTarget().getWidth() + el().getFrameWidth("lr");
+			int width;
+			if (LocaleInfo.getCurrentLocale().isRTL() && GXT.isIE) {
+				// ie calculates the width wrong on RTL so we use text width instead
+				width = getMaxTextWidth()  + el().getFrameWidth("lr");
+			}
+			else {
+				width = getLayoutTarget().getWidth() + el().getFrameWidth("lr");
+			}
       el().setWidth(Math.max(width, minWidth), true);
     }
   }
@@ -787,7 +823,6 @@ public class Menu extends Container<Component> {
     super.onLayoutExcecuted(layout);
     doAutoSize();
   }
-
   protected void onMouseMove(ComponentEvent ce) {
     Component c = findItem(ce.getTarget());
     if (c != null && c instanceof Item) {

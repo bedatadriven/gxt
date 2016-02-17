@@ -34,8 +34,10 @@ import com.extjs.gxt.ui.client.widget.toolbar.SeparatorToolItem;
 import com.extjs.gxt.ui.client.widget.toolbar.ToolBar;
 import com.google.gwt.dom.client.Node;
 import com.google.gwt.dom.client.NodeList;
+import com.google.gwt.i18n.client.LocaleInfo;
 import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.Element;
+import com.google.gwt.user.client.ui.AbstractImagePrototype;
 
 public class ToolBarLayout extends Layout {
 
@@ -302,7 +304,7 @@ public class ToolBarLayout extends Layout {
 
       more = new Button();
       more.addStyleName("x-toolbar-more");
-      more.setIcon(GXT.IMAGES.toolbar_more());
+      more.setIcon(AbstractImagePrototype.create(GXT.IMAGES.toolbar_more()));
       more.setMenu(moreMenu);
       ComponentHelper.setParent(container, more);
       if (GXT.isAriaEnabled()) {
@@ -356,10 +358,17 @@ public class ToolBarLayout extends Layout {
   }
 
   protected void onLayout(Container<?> container, El target) {
+	  String start="left", end="right";
+	  String margin="marginRight";
+		if (LocaleInfo.getCurrentLocale().isRTL()) {
+			start="right";
+			end="left";
+			margin="marginLeft";
+		}
     if (leftTr == null) {
       target.insertHtml(
           "beforeEnd",
-          "<table cellspacing=\"0\" class=\"x-toolbar-ct\" role=\"presentation\"><tbody><tr><td class=\"x-toolbar-left\" align=\"left\"><table cellspacing=\"0\" role=\"presentation\"><tbody><tr class=\"x-toolbar-left-row\"></tr></tbody></table></td><td class=\"x-toolbar-right\" align=\"right\"><table cellspacing=\"0\" class=\"x-toolbar-right-ct\" role=\"presentation\"><tbody><tr><td><table cellspacing=\"0\" role=\"presentation\"><tbody><tr class=\"x-toolbar-right-row\" role=\"presentation\"></tr></tbody></table></td><td><table cellspacing=\"0\" role=\"presentation\"><tbody><tr class=\"x-toolbar-extras-row\"></tr></tbody></table></td></tr></tbody></table></td></tr></tbody></table>");
+          "<table cellspacing=\"0\" class=\"x-toolbar-ct\" role=\"presentation\"><tbody><tr><td class=\"x-toolbar-left\" align=\""+start+"\"><table cellspacing=\"0\" role=\"presentation\"><tbody><tr class=\"x-toolbar-left-row\"></tr></tbody></table></td><td class=\"x-toolbar-right\" align=\""+end+"\"><table cellspacing=\"0\" class=\"x-toolbar-right-ct\" role=\"presentation\"><tbody><tr><td><table cellspacing=\"0\" role=\"presentation\"><tbody><tr class=\"x-toolbar-right-row\" role=\"presentation\"></tr></tbody></table></td><td><table cellspacing=\"0\" role=\"presentation\"><tbody><tr class=\"x-toolbar-extras-row\"></tr></tbody></table></td></tr></tbody></table></td></tr></tbody></table>");
       leftTr = target.child("tr.x-toolbar-left-row");
       rightTr = target.child("tr.x-toolbar-right-row");
       extrasTr = target.child("tr.x-toolbar-extras-row");
@@ -368,29 +377,38 @@ public class ToolBarLayout extends Layout {
       rightTr.dom.setAttribute("role", "presentation");
       extrasTr.dom.setAttribute("role", "presentation");
     }
-    El side = leftTr;
+    El side = null;
+    if (LocaleInfo.getCurrentLocale().isRTL()) {
+      side = rightTr;
+    } else {
+      side = leftTr;
+    }
     int pos = 0;
 
     for (int i = 0, len = container.getItemCount(); i < len; i++, pos++) {
       Component c = container.getItem(i);
       if (c instanceof FillToolItem) {
-        side = rightTr;
+    	  if (side == leftTr) {
+          side = rightTr;
+        } else {
+          side = leftTr;
+        }
         pos = -1;
       } else if (!c.isRendered()) {
         c.render(insertCell(c, side, pos));
         if (i < len - 1) {
-          c.el().setStyleAttribute("marginRight", spacing + "px");
+          c.el().setStyleAttribute(margin, spacing + "px");
         } else {
-          c.el().setStyleAttribute("marginRight", "0px");
+          c.el().setStyleAttribute(margin, "0px");
         }
       } else {
         if (!isHidden(c) && !isValidParent(c.el().dom, side.getChildElement(pos))) {
           Element td = insertCell(c, side, pos);
           td.appendChild(c.el().dom);
           if (i < len - 1) {
-            c.el().setStyleAttribute("marginRight", spacing + "px");
+            c.el().setStyleAttribute(margin, spacing + "px");
           } else {
-            c.el().setStyleAttribute("marginRight", "0px");
+            c.el().setStyleAttribute(margin, "0px");
           }
         }
       }

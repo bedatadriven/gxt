@@ -150,7 +150,7 @@ public class TreeGridView extends BufferView {
     sb.append(jointElement == null ? "<img src=\"" + GXT.BLANK_IMAGE_URL
         + "\" style=\"width: 16px\" class=\"x-tree3-node-joint\" />" : DOM.toString(jointElement));
     if (checkable) {
-      Element e = (Element) GXT.IMAGES.unchecked().createElement().cast();
+      Element e = (Element) AbstractImagePrototype.create(GXT.IMAGES.unchecked()).createElement().cast();
       El.fly(e).addStyleName("x-tree3-node-check");
       sb.append(DOM.toString(e));
     } else {
@@ -209,7 +209,7 @@ public class TreeGridView extends BufferView {
         + "\" style=\"width: 16px\" class=\"x-tree3-node-joint\" />" : DOM.toString(jointElement));
 
     if (checkable) {
-      Element e = (Element) GXT.IMAGES.unchecked().createElement().cast();
+      Element e = (Element) AbstractImagePrototype.create(GXT.IMAGES.unchecked()).createElement().cast();
       El.fly(e).addStyleName("x-tree3-node-check");
       sb.append(DOM.toString(e));
     } else {

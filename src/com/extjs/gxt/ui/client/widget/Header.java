@@ -13,6 +13,7 @@ import java.util.List;
 import com.extjs.gxt.ui.client.GXT;
 import com.extjs.gxt.ui.client.core.El;
 import com.extjs.gxt.ui.client.util.IconHelper;
+import com.google.gwt.i18n.client.LocaleInfo;
 import com.extjs.gxt.ui.client.util.Util;
 import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.Element;
@@ -181,6 +182,9 @@ public class Header extends Component implements IconSupport {
         ImagePrototypeElement i = icon.createElement();
         El.fly(i).addStyleName("x-panel-inline-icon");
         El.fly(i).setStyleAttribute("cursor", "default");
+        if (LocaleInfo.getCurrentLocale().isRTL())
+        	El.fly(i).setStyleAttribute("float", "right");
+        else
         El.fly(i).setStyleAttribute("float", "left");
         if (altIconText != null || GXT.isAriaEnabled()) {
           i.setAttribute("alt", altIconText != null ? altIconText : "Panel Icon");
@@ -257,6 +261,9 @@ public class Header extends Component implements IconSupport {
     widgetPanel.setParent(this);
     widgetPanel.addStyleName("x-panel-toolbar");
     widgetPanel.setLayoutOnChange(true);
+    if (LocaleInfo.getCurrentLocale().isRTL())
+    	widgetPanel.setStyleAttribute("float", "left");
+    else
     widgetPanel.setStyleAttribute("float", "right");
     widgetPanel.getAriaSupport().setPresentation(true);
 
