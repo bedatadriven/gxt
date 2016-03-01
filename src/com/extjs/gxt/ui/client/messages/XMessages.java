@@ -137,7 +137,7 @@ public interface XMessages extends Messages {
 
   String listField_removeSelected();
 
-  String listField_itemsSelected();
+  String listField_itemsSelected(int count);
 
   String htmlEditor_boldTipText();
 

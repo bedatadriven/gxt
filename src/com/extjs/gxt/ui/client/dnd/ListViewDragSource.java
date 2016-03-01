@@ -38,7 +38,7 @@ public class ListViewDragSource extends DragSource {
   public ListViewDragSource(ListView listView) {
     super(listView);
     this.listView = listView;
-    setStatusText(GXT.MESSAGES.listField_itemsSelected());
+    setStatusText(GXT.MESSAGES.listField_itemsSelected(listView.getSelectionModel().getSelectedItems().size()));
     
     listView.addListener(Events.OnMouseDown, new Listener<ComponentEvent>() {
       public void handleEvent(ComponentEvent be) {
