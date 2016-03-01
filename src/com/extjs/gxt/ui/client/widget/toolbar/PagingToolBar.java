@@ -28,6 +28,7 @@ import com.extjs.gxt.ui.client.widget.button.Button;
 import com.google.gwt.event.dom.client.KeyCodes;
 import com.google.gwt.event.dom.client.KeyDownEvent;
 import com.google.gwt.event.dom.client.KeyDownHandler;
+import com.google.gwt.i18n.client.LocaleInfo;
 import com.google.gwt.user.client.Command;
 import com.google.gwt.user.client.DeferredCommand;
 import com.google.gwt.user.client.Element;
@@ -256,7 +257,7 @@ public class PagingToolBar extends ToolBar {
     /**
      * Customizable piece of the default paging text (defaults to "Page").
      * 
-     * @param beforePageText the before page text
+     * @param beforePageTxt the before page text
      */
     public void setBeforePageText(String beforePageText) {
       this.beforePageText = beforePageText;
@@ -453,9 +454,17 @@ public class PagingToolBar extends ToolBar {
     add(first);
     add(prev);
     add(new SeparatorToolItem());
-    add(beforePage);
-    add(new WidgetComponent(pageText));
-    add(afterText);
+    // We're not changing the whole layout but this is one case where
+    // we need to change the order of the controls
+    if(LocaleInfo.getCurrentLocale().getLocaleName().equals("ar")) {
+      add(afterText);
+      add(new WidgetComponent(pageText));
+      add(beforePage);
+    } else {
+      add(beforePage);
+      add(new WidgetComponent(pageText));
+      add(afterText);
+    }
     add(new SeparatorToolItem());
     add(next);
     add(last);
