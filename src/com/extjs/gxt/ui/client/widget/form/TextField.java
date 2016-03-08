@@ -13,6 +13,10 @@ import com.extjs.gxt.ui.client.event.ComponentEvent;
 import com.extjs.gxt.ui.client.util.Format;
 import com.extjs.gxt.ui.client.util.Size;
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.i18n.client.BidiUtils;
+import com.google.gwt.i18n.client.HasDirection;
+import com.google.gwt.i18n.shared.DirectionEstimator;
+import com.google.gwt.i18n.shared.WordCountDirectionEstimator;
 import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.Element;
 import com.google.gwt.user.client.Event;
@@ -61,7 +65,10 @@ import com.google.gwt.user.client.ui.impl.TextBoxImpl;
  * @param <D> the data type
  * @see NumberField
  */
-public class TextField<D> extends Field<D> {
+public class TextField<D> extends Field<D> implements HasDirection {
+
+  private DirectionEstimator directionEstimator = WordCountDirectionEstimator.get();
+
 
   /**
    * TextField Messages.
@@ -288,7 +295,42 @@ public class TextField<D> extends Field<D> {
           ce.preventDefault();
         }
         break;
+      case Event.ONKEYUP:
+        refreshDirection();
+        break;
     }
+  }
+
+
+  /**
+   * Adjusts target's direction according to the estimated direction of the text
+   * it supplies.
+   */
+  public void refreshDirection() {
+    if (directionEstimator != null) {
+      HasDirection.Direction dir = directionEstimator.estimateDirection(getRawValue());
+      if (dir != getDirection()) {
+        setDirection(dir);
+      }
+    }
+  }
+
+  @Override
+  public void setRawValue(String value) {
+    super.setRawValue(value);
+    if(rendered) {
+      refreshDirection();
+    }
+  }
+
+  @Override
+  public void setDirection(Direction direction) {
+    BidiUtils.setDirectionOnElement(getElement(), direction);
+  }
+
+  @Override
+  public Direction getDirection() {
+    return BidiUtils.getDirectionOnElement(getElement());
   }
 
   /**

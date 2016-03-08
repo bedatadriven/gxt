@@ -21,6 +21,9 @@ import com.extjs.gxt.ui.client.widget.Component;
 import com.extjs.gxt.ui.client.widget.ComponentHelper;
 import com.extjs.gxt.ui.client.widget.IconSupport;
 import com.extjs.gxt.ui.client.widget.Layer;
+import com.google.gwt.i18n.client.BidiUtils;
+import com.google.gwt.i18n.client.HasDirection;
+import com.google.gwt.i18n.shared.WordCountDirectionEstimator;
 import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.Element;
 import com.google.gwt.user.client.ui.AbstractImagePrototype;
@@ -40,7 +43,9 @@ public class MenuItem extends Item implements IconSupport {
   protected AbstractImagePrototype icon;
   protected String html;
   protected Widget widget;
-
+  
+  private boolean directionEstimated = true;
+  
   /**
    * Creates a new item.
    */
@@ -183,6 +188,17 @@ public class MenuItem extends Item implements IconSupport {
     this.subMenu = menu;
     menu.parentItem = this;
   }
+  
+  public boolean isDirectionEstimated() {
+    return directionEstimated;
+  }
+
+  /**
+   * Enables/disables the use of direction estimation to set the direction of this menu item
+   */
+  public void setDirectionEstimated(boolean directionEstimated) {
+    this.directionEstimated = directionEstimated;
+  }
 
   /**
    * Sets the item's text.
@@ -298,6 +314,7 @@ public class MenuItem extends Item implements IconSupport {
     
     getElement().setAttribute("unselectable", "on");
 
+    
     if (GXT.isAriaEnabled()) {
       Accessibility.setRole(getElement(), Accessibility.ROLE_MENUITEM);
     } else {
@@ -311,6 +328,9 @@ public class MenuItem extends Item implements IconSupport {
       setWidget(widget);
     } else {
       setHtml(html);
+      if(directionEstimated && html!=null && html.length() > 0) {
+        BidiUtils.setDirectionOnElement(getElement(), WordCountDirectionEstimator.get().estimateDirection(html));
+      }
     }
 
     if (subMenu != null) {
