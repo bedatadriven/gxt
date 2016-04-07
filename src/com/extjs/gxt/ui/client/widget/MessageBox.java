@@ -20,7 +20,9 @@ import com.extjs.gxt.ui.client.event.MessageBoxEvent;
 import com.extjs.gxt.ui.client.event.WindowEvent;
 import com.extjs.gxt.ui.client.widget.form.TextArea;
 import com.extjs.gxt.ui.client.widget.form.TextField;
+import com.gargoylesoftware.htmlunit.javascript.host.MessageEvent;
 import com.google.gwt.safehtml.shared.SafeHtml;
+import com.google.gwt.safehtml.shared.SafeHtmlUtils;
 import com.google.gwt.user.client.Element;
 
 /**
@@ -106,6 +108,10 @@ public class MessageBox {
     return box;
   }
 
+  public static MessageBox alert(String title, String message, Listener<MessageBoxEvent> callback) {
+    return alert(SafeHtmlUtils.fromString(title), SafeHtmlUtils.fromString(message), callback);
+  }
+
   /**
    * Displays a confirmation message box with Yes and No buttons (comparable to
    * JavaScript's confirm).
@@ -124,6 +130,10 @@ public class MessageBox {
     box.setButtons(YESNO);
     box.show();
     return box;
+  }
+
+  public static MessageBox confirm(String title, String message, Listener<MessageBoxEvent> callback) {
+    return confirm(SafeHtmlUtils.fromString(title), SafeHtmlUtils.fromString(message), callback);
   }
 
   /**
@@ -214,6 +224,10 @@ public class MessageBox {
     }
     box.show();
     return box;
+  }
+
+  public static MessageBox promptText(String text, String message, Listener<MessageBoxEvent> callback) {
+    return prompt(SafeHtmlUtils.fromString(text), SafeHtmlUtils.fromString(message), callback);
   }
 
   /**
@@ -715,11 +729,15 @@ public class MessageBox {
 
   /**
    * Sets the title text (pre-render).
-   * 
+   *
    * @param titleHtml the title text
    */
   public void setTitleHtml(SafeHtml titleHtml) {
     this.titleHtml = titleHtml;
+  }
+
+  public void setTitle(String text) {
+    setTitleHtml(SafeHtmlUtils.fromString(text));
   }
 
   /**

@@ -29,6 +29,7 @@ import com.extjs.gxt.ui.client.widget.menu.Menu;
 import com.google.gwt.event.dom.client.KeyCodes;
 import com.google.gwt.safehtml.shared.SafeHtml;
 import com.google.gwt.safehtml.shared.SafeHtmlUtils;
+import com.google.gwt.user.cellview.client.SafeHtmlHeader;
 import com.google.gwt.user.client.Command;
 import com.google.gwt.user.client.DeferredCommand;
 import com.google.gwt.user.client.Element;
@@ -125,6 +126,10 @@ public class Button extends BoxComponent implements IconSupport {
     setHtml(html);
   }
 
+  public Button(String text) {
+    this(SafeHtmlUtils.fromString(text));
+  }
+
   /**
    * Creates a new button with the given HTML and icon.
    * 
@@ -134,6 +139,10 @@ public class Button extends BoxComponent implements IconSupport {
   public Button(SafeHtml html, AbstractImagePrototype icon) {
     this(html);
     setIcon(icon);
+  }
+
+  public Button(String text, AbstractImagePrototype icon) {
+    this(SafeHtmlUtils.fromString(text), icon);
   }
 
   /**
@@ -147,6 +156,10 @@ public class Button extends BoxComponent implements IconSupport {
   public Button(SafeHtml html, AbstractImagePrototype icon, SelectionListener<ButtonEvent> listener) {
     this(html, icon);
     addSelectionListener(listener);
+  }
+
+  public Button(String text, AbstractImagePrototype icon, SelectionListener<ButtonEvent> listener) {
+    this(SafeHtmlUtils.fromString(text), icon, listener);
   }
 
   /**

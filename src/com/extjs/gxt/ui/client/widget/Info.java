@@ -17,6 +17,7 @@ import com.extjs.gxt.ui.client.util.Params;
 import com.extjs.gxt.ui.client.util.Point;
 import com.extjs.gxt.ui.client.util.Size;
 import com.google.gwt.safehtml.shared.SafeHtml;
+import com.google.gwt.safehtml.shared.SafeHtmlUtils;
 import com.google.gwt.user.client.Element;
 import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.ui.Accessibility;
@@ -81,6 +82,10 @@ public class Info extends ContentPanel {
    */
   public static void display(SafeHtml title, SafeHtml html) {
     display(new InfoConfig(title, html));
+  }
+
+  public static void displayText(String title, String text) {
+    display(new InfoConfig(SafeHtmlUtils.fromString(title), SafeHtmlUtils.fromString(text)));
   }
 
   private static int firstAvail() {

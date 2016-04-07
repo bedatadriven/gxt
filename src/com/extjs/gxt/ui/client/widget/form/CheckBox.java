@@ -122,6 +122,10 @@ public class CheckBox extends Field<Boolean> {
     }
   }
 
+  public void setBoxLabel(String boxLabel) {
+    setBoxLabel(SafeHtmlUtils.fromString(boxLabel));
+  }
+
   @Override
   public void setRawValue(String value) {
     boolean b = Boolean.valueOf(value).booleanValue();

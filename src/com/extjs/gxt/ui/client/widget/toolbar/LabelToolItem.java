@@ -9,6 +9,7 @@
 
 import com.extjs.gxt.ui.client.widget.Html;
 import com.google.gwt.safehtml.shared.SafeHtml;
+import com.google.gwt.safehtml.shared.SafeHtmlUtils;
 import com.google.gwt.user.client.Element;
 
 /**
@@ -31,6 +32,10 @@ public class LabelToolItem extends Html {
   public LabelToolItem(SafeHtml html) {
     this();
     setHtml(html);
+  }
+
+  public LabelToolItem(String text) {
+    this(SafeHtmlUtils.fromString(text));
   }
 
   @Override

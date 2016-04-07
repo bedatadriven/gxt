@@ -40,6 +40,10 @@ public class Status extends BoxComponent {
     setHtml(html);
   }
 
+  public void clearStatusText(String text) {
+    clearStatus(SafeHtmlUtils.fromString(text));
+  }
+
   public void clearStatus() {
     clearStatus(SafeHtmlUtils.EMPTY_SAFE_HTML);
   }
@@ -95,6 +99,10 @@ public class Status extends BoxComponent {
   public void setBusy(SafeHtml html) {
     setIconStyle("x-status-busy");
     setHtml(html);
+  }
+
+  public void setBusyText(String text) {
+    setBusy(SafeHtmlUtils.fromSafeConstant(text));
   }
 
   /**

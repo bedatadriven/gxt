@@ -18,6 +18,7 @@ import com.extjs.gxt.ui.client.widget.Component;
 import com.extjs.gxt.ui.client.widget.ComponentHelper;
 import com.extjs.gxt.ui.client.widget.IconSupport;
 import com.extjs.gxt.ui.client.widget.Layer;
+import com.google.gwt.aria.client.MenuitemcheckboxRole;
 import com.google.gwt.i18n.client.BidiUtils;
 import com.google.gwt.i18n.client.HasDirection;
 import com.google.gwt.i18n.shared.WordCountDirectionEstimator;
@@ -80,6 +81,10 @@ public class MenuItem extends Item implements IconSupport {
     setIcon(icon);
   }
 
+  public MenuItem(String text, AbstractImagePrototype icon) {
+    this(SafeHtmlUtils.fromString(text), icon);
+  }
+
   /**
    * Creates a new item.
    * 
@@ -92,6 +97,10 @@ public class MenuItem extends Item implements IconSupport {
     addSelectionListener(listener);
   }
 
+  public MenuItem(String text, AbstractImagePrototype icon, SelectionListener<? extends MenuEvent> listener) {
+    this(SafeHtmlUtils.fromString(text), icon, listener);
+  }
+
   /**
    * Creates a new item.
    * 
@@ -101,6 +110,10 @@ public class MenuItem extends Item implements IconSupport {
   public MenuItem(SafeHtml text, SelectionListener<? extends MenuEvent> listener) {
     this(text);
     addSelectionListener(listener);
+  }
+
+  public MenuItem(String text, SelectionListener<? extends MenuEvent> listener) {
+    this(SafeHtmlUtils.fromString(text), listener);
   }
 
   /**

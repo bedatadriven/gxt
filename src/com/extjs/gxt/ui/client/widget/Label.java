@@ -55,6 +55,11 @@ public class Label extends Html {
     setHtml(html);
   }
 
+  public Label(String text) {
+    this();
+    setText(text);
+  }
+
   /**
    * Sets the label for id.
    * 

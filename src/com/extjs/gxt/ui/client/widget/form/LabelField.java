@@ -102,6 +102,9 @@ public class LabelField extends Field<SafeHtml> {
     }
   }
 
+  public void setText(String text) {
+    setValue(SafeHtmlUtils.fromString(text));
+  }
 
   @Override
   public void setValue(SafeHtml value) {

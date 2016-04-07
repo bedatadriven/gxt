@@ -8,6 +8,7 @@
  package com.extjs.gxt.ui.client.widget;
 
 import com.google.gwt.safehtml.shared.SafeHtml;
+import com.google.gwt.safehtml.shared.SafeHtmlUtils;
 import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.Element;
 
@@ -73,6 +74,10 @@ public class Html extends BoxComponent {
     this.html = html;
   }
 
+  public Html(String text) {
+    this(SafeHtmlUtils.fromString(text));
+  }
+
   /**
    * Returns the component's HTML.
    * 
@@ -99,6 +104,10 @@ public class Html extends BoxComponent {
     if (rendered) {
       getElement().setInnerSafeHtml(html);
     }
+  }
+
+  public void setText(String text) {
+    setHtml(SafeHtmlUtils.fromString(text));
   }
 
   /**

@@ -633,6 +633,10 @@ public class GridView extends BaseObservable {
     this.emptyText = emptyText;
   }
 
+  public void setEmptyText(String emptyText) {
+    setEmptyText(SafeHtmlUtils.fromString(emptyText));
+  }
+
   /**
    * True to auto expand/contract the size of the columns to fit the grid width
    * and prevent horizontal scrolling.
