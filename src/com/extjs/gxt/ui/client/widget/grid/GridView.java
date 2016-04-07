@@ -57,6 +57,8 @@ import com.google.gwt.dom.client.NodeList;
 import com.google.gwt.dom.client.TableRowElement;
 import com.google.gwt.dom.client.TableSectionElement;
 import com.google.gwt.i18n.client.DateTimeFormat;
+import com.google.gwt.safehtml.shared.SafeHtml;
+import com.google.gwt.safehtml.shared.SafeHtmlUtils;
 import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.Event;
 import com.google.gwt.user.client.ui.AbstractImagePrototype;
@@ -1133,12 +1135,19 @@ public class GridView extends BaseObservable {
 
     ColumnConfig c = cm.getColumn(colIndex);
 
-    if (val != null && val instanceof Number && c.getNumberFormat() != null) {
-      Number n = (Number) val;
-      val = c.getNumberFormat().format(n.doubleValue());
-    } else if (val != null && val instanceof Date && c.getDateTimeFormat() != null) {
-      DateTimeFormat dtf = c.getDateTimeFormat();
-      val = dtf.format((Date) val);
+    if(val != null) {
+      if (val instanceof Number && c.getNumberFormat() != null) {
+        Number n = (Number) val;
+        val = c.getNumberFormat().format(n.doubleValue());
+      } else if (val instanceof Date && c.getDateTimeFormat() != null) {
+        DateTimeFormat dtf = c.getDateTimeFormat();
+        val = dtf.format((Date) val);
+      } else {
+        String valString = val.toString();
+        if(valString != null) {
+          val = SafeHtmlUtils.htmlEscape(valString);
+        }
+      }
     }
 
     String text = null;
