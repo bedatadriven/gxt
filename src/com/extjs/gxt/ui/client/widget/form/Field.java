@@ -25,7 +25,10 @@ import com.extjs.gxt.ui.client.widget.BoxComponent;
 import com.extjs.gxt.ui.client.widget.ComponentHelper;
 import com.extjs.gxt.ui.client.widget.WidgetComponent;
 import com.extjs.gxt.ui.client.widget.layout.FormLayout;
+import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.InputElement;
+import com.google.gwt.safehtml.client.SafeHtmlTemplates;
+import com.google.gwt.safehtml.shared.SafeHtml;
 import com.google.gwt.user.client.Command;
 import com.google.gwt.user.client.DeferredCommand;
 import com.google.gwt.user.client.Element;
@@ -151,6 +154,14 @@ public abstract class Field<D> extends BoxComponent {
     }
 
   }
+
+  interface Templates extends SafeHtmlTemplates {
+
+    @Template("{0}{1}")
+    SafeHtml fieldLabel(String fieldName, String separator);
+  }
+
+  private static final Templates TEMPLATES = GWT.create(Templates.class);
 
   protected boolean autoValidate;
   protected String emptyText;
@@ -741,14 +752,14 @@ public abstract class Field<D> extends BoxComponent {
   /**
    * Sets the field's label.
    * 
-   * @param fieldLabelHtml the label treated as HTML
+   * @param fieldLabel the label treated as text
    */
-  public void setFieldLabel(String fieldLabelHtml) {
-    this.fieldLabel = fieldLabelHtml;
+  public void setFieldLabel(String fieldLabel) {
+    this.fieldLabel = fieldLabel;
     if (rendered) {
       El elem = findLabelElement();
       if (elem != null) {
-        elem.setInnerHtml(fieldLabelHtml + labelSeparator);
+        elem.setInnerHtml(TEMPLATES.fieldLabel(fieldLabel, labelSeparator));
       }
     }
   }

@@ -7,6 +7,7 @@
  */
  package com.extjs.gxt.ui.client.widget;
 
+import com.google.gwt.safehtml.shared.SafeHtml;
 import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.Element;
 
@@ -54,7 +55,7 @@ import com.google.gwt.user.client.Element;
 public class Html extends BoxComponent {
 
   private String tagName = "div";
-  private String html;
+  private SafeHtml html;
 
   /**
    * Creates a new instance.
@@ -68,7 +69,7 @@ public class Html extends BoxComponent {
    * 
    * @param html the html
    */
-  public Html(String html) {
+  public Html(SafeHtml html) {
     this.html = html;
   }
 
@@ -77,7 +78,7 @@ public class Html extends BoxComponent {
    * 
    * @return the html
    */
-  public String getHtml() {
+  public SafeHtml getHtml() {
     return html;
   }
 
@@ -93,10 +94,10 @@ public class Html extends BoxComponent {
    * 
    * @param html the html
    */
-  public void setHtml(String html) {
+  public void setHtml(SafeHtml html) {
     this.html = html;
     if (rendered) {
-      getElement().setInnerHTML(html);
+      getElement().setInnerSafeHtml(html);
     }
   }
 

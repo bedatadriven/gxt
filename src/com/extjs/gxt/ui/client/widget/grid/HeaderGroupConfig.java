@@ -9,6 +9,7 @@
 
 import com.extjs.gxt.ui.client.Style.HorizontalAlignment;
 import com.extjs.gxt.ui.client.widget.grid.ColumnHeader.Group;
+import com.google.gwt.safehtml.shared.SafeHtml;
 import com.google.gwt.user.client.ui.Widget;
 
 /**
@@ -18,7 +19,7 @@ import com.google.gwt.user.client.ui.Widget;
  */
 public class HeaderGroupConfig {
 
-  private String html;
+  private SafeHtml html;
   private Widget widget;
   private int row;
   private int column;
@@ -32,7 +33,7 @@ public class HeaderGroupConfig {
    * 
    * @param html the group text
    */
-  public HeaderGroupConfig(String html) {
+  public HeaderGroupConfig(SafeHtml html) {
     this.html = html;
   }
 
@@ -43,7 +44,7 @@ public class HeaderGroupConfig {
    * @param rowspan the rowspan
    * @param colspan the colspan
    */
-  public HeaderGroupConfig(String text, int rowspan, int colspan) {
+  public HeaderGroupConfig(SafeHtml text, int rowspan, int colspan) {
     this(text);
     this.rowspan = rowspan;
     this.colspan = colspan;
@@ -112,7 +113,7 @@ public class HeaderGroupConfig {
    * 
    * @return the html
    */
-  public String getHtml() {
+  public SafeHtml getHtml() {
     return html;
   }
 
@@ -175,7 +176,7 @@ public class HeaderGroupConfig {
    * 
    * @param html the html text
    */
-  public void setHtml(String html) {
+  public void setHtml(SafeHtml html) {
     this.html = html;
   }
 

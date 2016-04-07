@@ -10,6 +10,7 @@
 import com.extjs.gxt.ui.client.event.ComponentEvent;
 import com.extjs.gxt.ui.client.event.Listener;
 import com.extjs.gxt.ui.client.util.Params;
+import com.google.gwt.safehtml.shared.SafeHtml;
 
 /**
  * Configuration settings for {@link Info}.
@@ -19,17 +20,13 @@ public class InfoConfig {
   /**
    * The info title as HTML (defaults to null).
    */
-  public String titleHtml;
+  public SafeHtml titleHtml;
 
   /**
    * The info text as HTML (defaults to null).
    */
-  public String html;
+  public SafeHtml html;
 
-  /**
-   * The index or key based substitution values.
-   */
-  public Params params;
 
   /**
    * The time in milliseconds to display a message (defaults to 2500).
@@ -57,21 +54,8 @@ public class InfoConfig {
    * @param titleHtml the title as HTML
    * @param html the text as HTML
    */
-  public InfoConfig(String titleHtml, String html) {
+  public InfoConfig(SafeHtml titleHtml, SafeHtml html) {
     this.titleHtml = titleHtml;
     this.html = html;
-  }
-
-  /**
-   * Creates a new instance.
-   * 
-   * @param titleHtml the title as HTML
-   * @param html the text as HTML
-   * @param params the params
-   */
-  public InfoConfig(String titleHtml, String html, Params params) {
-    this.titleHtml = titleHtml;
-    this.html = html;
-    this.params = params;
   }
 }

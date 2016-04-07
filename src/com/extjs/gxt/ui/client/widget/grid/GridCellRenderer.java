@@ -9,6 +9,7 @@
 
 import com.extjs.gxt.ui.client.data.ModelData;
 import com.extjs.gxt.ui.client.store.ListStore;
+import com.google.gwt.safehtml.shared.SafeHtml;
 
 /**
  * Returns the HTML used for a grid cell.
@@ -27,7 +28,7 @@ public interface GridCellRenderer<M extends ModelData> {
    * @param grid the grid
    * @return the cell HTML or Component instance
    */
-  public Object render(M model, String property, ColumnData config, int rowIndex, int colIndex,
-      ListStore<M> store, Grid<M> grid);
+  public SafeHtml render(M model, String property, ColumnData config, int rowIndex, int colIndex,
+                         ListStore<M> store, Grid<M> grid);
 
 }

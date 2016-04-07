@@ -31,6 +31,7 @@ import com.extjs.gxt.ui.client.event.Events;
 import com.extjs.gxt.ui.client.event.Listener;
 import com.extjs.gxt.ui.client.fx.Draggable;
 import com.extjs.gxt.ui.client.util.Region;
+import com.extjs.gxt.ui.client.util.SafeGxt;
 import com.extjs.gxt.ui.client.widget.BoxComponent;
 import com.extjs.gxt.ui.client.widget.ComponentHelper;
 import com.extjs.gxt.ui.client.widget.ComponentManager;
@@ -42,6 +43,7 @@ import com.google.gwt.dom.client.Document;
 import com.google.gwt.dom.client.ImageElement;
 import com.google.gwt.dom.client.NodeList;
 import com.google.gwt.dom.client.Style;
+import com.google.gwt.safehtml.shared.SafeHtml;
 import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.Element;
 import com.google.gwt.user.client.Event;
@@ -194,7 +196,7 @@ public class ColumnHeader extends BoxComponent {
       groups.add(this);
     }
 
-    public void setHtml(String html) {
+    public void setHtml(SafeHtml html) {
       el().setInnerHtml(html);
     }
 
@@ -291,12 +293,12 @@ public class ColumnHeader extends BoxComponent {
       }
     }
 
-    public void setHeaderHtml(String header) {
+    public void setHeaderHtml(SafeHtml header) {
       if (text != null) text.setHtml(header);
     }
 
     public void setHeaderText(String text) {
-      setHeaderHtml(El.toSafeHTML(text));
+      setHeaderHtml(SafeGxt.fromNullableString(text));
     }
 
     public void updateWidth(int width) {
@@ -879,7 +881,7 @@ public class ColumnHeader extends BoxComponent {
    * @param column the column index
    * @param headerHtml the header text as HTML
    */
-  public void setHeaderHtml(int column, String headerHtml) {
+  public void setHeaderHtml(int column, SafeHtml headerHtml) {
     getHead(column).setHeaderHtml(headerHtml);
   }
 

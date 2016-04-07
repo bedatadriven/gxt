@@ -20,6 +20,8 @@ import com.extjs.gxt.ui.client.store.StoreEvent;
 import com.extjs.gxt.ui.client.widget.Component;
 import com.extjs.gxt.ui.client.widget.ComponentPlugin;
 import com.extjs.gxt.ui.client.widget.grid.ColumnHeader.Head;
+import com.google.gwt.safehtml.shared.SafeHtml;
+import com.google.gwt.safehtml.shared.SafeHtmlUtils;
 import com.google.gwt.user.client.Event;
 
 /**
@@ -50,10 +52,10 @@ public class CheckBoxSelectionModel<M extends ModelData> extends GridSelectionMo
     config.setMenuDisabled(true);
     config.setDataIndex("");
     config.setRenderer(new GridCellRenderer<M>() {
-      public String render(M model, String property, ColumnData config, int rowIndex, int colIndex, ListStore<M> store,
-          Grid<M> grid) {
+      public SafeHtml render(M model, String property, ColumnData config, int rowIndex, int colIndex, ListStore<M> store,
+                             Grid<M> grid) {
         config.cellAttr = "rowspan='2'";
-        return "<div class='x-grid3-row-checker'>&#160;</div>";
+        return SafeHtmlUtils.fromSafeConstant("<div class='x-grid3-row-checker'>&#160;</div>");
       }
     });
   }

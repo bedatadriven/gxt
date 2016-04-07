@@ -15,11 +15,13 @@ import com.extjs.gxt.ui.client.event.ComponentEvent;
 import com.extjs.gxt.ui.client.event.Events;
 import com.extjs.gxt.ui.client.event.Listener;
 import com.extjs.gxt.ui.client.util.Rectangle;
+import com.extjs.gxt.ui.client.util.SafeGxt;
 import com.extjs.gxt.ui.client.util.Size;
 import com.extjs.gxt.ui.client.util.Util;
 import com.extjs.gxt.ui.client.widget.button.ToolButton;
 import com.extjs.gxt.ui.client.widget.layout.BorderLayoutData;
 import com.extjs.gxt.ui.client.widget.layout.FitLayout;
+import com.google.gwt.safehtml.shared.SafeHtml;
 import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.Element;
 import com.google.gwt.user.client.Event;
@@ -196,7 +198,7 @@ public class CollapsePanel extends ContentPanel {
   @Override
   protected void onRender(Element target, int index) {
     setElement(DOM.createDiv(), target, index);
-    String html = null;
+    SafeHtml html = null;
 
     LayoutRegion r = parentData.getRegion();
 
@@ -205,7 +207,7 @@ public class CollapsePanel extends ContentPanel {
     }
     headerEl = el().createChild(
         "<div class=\"x-panel-header\"><span class=\"x-panel-header-text\">"
-            + (Util.isEmptyString(html) ? "&#160;" : html) + "</span></div>");
+            + SafeGxt.emptyToNbSpace(html) + "</span></div>");
 
     String icon = null;
     adj = new int[] {0, 0};

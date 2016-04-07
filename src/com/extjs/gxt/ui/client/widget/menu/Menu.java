@@ -21,11 +21,7 @@ import com.extjs.gxt.ui.client.event.Events;
 import com.extjs.gxt.ui.client.event.Listener;
 import com.extjs.gxt.ui.client.event.MenuEvent;
 import com.extjs.gxt.ui.client.event.PreviewEvent;
-import com.extjs.gxt.ui.client.util.BaseEventPreview;
-import com.extjs.gxt.ui.client.util.ClickRepeater;
-import com.extjs.gxt.ui.client.util.KeyNav;
-import com.extjs.gxt.ui.client.util.Point;
-import com.extjs.gxt.ui.client.util.Size;
+import com.extjs.gxt.ui.client.util.*;
 import com.extjs.gxt.ui.client.widget.Component;
 import com.extjs.gxt.ui.client.widget.Container;
 import com.extjs.gxt.ui.client.widget.Layout;
@@ -678,7 +674,7 @@ public class Menu extends Container<Component> {
 
       scroller = new El(DOM.createDiv());
       scroller.addStyleName("x-menu-scroller", "x-menu-scroller-top");
-      scroller.setInnerHtml("&nbsp;");
+      scroller.setInnerHtml(SafeGxt.NO_BREAK_SPACE);
       ClickRepeater cr = new ClickRepeater(scroller);
       cr.doAttach();
       cr.addListener(Events.OnClick, listener);
@@ -688,7 +684,7 @@ public class Menu extends Container<Component> {
 
       scroller = new El(DOM.createDiv());
       scroller.addStyleName("x-menu-scroller", "x-menu-scroller-bottom");
-      scroller.setInnerHtml("&nbsp;");
+      scroller.setInnerHtml(SafeGxt.NO_BREAK_SPACE);
       cr = new ClickRepeater(scroller);
       cr.doAttach();
       cr.addListener(Events.OnClick, listener);

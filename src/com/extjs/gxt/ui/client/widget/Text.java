@@ -8,6 +8,7 @@
  package com.extjs.gxt.ui.client.widget;
 
 import com.extjs.gxt.ui.client.core.El;
+import com.extjs.gxt.ui.client.util.SafeGxt;
 import com.extjs.gxt.ui.client.util.Util;
 import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.Element;
@@ -92,7 +93,7 @@ public class Text extends BoxComponent {
   public void setText(String text) {
     this.text = text;
     if (rendered) {
-      el().update(Util.isEmptyString(text) ? "&#160;" : El.toSafeHTML(text));
+      el().update(SafeGxt.fromNullableString(text));
     }
   }
 

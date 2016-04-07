@@ -13,6 +13,8 @@ import java.util.Map;
 
 import com.extjs.gxt.ui.client.core.El;
 import com.extjs.gxt.ui.client.core.XDOM;
+import com.google.gwt.safehtml.shared.SafeHtml;
+import com.google.gwt.safehtml.shared.SafeHtmlUtils;
 import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.Element;
 
@@ -89,7 +91,7 @@ public class TextMetrics {
    * @param html the html content to be measured
    * @return the height in pixels
    */
-  public int getHeight(String html) {
+  public int getHeight(SafeHtml html) {
     return getSize(html).height;
   }
 
@@ -100,10 +102,10 @@ public class TextMetrics {
    * @param html the html string to measure
    * @return the size
    */
-  public Size getSize(String html) {
+  public Size getSize(SafeHtml html) {
     el.update(html);
     Size size = el.getSize();
-    el.update("");
+    el.update(SafeHtmlUtils.EMPTY_SAFE_HTML);
     return size;
   }
 
@@ -113,7 +115,7 @@ public class TextMetrics {
    * @param html the html content to measure
    * @return the width in pixels
    */
-  public int getWidth(String html) {
+  public int getWidth(SafeHtml html) {
     el.setStyleAttribute("width", "auto");
     return getSize(html).width;
   }

@@ -16,6 +16,7 @@ import com.extjs.gxt.ui.client.event.BaseObservable;
 import com.extjs.gxt.ui.client.event.ColumnModelEvent;
 import com.extjs.gxt.ui.client.event.Events;
 import com.extjs.gxt.ui.client.util.Rectangle;
+import com.google.gwt.safehtml.shared.SafeHtml;
 
 /**
  * This is the default implementation of a ColumnModel.
@@ -198,7 +199,7 @@ public class ColumnModel extends BaseObservable {
    * @param colIndex the column index
    * @return the header
    */
-  public String getColumnHeader(int colIndex) {
+  public SafeHtml getColumnHeader(int colIndex) {
     ColumnConfig c = getColumn(colIndex);
     return c != null ? c.getHeaderHtml() : null;
   }
@@ -447,7 +448,7 @@ public class ColumnModel extends BaseObservable {
    * @param colIndex the column index
    * @param header the header
    */
-  public void setColumnHeader(int colIndex, String header) {
+  public void setColumnHeader(int colIndex, SafeHtml header) {
     ColumnConfig c = getColumn(colIndex);
     if (c != null) {
       c.setHeaderHtml(header);

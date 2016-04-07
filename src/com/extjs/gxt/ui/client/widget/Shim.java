@@ -13,6 +13,7 @@ import java.util.List;
 import com.extjs.gxt.ui.client.core.El;
 import com.extjs.gxt.ui.client.core.XDOM;
 import com.extjs.gxt.ui.client.util.Rectangle;
+import com.extjs.gxt.ui.client.util.SafeGxt;
 import com.google.gwt.dom.client.NodeList;
 import com.google.gwt.user.client.Command;
 import com.google.gwt.user.client.DeferredCommand;
@@ -91,7 +92,7 @@ public class Shim {
     shim.addStyleName("x-drag-overlay");
     shim.setSize(width, height);
     shim.setLeftTop(left, top);
-    shim.update("&#160;");
+    shim.update(SafeGxt.NO_BREAK_SPACE);
     El parent = null;
     if (element != null) {
       parent = El.fly(element).getParent();

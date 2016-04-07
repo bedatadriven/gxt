@@ -8,6 +8,7 @@
  package com.extjs.gxt.ui.client.event;
 
 import com.extjs.gxt.ui.client.widget.grid.ColumnModel;
+import com.google.gwt.safehtml.shared.SafeHtml;
 
 /**
  * ColumnModel event.
@@ -29,7 +30,7 @@ public class ColumnModelEvent extends BaseEvent {
   /**
    * The column header.
    */
-  private String header;
+  private SafeHtml header;
 
   /**
    * The column hidden state.
@@ -86,7 +87,7 @@ public class ColumnModelEvent extends BaseEvent {
    * 
    * @return the header text
    */
-  public String getHeader() {
+  public SafeHtml getHeader() {
     return header;
   }
 
@@ -122,7 +123,7 @@ public class ColumnModelEvent extends BaseEvent {
    * 
    * @param header the header text
    */
-  public void setHeader(String header) {
+  public void setHeader(SafeHtml header) {
     this.header = header;
   }
 

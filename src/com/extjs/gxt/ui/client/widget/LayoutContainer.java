@@ -14,6 +14,7 @@ import com.extjs.gxt.ui.client.core.El;
 import com.extjs.gxt.ui.client.event.ComponentEvent;
 import com.extjs.gxt.ui.client.widget.layout.FlowLayout;
 import com.extjs.gxt.ui.client.widget.layout.LayoutData;
+import com.google.gwt.safehtml.shared.SafeHtml;
 import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.Element;
 import com.google.gwt.user.client.Event;
@@ -137,7 +138,7 @@ public class LayoutContainer extends ScrollContainer<Component> {
    * @param text the html text
    * @return the new HTML instance
    */
-  public Html addText(String text) {
+  public Html addText(SafeHtml text) {
     Html html = new Html(text);
     if (add(html)) {
       return html;

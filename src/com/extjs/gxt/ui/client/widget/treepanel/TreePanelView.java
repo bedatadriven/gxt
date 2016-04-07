@@ -21,6 +21,7 @@ import com.extjs.gxt.ui.client.widget.Component;
 import com.extjs.gxt.ui.client.widget.treepanel.TreePanel.Joint;
 import com.extjs.gxt.ui.client.widget.treepanel.TreePanel.TreeNode;
 import com.google.gwt.dom.client.NodeList;
+import com.google.gwt.safehtml.shared.SafeHtml;
 import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.Element;
 import com.google.gwt.user.client.Event;
@@ -115,8 +116,8 @@ public class TreePanelView<M extends ModelData> {
     return scrollDelay;
   }
 
-  public String getTemplate(ModelData m, String id, String text, AbstractImagePrototype icon, boolean checkable,
-      boolean checked, Joint joint, int level, TreeViewRenderMode renderMode) {
+  public String getTemplate(ModelData m, String id, SafeHtml text, AbstractImagePrototype icon, boolean checkable,
+                            boolean checked, Joint joint, int level, TreeViewRenderMode renderMode) {
     if (renderMode == TreeViewRenderMode.CONTAINER) {
       if (GXT.isIE6 || GXT.isIE7) {
         return "<div unselectable=on class=\"x-tree3-node-ct\" style=\"position:relative;\" role=\"group\"></div>";
@@ -336,10 +337,11 @@ public class TreePanelView<M extends ModelData> {
     }
   }
 
-  public void onTextChange(TreeNode node, String text) {
+  public void onTextChange(TreeNode node, SafeHtml text) {
     Element textEl = getTextElement(node);
     if (textEl != null) {
-      textEl.setInnerHTML(Util.isEmptyString(text) ? "&#160;" : text);
+      String html = text.asString();
+      textEl.setInnerHTML(Util.isEmptyString(html) ? "&#160;" : html);
     }
   }
 

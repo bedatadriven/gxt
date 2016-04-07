@@ -13,6 +13,8 @@ import com.extjs.gxt.ui.client.core.El;
 import com.extjs.gxt.ui.client.core.XDOM;
 import com.extjs.gxt.ui.client.event.ComponentEvent;
 import com.google.gwt.dom.client.InputElement;
+import com.google.gwt.safehtml.shared.SafeHtml;
+import com.google.gwt.safehtml.shared.SafeHtmlUtils;
 import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.Element;
 import com.google.gwt.user.client.Timer;
@@ -53,7 +55,7 @@ import com.google.gwt.user.client.ui.Accessibility;
 public class CheckBox extends Field<Boolean> {
 
   protected El wrap, input, boxLabelEl;
-  private String boxLabel;
+  private SafeHtml boxLabel;
   private String valueAttribute;
   private Timer t;
 
@@ -77,7 +79,7 @@ public class CheckBox extends Field<Boolean> {
    * 
    * @return the box label
    */
-  public String getBoxLabel() {
+  public SafeHtml getBoxLabel() {
     return boxLabel;
   }
 
@@ -113,15 +115,10 @@ public class CheckBox extends Field<Boolean> {
 
   }
 
-  /**
-   * The text that appears beside the checkbox (defaults to null).
-   * 
-   * @param boxLabelHtml the box label treated as HTML
-   */
-  public void setBoxLabel(String boxLabelHtml) {
+  public void setBoxLabel(SafeHtml boxLabelHtml) {
     this.boxLabel = boxLabelHtml;
     if (rendered) {
-      boxLabelEl.update(getBoxLabel());
+      boxLabelEl.update(boxLabelHtml);
     }
   }
 

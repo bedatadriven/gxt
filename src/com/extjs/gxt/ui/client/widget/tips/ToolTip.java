@@ -16,14 +16,11 @@ import com.extjs.gxt.ui.client.event.ComponentEvent;
 import com.extjs.gxt.ui.client.event.EventType;
 import com.extjs.gxt.ui.client.event.Events;
 import com.extjs.gxt.ui.client.event.Listener;
-import com.extjs.gxt.ui.client.util.Params;
-import com.extjs.gxt.ui.client.util.Point;
-import com.extjs.gxt.ui.client.util.Region;
-import com.extjs.gxt.ui.client.util.Size;
-import com.extjs.gxt.ui.client.util.Util;
+import com.extjs.gxt.ui.client.util.*;
 import com.extjs.gxt.ui.client.widget.Component;
 import com.google.gwt.dom.client.EventTarget;
 import com.google.gwt.event.dom.client.KeyCodes;
+import com.google.gwt.safehtml.shared.SafeHtml;
 import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.Element;
 import com.google.gwt.user.client.Event;
@@ -43,7 +40,7 @@ public class ToolTip extends Tip {
   protected Timer showTimer;
   protected Component target;
   protected Point targetXY = new Point(0, 0);
-  protected String titleHtml, html;
+  protected SafeHtml titleHtml, html;
   protected ToolTipConfig toolTipConfig;
 
   private Date lastActive;
@@ -448,7 +445,7 @@ public class ToolTip extends Tip {
   protected void updateContent() {
     getHeader().setHtml(titleHtml);
     // show header or not
-    getHeader().el().selectNode("#" + getHeader().getId() + "-label").setVisible(titleHtml != null && !"".equals(titleHtml));
+    getHeader().el().selectNode("#" + getHeader().getId() + "-label").setVisible(SafeGxt.isNullOrEmpty(titleHtml));
 
     if (toolTipConfig.getTemplate() != null) {
       Params p = toolTipConfig.getParams();
@@ -457,7 +454,7 @@ public class ToolTip extends Tip {
       p.set("title", titleHtml);
       toolTipConfig.getTemplate().overwrite(getBody().dom, p);
     } else {
-      getBody().update(Util.isEmptyString(html) ? "&#160;" : html);
+      getBody().update(SafeGxt.emptyToNbSpace(html));
     }
   }
 

@@ -39,6 +39,8 @@ import com.google.gwt.event.dom.client.DomEvent;
 import com.google.gwt.event.logical.shared.ResizeEvent;
 import com.google.gwt.event.logical.shared.ResizeHandler;
 import com.google.gwt.event.shared.HandlerRegistration;
+import com.google.gwt.safehtml.shared.SafeHtml;
+import com.google.gwt.safehtml.shared.SafeHtmlUtils;
 import com.google.gwt.user.client.Command;
 import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.DeferredCommand;
@@ -244,7 +246,7 @@ public abstract class Component extends Widget implements Observable {
   protected List<SwallowEvent> swallowEvents;
   protected ToolTip toolTip;
   protected boolean mask;
-  protected String maskMessage;
+  protected SafeHtml maskMessage;
   protected String maskMessageStyleName;
   protected List<ComponentAttachable> attachables;
   protected boolean setElementRender;
@@ -794,7 +796,7 @@ public abstract class Component extends Widget implements Observable {
    * @return the mask element
    */
   public El mask(String message) {
-    return mask(message, null);
+    return mask(SafeHtmlUtils.fromString(message), null);
   }
 
   /**
@@ -804,7 +806,7 @@ public abstract class Component extends Widget implements Observable {
    * @param messageStyleName a CSS style name to be applied to the message text
    * @return the mask element
    */
-  public El mask(String message, String messageStyleName) {
+  public El mask(SafeHtml message, String messageStyleName) {
     mask = true;
     maskMessage = message;
     maskMessageStyleName = messageStyleName;

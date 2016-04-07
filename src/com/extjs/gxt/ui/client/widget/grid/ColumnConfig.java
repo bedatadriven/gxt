@@ -11,8 +11,11 @@ import com.extjs.gxt.ui.client.Style.HorizontalAlignment;
 import com.extjs.gxt.ui.client.core.El;
 import com.extjs.gxt.ui.client.data.ModelData;
 import com.extjs.gxt.ui.client.event.BaseObservable;
+import com.extjs.gxt.ui.client.util.SafeGxt;
 import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.i18n.client.NumberFormat;
+import com.google.gwt.safehtml.shared.SafeHtml;
+import com.google.gwt.safehtml.shared.SafeHtmlUtils;
 import com.google.gwt.user.client.ui.Widget;
 
 /**
@@ -35,7 +38,7 @@ public class ColumnConfig extends BaseObservable {
   private String toolTip;
   private String style;
   private String dataIndex;
-  private String headerHtml;
+  private SafeHtml headerHtml;
   private boolean sortable = true;
   private boolean fixed;
   private boolean resizable = true;
@@ -73,13 +76,24 @@ public class ColumnConfig extends BaseObservable {
    * Creates a new column config.
    * 
    * @param id the column id
-   * @param name the column name
+   * @param name the column name as html
    * @param width the column width
    */
-  public ColumnConfig(String id, String name, int width) {
+  public ColumnConfig(String id, SafeHtml name, int width) {
     this.id = id;
     this.width = width;
     this.headerHtml = name;
+  }
+
+  /**
+   * Creates a new column config.
+   *
+   * @param id the column id
+   * @param name the column name as html
+   * @param width the column width
+   */
+  public ColumnConfig(String id, String name, int width) {
+    this(id, SafeGxt.fromNullableString(name), width);
   }
 
   /**
@@ -135,7 +149,7 @@ public class ColumnConfig extends BaseObservable {
    * 
    * @return the header text
    */
-  public String getHeaderHtml() {
+  public SafeHtml getHeaderHtml() {
     return headerHtml;
   }
 
@@ -338,7 +352,7 @@ public class ColumnConfig extends BaseObservable {
    * 
    * @param headerHtml the header text as HTML
    */
-  public void setHeaderHtml(String headerHtml) {
+  public void setHeaderHtml(SafeHtml headerHtml) {
     this.headerHtml = headerHtml;
   }
 
@@ -348,7 +362,7 @@ public class ColumnConfig extends BaseObservable {
    * @param headerText the header text
    */
   public void setHeaderText(String headerText) {
-    setHeaderHtml(El.toSafeHTML(headerText));
+    setHeaderHtml(SafeHtmlUtils.fromString(headerText));
   }
 
   /**
@@ -456,7 +470,7 @@ public class ColumnConfig extends BaseObservable {
    * @param widget the widget
    * @param header the text used for the column context menu
    */
-  public void setWidget(Widget widget, String header) {
+  public void setWidget(Widget widget, SafeHtml header) {
     this.widget = widget;
     this.headerHtml = header;
   }

@@ -21,6 +21,7 @@ import com.extjs.gxt.ui.client.widget.form.Field;
 import com.extjs.gxt.ui.client.widget.form.TriggerField;
 import com.google.gwt.dom.client.InputElement;
 import com.google.gwt.event.dom.client.KeyCodes;
+import com.google.gwt.safehtml.shared.SafeHtmlUtils;
 import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.Element;
 import com.google.gwt.user.client.ui.RootPanel;
@@ -470,7 +471,7 @@ public class Editor extends BoxComponent {
     if (fireEvent(Events.BeforeComplete, e)) {
       editing = false;
       if (updateEl && boundEl != null) {
-        boundEl.setInnerHtml(v.toString());
+        boundEl.setInnerHtml(SafeHtmlUtils.fromString(v.toString()));
       }
 
       hide(remainVisible);

@@ -17,6 +17,8 @@ import com.extjs.gxt.ui.client.util.DelayedTask;
 import com.extjs.gxt.ui.client.widget.Component;
 import com.extjs.gxt.ui.client.widget.ComponentPlugin;
 import com.google.gwt.dom.client.Element;
+import com.google.gwt.safehtml.shared.SafeHtml;
+import com.google.gwt.safehtml.shared.SafeHtmlUtils;
 
 /**
  * A <code>ColumnConfig</code> that provides an automatic row numbering column.
@@ -51,7 +53,7 @@ public class RowNumberer extends ColumnConfig implements ComponentPlugin {
   private DelayedTask task;
 
   public RowNumberer() {
-    setHeaderHtml("");
+    setHeaderHtml(SafeHtmlUtils.EMPTY_SAFE_HTML);
     setWidth(23);
     setSortable(false);
     setResizable(false);
@@ -62,10 +64,10 @@ public class RowNumberer extends ColumnConfig implements ComponentPlugin {
 
     setRenderer(new GridCellRenderer<ModelData>() {
 
-      public String render(ModelData model, String property, ColumnData d, int rowIndex, int colIndex,
-          ListStore<ModelData> store, Grid<ModelData> grid) {
+      public SafeHtml render(ModelData model, String property, ColumnData d, int rowIndex, int colIndex,
+                             ListStore<ModelData> store, Grid<ModelData> grid) {
         d.cellAttr = "rowspan='2'";
-        return String.valueOf(rowIndex + 1);
+        return SafeHtmlUtils.fromTrustedString(String.valueOf(rowIndex + 1));
       }
     });
   }

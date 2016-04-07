@@ -20,6 +20,7 @@ import com.extjs.gxt.ui.client.store.Record;
 import com.extjs.gxt.ui.client.util.DelayedTask;
 import com.google.gwt.dom.client.Element;
 import com.google.gwt.dom.client.NodeList;
+import com.google.gwt.safehtml.shared.SafeHtml;
 import com.google.gwt.user.client.ui.Widget;
 
 /**
@@ -236,7 +237,7 @@ public class BufferView extends GridView {
         for (int i = 0; i < colCount; i++) {
           ColumnData c = cs.get(i);
           c.css = c.css == null ? "" : c.css;
-          String rv = getRenderedValue(c, rowIndex, i, model, c.name);
+          SafeHtml rv = getRenderedValue(c, rowIndex, i, model, c.name);
 
           String css = (i == 0 ? "x-grid-cell-first " : (i == last ? "x-grid3-cell-last " : " ")) + " "
               + (c.css == null ? "" : c.css);
@@ -266,7 +267,7 @@ public class BufferView extends GridView {
           cb.append("\" ");
           cb.append(attr);
           cb.append(">");
-          cb.append(rv);
+          cb.append(rv.asString());
           cb.append("</div></td>");
 
         }

@@ -29,6 +29,8 @@ import com.google.gwt.event.dom.client.KeyCodes;
 import com.google.gwt.event.dom.client.KeyDownEvent;
 import com.google.gwt.event.dom.client.KeyDownHandler;
 import com.google.gwt.i18n.client.LocaleInfo;
+import com.google.gwt.safehtml.shared.SafeHtml;
+import com.google.gwt.safehtml.shared.SafeHtmlUtils;
 import com.google.gwt.user.client.Command;
 import com.google.gwt.user.client.DeferredCommand;
 import com.google.gwt.user.client.Element;
@@ -160,9 +162,9 @@ public class PagingToolBar extends ToolBar {
    */
   public static class PagingToolBarMessages {
     private String afterPageText;
-    private String beforePageText = GXT.MESSAGES.pagingToolBar_beforePageText();
+    private SafeHtml beforePageText = GXT.MESSAGES.pagingToolBar_beforePageText();
     private String displayMsg;
-    private String emptyMsg = GXT.MESSAGES.pagingToolBar_emptyMsg();
+    private SafeHtml emptyMsg = GXT.MESSAGES.pagingToolBar_emptyMsg();
     private String firstText = GXT.MESSAGES.pagingToolBar_firstText();
     private String lastText = GXT.MESSAGES.pagingToolBar_lastText();
     private String nextText = GXT.MESSAGES.pagingToolBar_nextText();
@@ -183,7 +185,7 @@ public class PagingToolBar extends ToolBar {
      * 
      * @return the before page text
      */
-    public String getBeforePageText() {
+    public SafeHtml getBeforePageText() {
       return beforePageText;
     }
 
@@ -201,7 +203,7 @@ public class PagingToolBar extends ToolBar {
      * 
      * @return the empty message
      */
-    public String getEmptyMsg() {
+    public SafeHtml getEmptyMsg() {
       return emptyMsg;
     }
 
@@ -246,44 +248,12 @@ public class PagingToolBar extends ToolBar {
     }
 
     /**
-     * Customizable piece of the default paging text (defaults to "of {0}").
-     * 
-     * @param afterPageText the after page text
-     */
-    public void setAfterPageText(String afterPageText) {
-      this.afterPageText = afterPageText;
-    }
-
-    /**
      * Customizable piece of the default paging text (defaults to "Page").
      * 
-     * @param beforePageTxt the before page text
+     * @param beforePageText the before page text
      */
-    public void setBeforePageText(String beforePageText) {
+    public void setBeforePageText(SafeHtml beforePageText) {
       this.beforePageText = beforePageText;
-    }
-
-    /**
-     * The paging status message to display (defaults to "Displaying {0} - {1}
-     * of {2}"). Note that this string is formatted using the braced numbers 0-2
-     * as tokens that are replaced by the values for start, end and total
-     * respectively. These tokens should be preserved when overriding this
-     * string if showing those values is desired.
-     * 
-     * @param displayMsg the display message
-     */
-    public void setDisplayMsg(String displayMsg) {
-      this.displayMsg = displayMsg;
-    }
-
-    /**
-     * The message to display when no records are found (defaults to "No data to
-     * display").
-     * 
-     * @param emptyMsg the empty message
-     */
-    public void setEmptyMsg(String emptyMsg) {
-      this.emptyMsg = emptyMsg;
     }
 
     /**
@@ -528,8 +498,8 @@ public class PagingToolBar extends ToolBar {
   public void clear() {
     if (rendered) {
       pageText.setText("");
-      afterText.setHtml("");
-      displayText.setHtml("");
+      afterText.setHtml(SafeHtmlUtils.EMPTY_SAFE_HTML);
+      displayText.setHtml(SafeHtmlUtils.EMPTY_SAFE_HTML);
     }
   }
 
@@ -753,14 +723,7 @@ public class PagingToolBar extends ToolBar {
     
     pageText.setText(String.valueOf((int) activePage));
 
-    String after = null, display = null;
-    if (msgs.getAfterPageText() != null) {
-      after = Format.substitute(msgs.getAfterPageText(), "" + pages);
-    } else {
-      after = GXT.MESSAGES.pagingToolBar_afterPageText(pages);
-    }
-
-    afterText.setHtml(after);
+    afterText.setHtml(GXT.MESSAGES.pagingToolBar_afterPageText(pages));
 
     first.setEnabled(activePage != 1);
     prev.setEnabled(activePage != 1);
@@ -769,14 +732,7 @@ public class PagingToolBar extends ToolBar {
 
     int temp = activePage == pages ? totalLength : start + pageSize;
 
-    if (msgs.getDisplayMsg() != null) {
-      String[] params = new String[] {"" + (start + 1), "" + temp, "" + totalLength};
-      display = Format.substitute(msgs.getDisplayMsg(), (Object[]) params);
-    } else {
-      display = GXT.MESSAGES.pagingToolBar_displayMsg(start + 1, (int) temp, (int) totalLength);
-    }
-
-    String msg = display;
+    SafeHtml msg = GXT.MESSAGES.pagingToolBar_displayMsg(start + 1, (int) temp, (int) totalLength);
     if (totalLength == 0) {
       msg = msgs.getEmptyMsg();
     }

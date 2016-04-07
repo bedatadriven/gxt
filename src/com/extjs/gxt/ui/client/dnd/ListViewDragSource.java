@@ -18,6 +18,8 @@ import com.extjs.gxt.ui.client.event.Events;
 import com.extjs.gxt.ui.client.event.Listener;
 import com.extjs.gxt.ui.client.util.Format;
 import com.extjs.gxt.ui.client.widget.ListView;
+import com.google.gwt.safehtml.shared.SafeHtml;
+import com.google.gwt.safehtml.shared.SafeHtmlUtils;
 import com.google.gwt.user.client.Element;
 
 /**
@@ -89,7 +91,7 @@ public class ListViewDragSource extends DragSource {
       if (getStatusText() == null) {
         e.getStatus().update(GXT.MESSAGES.grid_ddText(sel.size()));
       } else {
-        e.getStatus().update(Format.substitute(getStatusText(), sel.size()));
+        e.getStatus().update(SafeHtmlUtils.fromString(Format.substitute(getStatusText(), sel.size())));
       }
     }
   }

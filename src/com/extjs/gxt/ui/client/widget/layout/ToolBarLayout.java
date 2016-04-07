@@ -18,6 +18,7 @@ import com.extjs.gxt.ui.client.event.Events;
 import com.extjs.gxt.ui.client.event.Listener;
 import com.extjs.gxt.ui.client.event.MenuEvent;
 import com.extjs.gxt.ui.client.event.SelectionListener;
+import com.extjs.gxt.ui.client.util.SafeGxt;
 import com.extjs.gxt.ui.client.widget.Component;
 import com.extjs.gxt.ui.client.widget.ComponentHelper;
 import com.extjs.gxt.ui.client.widget.Container;
@@ -34,6 +35,8 @@ import com.extjs.gxt.ui.client.widget.toolbar.SeparatorToolItem;
 import com.extjs.gxt.ui.client.widget.toolbar.ToolBar;
 import com.google.gwt.dom.client.Node;
 import com.google.gwt.dom.client.NodeList;
+import com.google.gwt.safehtml.shared.SafeHtml;
+import com.google.gwt.safehtml.shared.SafeHtmlUtils;
 import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.Element;
 
@@ -48,7 +51,7 @@ public class ToolBarLayout extends Layout {
   private boolean lastOverflow = false;
   private int lastWidth = 0;
   private El leftTr;
-  private String noItemsMenuText = "<div class=\"x-toolbar-no-items\">(None)</div>";
+  private SafeHtml noItemsMenuText = SafeHtmlUtils.fromSafeConstant("<div class=\"x-toolbar-no-items\">(None)</div>");
   private El rightTr;
   private int spacing = 0;
 
@@ -74,7 +77,7 @@ public class ToolBarLayout extends Layout {
    * 
    * @return the no menu item text
    */
-  public String getNoItemsMenuText() {
+  public SafeHtml getNoItemsMenuText() {
     return noItemsMenuText;
   }
 
@@ -117,7 +120,7 @@ public class ToolBarLayout extends Layout {
    * 
    * @param noItemsMenuText the no menu items text
    */
-  public void setNoItemsMenuText(String noItemsMenuText) {
+  public void setNoItemsMenuText(SafeHtml noItemsMenuText) {
     this.noItemsMenuText = noItemsMenuText;
   }
 
@@ -139,7 +142,7 @@ public class ToolBarLayout extends Layout {
       item.setEnabled(c.isEnabled());
       item.setItemId(c.getItemId());
       if (sb.getData("gxt-menutext") != null) {
-        item.setHtml(sb.getData("gxt-menutext").toString());
+        item.setText(sb.getData("gxt-menutext").toString());
       }
       if (sb.getMenu() != null) {
         item.setSubMenu(sb.getMenu());
@@ -162,7 +165,7 @@ public class ToolBarLayout extends Layout {
       item.setItemId(c.getItemId());
 
       if (b.getData("gxt-menutext") != null) {
-        item.setHtml(b.getData("gxt-menutext").toString());
+        item.setText(b.getData("gxt-menutext").toString());
       }
       if (b.getMenu() != null) {
         item.setHideOnClick(false);
@@ -184,8 +187,8 @@ public class ToolBarLayout extends Layout {
       ButtonGroup g = (ButtonGroup) c;
       g.setItemId(c.getItemId());
       menu.add(new SeparatorMenuItem());
-      String heading = g.getHeadingHtml();
-      if (heading != null && heading.length() > 0 && !heading.equals("&#160;")) {
+      SafeHtml heading = g.getHeadingHtml();
+      if (SafeGxt.isNullOrEmpty(heading)) {
         menu.add(new HeaderMenuItem(g.getHeadingHtml()));
       }
       for (Component c2 : g.getItems()) {

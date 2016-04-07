@@ -20,6 +20,7 @@ import com.extjs.gxt.ui.client.event.MessageBoxEvent;
 import com.extjs.gxt.ui.client.event.WindowEvent;
 import com.extjs.gxt.ui.client.widget.form.TextArea;
 import com.extjs.gxt.ui.client.widget.form.TextField;
+import com.google.gwt.safehtml.shared.SafeHtml;
 import com.google.gwt.user.client.Element;
 
 /**
@@ -94,7 +95,7 @@ public class MessageBox {
    * @param callback listener to be called when the box is closed
    * @return the new message box instance
    */
-  public static MessageBox alert(String title, String msg, Listener<MessageBoxEvent> callback) {
+  public static MessageBox alert(SafeHtml title, SafeHtml msg, Listener<MessageBoxEvent> callback) {
     MessageBox box = new MessageBox();
     box.setTitleHtml(title);
     box.setMessage(msg);
@@ -114,7 +115,7 @@ public class MessageBox {
    * @param callback the listener invoked after the message box is closed
    * @return the new message box instance
    */
-  public static MessageBox confirm(String title, String msg, Listener<MessageBoxEvent> callback) {
+  public static MessageBox confirm(SafeHtml title, SafeHtml msg, Listener<MessageBoxEvent> callback) {
     MessageBox box = new MessageBox();
     box.setTitleHtml(title);
     box.setMessage(msg);
@@ -134,7 +135,7 @@ public class MessageBox {
    * @param callback listener to be called when the box is closed
    * @return the new message box instance
    */
-  public static MessageBox info(String title, String msg, Listener<MessageBoxEvent> callback) {
+  public static MessageBox info(SafeHtml title, SafeHtml msg, Listener<MessageBoxEvent> callback) {
     MessageBox box = new MessageBox();
     box.setTitleHtml(title);
     box.setMessage(msg);
@@ -155,7 +156,7 @@ public class MessageBox {
    * @param progressText the text to display inside the progress bar
    * @return the new message box
    */
-  public static MessageBox progress(String title, String msg, String progressText) {
+  public static MessageBox progress(SafeHtml title, SafeHtml msg, SafeHtml progressText) {
     MessageBox box = new MessageBox();
     box.setTitleHtml(title);
     box.setMessage(msg);
@@ -175,7 +176,7 @@ public class MessageBox {
    * @param msg the message box body text
    * @return the new message box
    */
-  public static MessageBox prompt(String title, String msg) {
+  public static MessageBox prompt(SafeHtml title, SafeHtml msg) {
     return prompt(title, msg, false, null);
   }
 
@@ -188,7 +189,7 @@ public class MessageBox {
    * @param multiline true for a multi-line text aread
    * @return the new message box
    */
-  public static MessageBox prompt(String title, String msg, boolean multiline) {
+  public static MessageBox prompt(SafeHtml title, SafeHtml msg, boolean multiline) {
     return prompt(title, msg, multiline, null);
   }
 
@@ -201,7 +202,7 @@ public class MessageBox {
    * @param multiline true for a multi-line text aread
    * @return the new message box
    */
-  public static MessageBox prompt(String title, String msg, boolean multiline, Listener<MessageBoxEvent> callback) {
+  public static MessageBox prompt(SafeHtml title, SafeHtml msg, boolean multiline, Listener<MessageBoxEvent> callback) {
     MessageBox box = new MessageBox();
     box.setTitleHtml(title);
     box.setMessage(msg);
@@ -224,7 +225,7 @@ public class MessageBox {
    * @param callback the callback
    * @return the new message box
    */
-  public static MessageBox prompt(String title, String msg, Listener<MessageBoxEvent> callback) {
+  public static MessageBox prompt(SafeHtml title, SafeHtml msg, Listener<MessageBoxEvent> callback) {
     return prompt(title, msg, false, callback);
   }
 
@@ -239,7 +240,7 @@ public class MessageBox {
    * @param progressText the text to display inside the progress bar
    * @return the new message box instance
    */
-  public static MessageBox wait(String title, String msg, String progressText) {
+  public static MessageBox wait(SafeHtml title, SafeHtml msg, SafeHtml progressText) {
     MessageBox box = new MessageBox();
     box.setTitleHtml(title);
     box.setMessage(msg);
@@ -262,7 +263,7 @@ public class MessageBox {
   private int minProgressWidth = 250;
   private String message = "&#160;";
   private boolean closable;
-  private String titleHtml;
+  private SafeHtml titleHtml;
   private String buttons = OK;
   private Dialog dialog;
   private Element iconEl;
@@ -551,7 +552,7 @@ public class MessageBox {
    * 
    * @return the title text
    */
-  public String getTitleHtml() {
+  public SafeHtml getTitleHtml() {
     return titleHtml;
   }
 
@@ -667,8 +668,8 @@ public class MessageBox {
    * 
    * @param message the message
    */
-  public void setMessage(String message) {
-    this.message = message;
+  public void setMessage(SafeHtml message) {
+    this.message = message.asString();
   }
 
   /**
@@ -708,8 +709,8 @@ public class MessageBox {
    * 
    * @param progressHtml the progress text as HTML
    */
-  public void setProgressHtml(String progressHtml) {
-    this.progressHtml = progressHtml;
+  public void setProgressHtml(SafeHtml progressHtml) {
+    this.progressHtml = progressHtml.asString();
   }
 
   /**
@@ -717,7 +718,7 @@ public class MessageBox {
    * 
    * @param titleHtml the title text
    */
-  public void setTitleHtml(String titleHtml) {
+  public void setTitleHtml(SafeHtml titleHtml) {
     this.titleHtml = titleHtml;
   }
 

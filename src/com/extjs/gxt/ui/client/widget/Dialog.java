@@ -11,6 +11,8 @@ import com.extjs.gxt.ui.client.GXT;
 import com.extjs.gxt.ui.client.event.ButtonEvent;
 import com.extjs.gxt.ui.client.event.SelectionListener;
 import com.extjs.gxt.ui.client.widget.button.Button;
+import com.google.gwt.safehtml.shared.SafeHtml;
+import com.google.gwt.safehtml.shared.SafeHtmlUtils;
 
 /**
  * A <code>Window</code> with specialized support for buttons. Defaults to a
@@ -120,27 +122,27 @@ public class Dialog extends Window {
   /**
    * The OK button text (defaults to 'OK');
    */
-  public String okText = GXT.MESSAGES.messageBox_ok();
+  public SafeHtml okText = GXT.MESSAGES.messageBox_ok();
 
   /**
    * The Close button text (defaults to 'Close').
    */
-  public String closeText = GXT.MESSAGES.messageBox_close();
+  public SafeHtml closeText = SafeHtmlUtils.fromString(GXT.MESSAGES.messageBox_close());
 
   /**
    * The Cancel button text (defaults to 'Cancel').
    */
-  public String cancelText = GXT.MESSAGES.messageBox_cancel();
+  public SafeHtml cancelText = GXT.MESSAGES.messageBox_cancel();
 
   /**
    * The Yes button text (defaults to 'Yes').
    */
-  public String yesText = GXT.MESSAGES.messageBox_yes();
+  public SafeHtml yesText = GXT.MESSAGES.messageBox_yes();
 
   /**
    * The No button text (defaults to 'No').
    */
-  public String noText = GXT.MESSAGES.messageBox_no();
+  public SafeHtml noText = GXT.MESSAGES.messageBox_no();
 
   private boolean hideOnButtonClick = false;
   private String buttons;

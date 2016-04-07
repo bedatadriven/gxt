@@ -15,8 +15,10 @@ import com.extjs.gxt.ui.client.event.Events;
 import com.extjs.gxt.ui.client.event.Listener;
 import com.extjs.gxt.ui.client.event.MenuEvent;
 import com.extjs.gxt.ui.client.store.ListStore;
+import com.extjs.gxt.ui.client.util.SafeGxt;
 import com.extjs.gxt.ui.client.widget.menu.CheckMenuItem;
 import com.extjs.gxt.ui.client.widget.menu.Menu;
+import com.google.gwt.safehtml.shared.SafeHtml;
 
 public class ListMenu extends Menu {
 
@@ -79,7 +81,7 @@ public class ListMenu extends Menu {
       ModelData m = store.getAt(i);
       CheckMenuItem item = new CheckMenuItem();
       Object v = m.get(filter.getDisplayProperty());
-      item.setHtml(v == null ? "" : v.toString());
+      item.setText(v == null ? "" : v.toString());
       item.setChecked(selected.contains(m));
       item.setHideOnClick(false);
       item.setData("model", m);

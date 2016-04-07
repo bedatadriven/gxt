@@ -41,6 +41,8 @@ import com.google.gwt.http.client.Request;
 import com.google.gwt.http.client.RequestBuilder;
 import com.google.gwt.http.client.RequestCallback;
 import com.google.gwt.http.client.Response;
+import com.google.gwt.safehtml.shared.SafeHtml;
+import com.google.gwt.safehtml.shared.SafeHtmlUtils;
 import com.google.gwt.user.client.Command;
 import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.DeferredCommand;
@@ -1589,7 +1591,7 @@ public class El {
     String html = getInnerHtml();
     TextMetrics metrics = TextMetrics.get();
     metrics.bind(dom);
-    return metrics.getWidth(html);
+    return metrics.getWidth(SafeHtmlUtils.fromTrustedString(html));
   }
 
   /**
@@ -2046,17 +2048,17 @@ public class El {
       builder.setCallback(new RequestCallback() {
 
         public void onError(Request request, Throwable exception) {
-          setInnerHtml(exception.getMessage());
+          setInnerHtml(SafeHtmlUtils.fromString(exception.getMessage()));
         }
 
         public void onResponseReceived(Request request, Response response) {
-          setInnerHtml(response.getText());
+          setInnerHtml(SafeHtmlUtils.fromTrustedString(response.getText()));
         }
 
       });
       return builder.send();
     } catch (Exception e) {
-      setInnerHtml(e.getMessage());
+      setInnerHtml(SafeHtmlUtils.fromString(e.getMessage()));
       return null;
     }
   }
@@ -2098,8 +2100,12 @@ public class El {
    * @param message a message to display in the mask
    * @return the mask element
    */
-  public El mask(String message) {
+  public El mask(SafeHtml message) {
     return mask(message, null);
+  }
+
+  public El mask(String message) {
+    return mask(SafeHtmlUtils.fromString(message), null);
   }
 
   /**
@@ -2109,7 +2115,7 @@ public class El {
    * @param messageStyleName a CSS style name to be applied to the message text
    * @return the mask element
    */
-  public El mask(String message, String messageStyleName) {
+  public El mask(SafeHtml message, String messageStyleName) {
     if ("static".equals(getStyleAttribute("position"))) {
       addStyleName("x-masked-relative");
     }
@@ -2188,7 +2194,7 @@ public class El {
     while ((child = firstChild()) != null) {
       dom.removeChild(child.dom);
     }
-    setInnerHtml("");
+    setInnerHtml(SafeHtmlUtils.EMPTY_SAFE_HTML);
     return this;
   }
 
@@ -2601,8 +2607,8 @@ public class El {
    * @param html the new HTML
    * @return this
    */
-  public El setInnerHtml(String html) {
-    DOM.setInnerHTML(dom, html);
+  public El setInnerHtml(SafeHtml html) {
+    DOM.setInnerHTML(dom, html.asString());
     return this;
   }
 
@@ -3155,8 +3161,8 @@ public class El {
    * @param html the html
    * @return this
    */
-  public El update(String html) {
-    DOM.setInnerHTML(dom, html);
+  public El update(SafeHtml html) {
+    DOM.setInnerHTML(dom, html.asString());
     return this;
   }
 

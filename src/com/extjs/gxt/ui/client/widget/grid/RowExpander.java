@@ -21,6 +21,8 @@ import com.extjs.gxt.ui.client.util.KeyNav;
 import com.extjs.gxt.ui.client.util.Util;
 import com.extjs.gxt.ui.client.widget.Component;
 import com.extjs.gxt.ui.client.widget.ComponentPlugin;
+import com.google.gwt.safehtml.shared.SafeHtml;
+import com.google.gwt.safehtml.shared.SafeHtmlUtils;
 import com.google.gwt.user.client.Element;
 
 /**
@@ -88,7 +90,7 @@ public class RowExpander extends ColumnConfig implements ComponentPlugin {
    * Creates a new row expander.
    */
   public RowExpander() {
-    setHeaderHtml("");
+    setHeaderHtml(SafeHtmlUtils.EMPTY_SAFE_HTML);
     setWidth(20);
     setSortable(false);
     setResizable(false);
@@ -100,10 +102,10 @@ public class RowExpander extends ColumnConfig implements ComponentPlugin {
     ariaIgnore = true;
     
     setRenderer(new GridCellRenderer<ModelData>() {
-      public String render(ModelData model, String property, ColumnData d, int rowIndex, int colIndex,
-          ListStore<ModelData> store, Grid<ModelData> grid) {
+      public SafeHtml render(ModelData model, String property, ColumnData d, int rowIndex, int colIndex,
+                             ListStore<ModelData> store, Grid<ModelData> grid) {
         d.cellAttr = "rowspan='2'";
-        return "<div class='x-grid3-row-expander'>&#160;</div>";
+        return SafeHtmlUtils.fromSafeConstant("<div class='x-grid3-row-expander'>&#160;</div>");
       }
     });
 

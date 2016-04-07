@@ -13,6 +13,7 @@ import com.extjs.gxt.ui.client.event.ButtonEvent;
 import com.extjs.gxt.ui.client.event.ComponentEvent;
 import com.extjs.gxt.ui.client.event.Events;
 import com.extjs.gxt.ui.client.event.SelectionListener;
+import com.google.gwt.safehtml.shared.SafeHtml;
 
 /**
  * A split button that provides a built-in dropdown arrow that can fire an event
@@ -48,7 +49,7 @@ public class SplitButton extends Button {
    * 
    * @param text the button's text
    */
-  public SplitButton(String text) {
+  public SplitButton(SafeHtml text) {
     super(text);
   }
 
@@ -58,7 +59,7 @@ public class SplitButton extends Button {
    * @param text the button's text
    * @param listener the selection listener
    */
-  public SplitButton(String text, SelectionListener<ButtonEvent> listener) {
+  public SplitButton(SafeHtml text, SelectionListener<ButtonEvent> listener) {
     super(text, listener);
   }
 

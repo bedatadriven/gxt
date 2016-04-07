@@ -7,8 +7,11 @@
  */
  package com.extjs.gxt.ui.client.widget.menu;
 
+import com.extjs.gxt.ui.client.GXT;
 import com.extjs.gxt.ui.client.core.El;
+import com.extjs.gxt.ui.client.util.SafeGxt;
 import com.extjs.gxt.ui.client.util.Util;
+import com.google.gwt.safehtml.shared.SafeHtml;
 import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.Element;
 
@@ -17,7 +20,7 @@ import com.google.gwt.user.client.Element;
  */
 public class HeaderMenuItem extends Item {
   private String itemStyle = "x-menu-text";
-  private String html;
+  private SafeHtml html;
 
   /**
    * Creates a new header menu item.
@@ -32,7 +35,7 @@ public class HeaderMenuItem extends Item {
    * 
    * @param html the header text as HTML
    */
-  public HeaderMenuItem(String html) {
+  public HeaderMenuItem(SafeHtml html) {
     this();
     this.html = html;
   }
@@ -42,7 +45,7 @@ public class HeaderMenuItem extends Item {
    * 
    * @return the item text
    */
-  public String getHtml() {
+  public SafeHtml getHtml() {
     return html;
   }
 
@@ -52,7 +55,7 @@ public class HeaderMenuItem extends Item {
    * @param text the item's text
    */
   public void setText(String text) {
-    setHtml(El.toSafeHTML(text));
+    setHtml(SafeGxt.fromNullableString(text));
   }
 
   /**
@@ -60,10 +63,10 @@ public class HeaderMenuItem extends Item {
    * 
    * @param html html the text as HTML
    */
-  public void setHtml(String html) {
+  public void setHtml(SafeHtml html) {
     this.html = html;
     if (rendered) {
-      el().update(Util.isEmptyString(html) ? "&#160;" : html);
+      el().update(SafeGxt.emptyToNbSpace(html));
     }
 
   }

@@ -40,25 +40,26 @@ import com.extjs.gxt.ui.client.widget.menu.CheckMenuItem;
 import com.extjs.gxt.ui.client.widget.menu.Menu;
 import com.extjs.gxt.ui.client.widget.menu.MenuItem;
 import com.extjs.gxt.ui.client.widget.menu.SeparatorMenuItem;
+import com.google.gwt.safehtml.shared.SafeHtml;
 import com.google.gwt.user.client.Command;
 import com.google.gwt.user.client.DeferredCommand;
 
 @SuppressWarnings("deprecation")
 public abstract class AbstractGridFilters implements ComponentPlugin {
   public static class GridFiltersMessages {
-    private String filterText = GXT.MESSAGES.gridFilters_filterText();
+    private SafeHtml filterText = GXT.MESSAGES.gridFilters_filterText();
 
     /**
      * @return the filterText
      */
-    public String getFilterText() {
+    public SafeHtml getFilterText() {
       return filterText;
     }
 
     /**
      * @param filterText the filterText to set
      */
-    public void setFilterText(String filterText) {
+    public void setFilterText(SafeHtml filterText) {
       this.filterText = filterText;
     }
   }

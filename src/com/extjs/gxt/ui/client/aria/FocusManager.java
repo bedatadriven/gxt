@@ -224,7 +224,6 @@ public class FocusManager {
 
   protected void initHandlers() {
     register(new FieldSetHandler());
-    register(new HtmlEditorHandler());
     register(new ToolButtonHandler());
     register(new ToolBarHandler());
     register(new MenuHandler());

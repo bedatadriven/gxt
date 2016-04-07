@@ -13,6 +13,7 @@ import com.extjs.gxt.ui.client.GXT;
 import com.extjs.gxt.ui.client.core.XDOM;
 import com.extjs.gxt.ui.client.widget.BoxComponent;
 import com.extjs.gxt.ui.client.widget.flash.SwfObject.SwfConfig;
+import com.google.gwt.safehtml.shared.SafeHtmlUtils;
 import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.Element;
 import com.google.gwt.user.client.Window;
@@ -178,7 +179,7 @@ public class FlashComponent extends BoxComponent {
   @Override
   protected void onAttach() {
     super.onAttach();
-    el().setInnerHtml("<div id=\"" + getSwfId() + "\"></div>");
+    el().setInnerHtml(SafeHtmlUtils.fromTrustedString("<div id=\"" + getSwfId() + "\"></div>"));
     SwfConfig config = new SwfConfig();
     injectFlash(config);
   }

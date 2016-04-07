@@ -16,6 +16,7 @@ import com.extjs.gxt.ui.client.event.Events;
 import com.extjs.gxt.ui.client.event.SelectionListener;
 import com.extjs.gxt.ui.client.widget.Component;
 import com.extjs.gxt.ui.client.widget.ComponentManager;
+import com.google.gwt.safehtml.shared.SafeHtml;
 import com.google.gwt.user.client.Element;
 import com.google.gwt.user.client.ui.AbstractImagePrototype;
 import com.google.gwt.user.client.ui.Accessibility;
@@ -52,7 +53,7 @@ public class ToggleButton extends Button {
    * 
    * @param text the button text
    */
-  public ToggleButton(String text) {
+  public ToggleButton(SafeHtml text) {
     super(text);
   }
 
@@ -62,7 +63,7 @@ public class ToggleButton extends Button {
    * @param text the button text
    * @param listener a selection listener
    */
-  public ToggleButton(String text, SelectionListener<ButtonEvent> listener) {
+  public ToggleButton(SafeHtml text, SelectionListener<ButtonEvent> listener) {
     super(text, listener);
   }
 
@@ -72,7 +73,7 @@ public class ToggleButton extends Button {
    * @param text the button text
    * @param icon the icon
    */
-  public ToggleButton(String text, AbstractImagePrototype icon) {
+  public ToggleButton(SafeHtml text, AbstractImagePrototype icon) {
     this(text);
     setIcon(icon);
   }

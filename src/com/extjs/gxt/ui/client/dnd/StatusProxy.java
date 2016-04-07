@@ -9,6 +9,8 @@
 
 import com.extjs.gxt.ui.client.core.El;
 import com.extjs.gxt.ui.client.widget.BoxComponent;
+import com.google.gwt.safehtml.shared.SafeHtml;
+import com.google.gwt.safehtml.shared.SafeHtmlUtils;
 import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.Element;
 
@@ -87,7 +89,7 @@ public class StatusProxy extends BoxComponent {
    * @param element the new ghost content
    */
   public void update(Element element) {
-    ghost.setInnerHtml("");
+    ghost.setInnerHtml(SafeHtmlUtils.EMPTY_SAFE_HTML);
     ghost.setStyleAttribute("margin", "");
     ghost.appendChild(element);
   }
@@ -98,7 +100,7 @@ public class StatusProxy extends BoxComponent {
    * @param html the html that will replace the current contents of the ghost
    *          element
    */
-  public void update(String html) {
+  public void update(SafeHtml html) {
     ghost.setInnerHtml(html);
   }
 

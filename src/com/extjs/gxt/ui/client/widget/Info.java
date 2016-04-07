@@ -16,6 +16,7 @@ import com.extjs.gxt.ui.client.util.Format;
 import com.extjs.gxt.ui.client.util.Params;
 import com.extjs.gxt.ui.client.util.Point;
 import com.extjs.gxt.ui.client.util.Size;
+import com.google.gwt.safehtml.shared.SafeHtml;
 import com.google.gwt.user.client.Element;
 import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.ui.Accessibility;
@@ -78,33 +79,8 @@ public class Info extends ContentPanel {
    * @param title the title
    * @param html the text
    */
-  public static void display(String title, String html) {
+  public static void display(SafeHtml title, SafeHtml html) {
     display(new InfoConfig(title, html));
-  }
-
-  /**
-   * Displays a message with the given title and text. The passed parameters
-   * will be applied to both the title and text before being displayed.
-   * 
-   * @param title the info title
-   * @param html the info text as HTML
-   * @param params the parameters to be applied to the title and text
-   */
-  public static void display(String title, String html, Params params) {
-    InfoConfig config = new InfoConfig(title, html, params);
-    display(config);
-  }
-
-  /**
-   * Displays a message with the given title and text. All {0},{1}... values in
-   * text will be replaced with values.
-   * 
-   * @param title the message title
-   * @param text the message
-   * @param values the values to be substituted
-   */
-  public static void display(String title, String text, String... values) {
-    display(new InfoConfig(title, text, new Params((Object[]) values)));
   }
 
   private static int firstAvail() {
@@ -207,9 +183,6 @@ public class Info extends ContentPanel {
 
   private void setText() {
     if (config.html != null) {
-      if (config.params != null) {
-        config.html = Format.substitute(config.html, config.params);
-      }
       removeAll();
       addText(config.html);
     }
@@ -218,9 +191,6 @@ public class Info extends ContentPanel {
   private void setTitle() {
     if (config.titleHtml != null) {
       head.setVisible(true);
-      if (config.params != null) {
-        config.titleHtml = Format.substitute(config.titleHtml, config.params);
-      }
       setHeadingHtml(config.titleHtml);
     } else {
       head.setVisible(false);

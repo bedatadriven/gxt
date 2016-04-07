@@ -8,6 +8,7 @@
  package com.extjs.gxt.ui.client.widget.toolbar;
 
 import com.extjs.gxt.ui.client.widget.Html;
+import com.google.gwt.safehtml.shared.SafeHtml;
 import com.google.gwt.user.client.Element;
 
 /**
@@ -27,7 +28,7 @@ public class LabelToolItem extends Html {
    * 
    * @param html the label treated as HTML
    */
-  public LabelToolItem(String html) {
+  public LabelToolItem(SafeHtml html) {
     this();
     setHtml(html);
   }

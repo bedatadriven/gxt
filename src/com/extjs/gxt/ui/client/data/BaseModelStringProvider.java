@@ -7,15 +7,18 @@
  */
  package com.extjs.gxt.ui.client.data;
 
+import com.extjs.gxt.ui.client.util.SafeGxt;
+import com.google.gwt.safehtml.shared.SafeHtml;
+
 /**
  * Basic implementation of the <code>ModelStringProvider</code> interface.
  * Simply calls toSring on the value.
  */
 public class BaseModelStringProvider<M extends ModelData> implements ModelStringProvider<M> {
 
-  public String getStringValue(M model, String property) {
+  public SafeHtml getStringValue(M model, String property) {
     Object value = model.get(property);
-    return value == null ? "" : value.toString();
+    return SafeGxt.fromNullable(value);
   }
 
 }

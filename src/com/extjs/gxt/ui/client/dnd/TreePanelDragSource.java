@@ -19,6 +19,7 @@ import com.extjs.gxt.ui.client.store.TreeStore;
 import com.extjs.gxt.ui.client.util.Format;
 import com.extjs.gxt.ui.client.widget.treepanel.TreePanel;
 import com.extjs.gxt.ui.client.widget.treepanel.TreePanel.TreeNode;
+import com.google.gwt.safehtml.shared.SafeHtmlUtils;
 import com.google.gwt.user.client.Element;
 
 /**
@@ -120,7 +121,7 @@ public class TreePanelDragSource extends DragSource {
         }
         e.setData(models);
         e.setCancelled(false);
-        e.getStatus().update(Format.substitute(getStatusText(), sel.size()));
+        e.getStatus().update(SafeHtmlUtils.fromString(Format.substitute(getStatusText(), sel.size())));
 
       } else {
         e.setCancelled(true);

@@ -33,6 +33,8 @@ import com.extjs.gxt.ui.client.widget.menu.MenuItem;
 import com.extjs.gxt.ui.client.widget.menu.SeparatorMenuItem;
 import com.google.gwt.dom.client.Element;
 import com.google.gwt.dom.client.NodeList;
+import com.google.gwt.safehtml.shared.SafeHtml;
+import com.google.gwt.safehtml.shared.SafeHtmlUtils;
 import com.google.gwt.user.client.ui.AbstractImagePrototype;
 
 /**
@@ -480,20 +482,20 @@ public class GroupingView extends GridView {
   }
 
   @Override
-  protected String renderRows(int startRow, int endRow) {
+  protected SafeHtml renderRows(int startRow, int endRow) {
     String groupField = getGroupField();
     boolean eg = groupField != null;
     if (!showGroupedColumn) {
       int colIndex = cm.findColumnIndex(groupField);
       if (!eg && lastGroupField != null) {
-        mainBody.update("");
+        mainBody.update(SafeHtmlUtils.EMPTY_SAFE_HTML);
         cm.setHidden(cm.findColumnIndex(lastGroupField), false);
         lastGroupField = null;
       } else if (eg && (lastGroupField == null || lastGroupField == groupField)) {
         lastGroupField = groupField;
         cm.setHidden(colIndex, true);
       } else if (eg && lastGroupField != null && !groupField.equals(lastGroupField)) {
-        mainBody.update("");
+        mainBody.update(SafeHtmlUtils.EMPTY_SAFE_HTML);
         int oldIndex = cm.findColumnIndex(lastGroupField);
         cm.setHidden(oldIndex, false);
         lastGroupField = groupField;

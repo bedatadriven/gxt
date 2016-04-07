@@ -10,6 +10,8 @@
 import com.extjs.gxt.ui.client.core.El;
 import com.extjs.gxt.ui.client.core.Template;
 import com.extjs.gxt.ui.client.util.Params;
+import com.extjs.gxt.ui.client.util.SafeGxt;
+import com.google.gwt.safehtml.shared.SafeHtml;
 
 /**
  * Configuration information for a tool tip.
@@ -29,8 +31,8 @@ public class ToolTipConfig {
   private Params params;
   private int showDelay = 500;
   private Template template;
-  private String html;
-  private String titleHtml;
+  private SafeHtml html;
+  private SafeHtml titleHtml;
   private boolean trackMouse;
   private boolean closeable;
 
@@ -46,7 +48,7 @@ public class ToolTipConfig {
    * 
    * @param html the tool tip text as HTML
    */
-  public ToolTipConfig(String html) {
+  public ToolTipConfig(SafeHtml html) {
     this.setHtml(html);
   }
 
@@ -56,7 +58,7 @@ public class ToolTipConfig {
    * @param titleHtml the tool tip title
    * @param html the tool tip text
    */
-  public ToolTipConfig(String titleHtml, String html) {
+  public ToolTipConfig(SafeHtml titleHtml, SafeHtml html) {
     this.setTitleHtml(titleHtml);
     this.setHtml(html);
   }
@@ -156,7 +158,7 @@ public class ToolTipConfig {
    * 
    * @return the text as HTML
    */
-  public String getHtml() {
+  public SafeHtml getHtml() {
     return html;
   }
 
@@ -165,7 +167,7 @@ public class ToolTipConfig {
    * 
    * @return the title
    */
-  public String getTitleHtml() {
+  public SafeHtml getTitleHtml() {
     return titleHtml;
   }
 
@@ -362,7 +364,7 @@ public class ToolTipConfig {
    * 
    * @param html the text as HTML
    */
-  public void setHtml(String html) {
+  public void setHtml(SafeHtml html) {
     this.html = html;
   }
 
@@ -372,7 +374,7 @@ public class ToolTipConfig {
    * @param text the text
    */
   public void setText(String text) {
-    setHtml(El.toSafeHTML(text));
+    setHtml(SafeGxt.fromNullableString(text));
   }
 
   /**
@@ -381,7 +383,7 @@ public class ToolTipConfig {
    * @param title the title as text
    */
   public void setTitle(String title) {
-    setTitleHtml(El.toSafeHTML(title));
+    setTitleHtml(SafeGxt.fromNullableString(title));
   }
 
   /**
@@ -389,7 +391,7 @@ public class ToolTipConfig {
    * 
    * @param titleHtml the title as HTML
    */
-  public void setTitleHtml(String titleHtml) {
+  public void setTitleHtml(SafeHtml titleHtml) {
     this.titleHtml = titleHtml;
   }
 

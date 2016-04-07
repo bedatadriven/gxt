@@ -36,29 +36,6 @@ import com.extjs.gxt.ui.client.event.ComponentEvent;
  */
 public class FileUploadField extends TextField<String> {
 
-  public class FileUploadFieldMessages extends TextFieldMessages {
-
-    private String browseText = GXT.MESSAGES.uploadField_browseText();
-
-    /**
-     * Returns the browse text.
-     * 
-     * @return the browse text
-     */
-    public String getBrowseText() {
-      return browseText;
-    }
-
-    /**
-     * Sets the browse text.
-     * 
-     * @param browseText the browse text
-     */
-    public void setBrowseText(String browseText) {
-      this.browseText = browseText;
-    }
-
-  }
 
   private String accept;
   private Button button;
@@ -73,7 +50,6 @@ public class FileUploadField extends TextField<String> {
   public FileUploadField() {
     focusPreview = new BaseEventPreview();
     focusPreview.setAutoHide(false);
-    messages = new FileUploadFieldMessages();
     ensureVisibilityOnSizing = true;
     setWidth(150);
   }
@@ -110,11 +86,6 @@ public class FileUploadField extends TextField<String> {
    */
   public InputElement getFileInput() {
     return (InputElement) file.dom.cast();
-  }
-
-  @Override
-  public FileUploadFieldMessages getMessages() {
-    return (FileUploadFieldMessages) messages;
   }
 
   @Override
@@ -319,7 +290,7 @@ public class FileUploadField extends TextField<String> {
 
     setElement(wrap.dom, target, index);
 
-    button = new Button(getMessages().getBrowseText());
+    button = new Button(GXT.MESSAGES.uploadField_browseText());
     button.getFocusSupport().setIgnore(true);
     button.addStyleName("x-form-file-btn");
     button.setIcon(buttonIcon);

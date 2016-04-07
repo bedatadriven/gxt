@@ -13,9 +13,11 @@ import com.extjs.gxt.ui.client.core.Template;
 import com.extjs.gxt.ui.client.event.BaseEvent;
 import com.extjs.gxt.ui.client.event.ComponentEvent;
 import com.extjs.gxt.ui.client.util.IconHelper;
+import com.extjs.gxt.ui.client.util.SafeGxt;
 import com.extjs.gxt.ui.client.util.Util;
 import com.extjs.gxt.ui.client.widget.layout.FlowLayout;
 import com.google.gwt.http.client.RequestBuilder;
+import com.google.gwt.safehtml.shared.SafeHtml;
 import com.google.gwt.user.client.Command;
 import com.google.gwt.user.client.DeferredCommand;
 import com.google.gwt.user.client.Element;
@@ -76,7 +78,7 @@ public class TabItem extends LayoutContainer implements IconSupport {
       disableContextMenu(true);
     }
 
-    protected String html;
+    protected SafeHtml html;
     protected AbstractImagePrototype icon;
 
     /**
@@ -93,7 +95,7 @@ public class TabItem extends LayoutContainer implements IconSupport {
      * 
      * @return the text
      */
-    public String getHtml() {
+    public SafeHtml getHtml() {
       return html;
     }
 
@@ -144,7 +146,7 @@ public class TabItem extends LayoutContainer implements IconSupport {
      * @param text the text
      */
     public void setText(String text) {
-      setHtml(El.toSafeHTML(text));
+      setHtml(SafeGxt.fromNullableString(text));
     }
 
     /**
@@ -152,10 +154,10 @@ public class TabItem extends LayoutContainer implements IconSupport {
      * 
      * @param html the html to set
      */
-    public void setHtml(String html) {
+    public void setHtml(SafeHtml html) {
       this.html = html;
       if (rendered) {
-        el().child(".x-tab-strip-text").dom.setInnerHTML(Util.isEmptyString(html) ? "&#160;" : html);
+        el().child(".x-tab-strip-text").dom.setInnerSafeHtml(SafeGxt.emptyToNbSpace(html));
         tabPanel.onItemTextChange(TabItem.this, this.html, html);
       }
     }
@@ -268,7 +270,7 @@ public class TabItem extends LayoutContainer implements IconSupport {
    * 
    * @return the HTML of the header
    */
-  public String getHtml() {
+  public SafeHtml getHtml() {
     return header.getHtml();
   }
 
@@ -335,7 +337,7 @@ public class TabItem extends LayoutContainer implements IconSupport {
    * 
    * @param html the new html content to draw in the header
    */
-  public void setHtml(String html) {
+  public void setHtml(SafeHtml html) {
     header.setHtml(html);
   }
 

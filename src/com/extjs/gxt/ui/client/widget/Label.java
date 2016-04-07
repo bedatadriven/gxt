@@ -7,6 +7,7 @@
  */
  package com.extjs.gxt.ui.client.widget;
 
+import com.google.gwt.safehtml.shared.SafeHtml;
 import com.google.gwt.user.client.Element;
 
 /**
@@ -49,7 +50,7 @@ public class Label extends Html {
    * 
    * @param html the label's text
    */
-  public Label(String html) {
+  public Label(SafeHtml html) {
     this();
     setHtml(html);
   }

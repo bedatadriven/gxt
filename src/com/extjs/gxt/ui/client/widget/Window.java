@@ -37,6 +37,7 @@ import com.extjs.gxt.ui.client.widget.form.TriggerField;
 import com.extjs.gxt.ui.client.widget.menu.Menu;
 import com.google.gwt.event.dom.client.KeyCodes;
 import com.google.gwt.event.shared.HandlerRegistration;
+import com.google.gwt.safehtml.shared.SafeHtml;
 import com.google.gwt.user.client.Command;
 import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.DeferredCommand;
@@ -214,7 +215,7 @@ public class Window extends ContentPanel {
   }
 
   @Override
-  public void setHeadingHtml(String text) {
+  public void setHeadingHtml(SafeHtml text) {
     super.setHeadingHtml(text);
     if (ghost != null) {
       ghost.selectNode(".x-window-header-text").setInnerHtml(text);

@@ -39,10 +39,7 @@ import com.extjs.gxt.ui.client.store.ListStore;
 import com.extjs.gxt.ui.client.store.Record;
 import com.extjs.gxt.ui.client.store.StoreEvent;
 import com.extjs.gxt.ui.client.store.StoreListener;
-import com.extjs.gxt.ui.client.util.DelayedTask;
-import com.extjs.gxt.ui.client.util.Point;
-import com.extjs.gxt.ui.client.util.Size;
-import com.extjs.gxt.ui.client.util.Util;
+import com.extjs.gxt.ui.client.util.*;
 import com.extjs.gxt.ui.client.widget.Component;
 import com.extjs.gxt.ui.client.widget.ComponentHelper;
 import com.extjs.gxt.ui.client.widget.menu.CheckMenuItem;
@@ -118,7 +115,7 @@ public class GridView extends BaseObservable {
   protected ListStore<ModelData> ds;
   // elements
   protected El el, mainWrap, mainHd, innerHd, scroller, mainBody, focusEl;
-  protected String emptyText = "&nbsp;";
+  protected SafeHtml emptyText = SafeGxt.NO_BREAK_SPACE;
   protected boolean enableHdMenu = true;
   // config
   protected boolean enableRowBody;
@@ -367,7 +364,7 @@ public class GridView extends BaseObservable {
    * 
    * @return the empty text
    */
-  public String getEmptyText() {
+  public SafeHtml getEmptyText() {
     return emptyText;
   }
 
@@ -632,7 +629,7 @@ public class GridView extends BaseObservable {
    * 
    * @param emptyText the empty text
    */
-  public void setEmptyText(String emptyText) {
+  public void setEmptyText(SafeHtml emptyText) {
     this.emptyText = emptyText;
   }
 
@@ -725,10 +722,10 @@ public class GridView extends BaseObservable {
 
   protected void applyEmptyText() {
     if (emptyText == null) {
-      emptyText = "&nbsp;";
+      emptyText = SafeGxt.NO_BREAK_SPACE;
     }
     if (!hasRows()) {
-      mainBody.setInnerHtml("<div class='x-grid-empty'>" + emptyText + "</div>");
+      mainBody.setInnerHtml(SafeHtmlUtils.fromTrustedString("<div class='x-grid-empty'>" + emptyText.asString() + "</div>"));
     }
     syncHScroll();
   }
@@ -937,7 +934,7 @@ public class GridView extends BaseObservable {
       for (int i = 0; i < colCount; i++) {
         ColumnData c = cs.get(i);
         c.css = c.css == null ? "" : c.css;
-        String rv = getRenderedValue(c, rowIndex, i, model, c.name);
+        SafeHtml rv = getRenderedValue(c, rowIndex, i, model, c.name);
         String role = "gridcell";
         if (GXT.isAriaEnabled()) {
           ColumnConfig cc = cm.getColumn(i);
@@ -975,7 +972,7 @@ public class GridView extends BaseObservable {
         buf.append("\" ");
         buf.append(attr);
         buf.append(">");
-        buf.append(rv);
+        buf.append(rv.asString());
         buf.append("</div></td>");
       }
 
@@ -1116,45 +1113,35 @@ public class GridView extends BaseObservable {
     return (getTotalWidth() + getScrollAdjust());
   }
 
-  protected String getRenderedValue(ColumnData data, int rowIndex, int colIndex, ModelData m, String property) {
+  protected SafeHtml getRenderedValue(ColumnData data, int rowIndex, int colIndex, ModelData m, String property) {
     GridCellRenderer<ModelData> r = cm.getRenderer(colIndex);
     List<Widget> rowMap = widgetList.get(rowIndex);
     rowMap.add(colIndex, null);
     if (r != null) {
-      Object o = r.render(ds.getAt(rowIndex), property, data, rowIndex, colIndex, ds, grid);
-      if (o instanceof Widget) {
-        Widget w = (Widget) o;
-
-        rowMap.set(colIndex, w);
-        return "";
-      } else if (o != null) {
-        return o.toString();
+      SafeHtml o = r.render(ds.getAt(rowIndex), property, data, rowIndex, colIndex, ds, grid);
+      if (o != null) {
+        return o;
       }
     }
     Object val = m.get(property);
-
+    SafeHtml html = null;
     ColumnConfig c = cm.getColumn(colIndex);
 
     if(val != null) {
       if (val instanceof Number && c.getNumberFormat() != null) {
         Number n = (Number) val;
-        val = c.getNumberFormat().format(n.doubleValue());
+        html = SafeHtmlUtils.fromTrustedString(c.getNumberFormat().format(n.doubleValue()));
       } else if (val instanceof Date && c.getDateTimeFormat() != null) {
         DateTimeFormat dtf = c.getDateTimeFormat();
-        val = dtf.format((Date) val);
+        html = SafeHtmlUtils.fromTrustedString(dtf.format((Date) val));
       } else {
         String valString = val.toString();
         if(valString != null) {
-          val = SafeHtmlUtils.htmlEscape(valString);
+          html = SafeHtmlUtils.fromString(valString);
         }
       }
     }
-
-    String text = null;
-    if (val != null) {
-      text = val.toString();
-    }
-    return Util.isEmptyString(text) ? "&#160;" : text;
+    return SafeGxt.emptyToNbSpace(html);
   }
 
   protected NodeList<Element> getRows() {
@@ -1392,13 +1379,13 @@ public class GridView extends BaseObservable {
       mainBody.dom.setInnerHTML("");
     }
 
-    String html = renderRows(firstRow, lastRow);
+    SafeHtml html = renderRows(firstRow, lastRow);
     Element before = getRow(firstRow);
 
     if (before != null) {
-      DomHelper.insertBefore((com.google.gwt.user.client.Element) before, html);
+      DomHelper.insertBefore((com.google.gwt.user.client.Element) before, html.asString());
     } else {
-      DomHelper.insertHtml("beforeEnd", mainBody.dom, html);
+      DomHelper.insertHtml("beforeEnd", mainBody.dom, html.asString());
     }
 
     if (!isUpdate) {
@@ -1604,7 +1591,7 @@ public class GridView extends BaseObservable {
     }
   }
 
-  protected void onHeaderChange(int column, String text) {
+  protected void onHeaderChange(int column, SafeHtml text) {
     header.setHeaderHtml(column, text);
   }
 
@@ -1800,11 +1787,11 @@ public class GridView extends BaseObservable {
     }
   }
 
-  protected String renderRows(int startRow, int endRow) {
+  protected SafeHtml renderRows(int startRow, int endRow) {
     int colCount = cm.getColumnCount();
 
     if (ds.getCount() < 1) {
-      return "";
+      return SafeHtmlUtils.EMPTY_SAFE_HTML;
     }
 
     List<ColumnData> cs = getColumnData();
@@ -1814,7 +1801,7 @@ public class GridView extends BaseObservable {
     }
 
     List<ModelData> rs = ds.getRange(startRow, endRow);
-    return doRender(cs, rs, startRow, colCount, grid.isStripeRows());
+    return SafeHtmlUtils.fromTrustedString(doRender(cs, rs, startRow, colCount, grid.isStripeRows()));
   }
 
   protected void renderUI() {

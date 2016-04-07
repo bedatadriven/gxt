@@ -14,6 +14,7 @@ import com.extjs.gxt.ui.client.widget.grid.ColumnData;
 import com.extjs.gxt.ui.client.widget.grid.Grid;
 import com.extjs.gxt.ui.client.widget.grid.GridCellRenderer;
 import com.extjs.gxt.ui.client.widget.treepanel.TreePanel.Joint;
+import com.google.gwt.safehtml.shared.SafeHtml;
 import com.google.gwt.safehtml.shared.SafeHtmlUtils;
 import com.google.gwt.user.client.ui.AbstractImagePrototype;
 
@@ -24,8 +25,8 @@ import com.google.gwt.user.client.ui.AbstractImagePrototype;
 public class TreeGridCellRenderer<M extends ModelData> implements GridCellRenderer<M> {
 
   @SuppressWarnings({"unchecked", "rawtypes"})
-  public Object render(M model, String property, ColumnData config, int rowIndex, int colIndex, ListStore<M> store,
-      Grid<M> grid) {
+  public SafeHtml render(M model, String property, ColumnData config, int rowIndex, int colIndex, ListStore<M> store,
+                         Grid<M> grid) {
     config.css = "x-treegrid-column";
 
     assert grid instanceof TreeGrid : "TreeGridCellRenderer can only be used in a TreeGrid";
@@ -36,7 +37,7 @@ public class TreeGridCellRenderer<M extends ModelData> implements GridCellRender
     int level = ts.getDepth(model);
 
     String id = getId(tree, model, property, rowIndex, colIndex);
-    String text = getText(tree, model, property, rowIndex, colIndex);
+    SafeHtml text = getText(tree, model, property, rowIndex, colIndex);
     AbstractImagePrototype icon = calculateIconStyle(tree, model, property, rowIndex, colIndex);
     Joint j = calcualteJoint(tree, model, property, rowIndex, colIndex);
 
@@ -56,7 +57,7 @@ public class TreeGridCellRenderer<M extends ModelData> implements GridCellRender
     return grid.findNode(model).id;
   }
 
-  protected String getText(TreeGrid<M> grid, M model, String property, int rowIndex, int colIndex) {
-    return SafeHtmlUtils.htmlEscape(String.valueOf(model.get(property)));
+  protected SafeHtml getText(TreeGrid<M> grid, M model, String property, int rowIndex, int colIndex) {
+    return SafeHtmlUtils.fromString(String.valueOf(model.get(property)));
   }
 }

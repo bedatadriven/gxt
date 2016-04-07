@@ -47,6 +47,8 @@ import com.extjs.gxt.ui.client.widget.layout.TableLayout;
 import com.extjs.gxt.ui.client.widget.tips.ToolTip;
 import com.extjs.gxt.ui.client.widget.tips.ToolTipConfig;
 import com.google.gwt.event.dom.client.KeyCodes;
+import com.google.gwt.safehtml.shared.SafeHtml;
+import com.google.gwt.safehtml.shared.SafeHtmlUtils;
 import com.google.gwt.user.client.Command;
 import com.google.gwt.user.client.DeferredCommand;
 import com.google.gwt.user.client.Element;
@@ -393,7 +395,7 @@ public class RowEditor<M extends ModelData> extends ContentPanel implements Comp
     }
 
     if (editing && isDirty()) {
-      showTooltip(getMessages().getDirtyText());
+      showTooltip(SafeHtmlUtils.fromTrustedString(getMessages().getDirtyText()));
       return;
     }
 
@@ -434,7 +436,7 @@ public class RowEditor<M extends ModelData> extends ContentPanel implements Comp
         if (i == 0 && saveBtn != null) {
           saveBtn.getFocusSupport().setNextId(f.getId());
         }
-        f.getAriaSupport().setLabel(cm.getColumnHeader(i));
+        f.getAriaSupport().setLabel(cm.getColumnHeader(i).asString());
       }
       String dIndex = cm.getDataIndex(i);
       CellEditor ed = cm.getEditor(i);
@@ -671,7 +673,7 @@ public class RowEditor<M extends ModelData> extends ContentPanel implements Comp
     return null;
   }
 
-  protected String getErrorText() {
+  protected SafeHtml getErrorText() {
     StringBuffer sb = new StringBuffer();
     sb.append("<ul>");
     for (int i = 0; i < getItemCount(); i++) {
@@ -679,14 +681,14 @@ public class RowEditor<M extends ModelData> extends ContentPanel implements Comp
       Field<?> f = (Field<?>) getItem(i);
       if (!f.isValid(true)) {
         sb.append("<li><b>");
-        sb.append(grid.getColumnModel().getColumn(i).getHeaderHtml());
+        sb.append(grid.getColumnModel().getColumn(i).getHeaderHtml().asString());
         sb.append("</b>: ");
-        sb.append(f.getErrorMessage());
+        sb.append(SafeHtmlUtils.htmlEscape(f.getErrorMessage()));
         sb.append("</li>");
       }
     }
     sb.append("</ul>");
-    return sb.toString();
+    return SafeHtmlUtils.fromTrustedString(sb.toString());
   }
 
   protected Point getPosition(Element row) {
@@ -869,7 +871,7 @@ public class RowEditor<M extends ModelData> extends ContentPanel implements Comp
     }
   }
 
-  protected void showTooltip(String msg) {
+  protected void showTooltip(SafeHtml msg) {
     if (tooltip == null) {
       ToolTipConfig config = new ToolTipConfig();
       config.setAutoHide(false);

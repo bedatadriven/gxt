@@ -9,7 +9,10 @@
 
 import com.extjs.gxt.ui.client.GXT;
 import com.extjs.gxt.ui.client.core.El;
+import com.extjs.gxt.ui.client.util.SafeGxt;
 import com.extjs.gxt.ui.client.util.TextMetrics;
+import com.google.gwt.safehtml.shared.SafeHtml;
+import com.google.gwt.safehtml.shared.SafeHtmlUtils;
 import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.Element;
 
@@ -18,7 +21,7 @@ import com.google.gwt.user.client.Element;
  */
 public class Status extends BoxComponent {
 
-  private String html;
+  private SafeHtml html;
   private String iconStyle;
   private boolean box;
   private El textEl;
@@ -32,9 +35,13 @@ public class Status extends BoxComponent {
    * 
    * @param html the new text value as HTML
    */
-  public void clearStatus(String html) {
+  public void clearStatus(SafeHtml html) {
     setIconStyle(null);
     setHtml(html);
+  }
+
+  public void clearStatus() {
+    clearStatus(SafeHtmlUtils.EMPTY_SAFE_HTML);
   }
 
   /**
@@ -51,7 +58,7 @@ public class Status extends BoxComponent {
    * 
    * @return the text
    */
-  public String getHtml() {
+  public SafeHtml getHtml() {
     return html;
   }
 
@@ -85,7 +92,7 @@ public class Status extends BoxComponent {
    * 
    * @param html the text to display as HTML
    */
-  public void setBusy(String html) {
+  public void setBusy(SafeHtml html) {
     setIconStyle("x-status-busy");
     setHtml(html);
   }
@@ -129,18 +136,18 @@ public class Status extends BoxComponent {
    * @param text the text
    */
   public void setText(String text) {
-    setHtml(El.toSafeHTML(text));
+    setHtml(SafeGxt.fromNullableString(text));
   }
   
   /**
    * Sets the html of the status.
    * @param html the html content to draw in the status
    */
-  public void setHtml(String html) {
+  public void setHtml(SafeHtml html) {
     if (this.html != html) {
       this.html = html;
       if (rendered) {
-        textEl.update((html == null || html.length() == 0) ? "&nbsp;" : html);
+        textEl.update(SafeGxt.emptyToNbSpace (html));
         autoWidth();
       }
     }
@@ -170,10 +177,10 @@ public class Status extends BoxComponent {
     disableTextSelection(true);
     setBox(box);
     
-    String text = this.html;
     String iconStyle = this.iconStyle;
     this.html = null;
     this.iconStyle = null;
-    setStatus(text, iconStyle);
+    setHtml(html);
+    setIconStyle(iconStyle);
   }
 }

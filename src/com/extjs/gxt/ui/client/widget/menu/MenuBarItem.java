@@ -10,6 +10,7 @@
 import com.extjs.gxt.ui.client.GXT;
 import com.extjs.gxt.ui.client.core.El;
 import com.extjs.gxt.ui.client.event.ComponentEvent;
+import com.extjs.gxt.ui.client.util.SafeGxt;
 import com.extjs.gxt.ui.client.util.Util;
 import com.extjs.gxt.ui.client.widget.Component;
 import com.google.gwt.user.client.Command;
@@ -99,7 +100,7 @@ public class MenuBarItem extends Component {
   public void setHtml(String html) {
     this.html = html;
     if (rendered) {
-      el().update(Util.isEmptyString(html) ? "&#160;" : html);
+      el().update(SafeGxt.emptyToNbSpace(html));
     }
   }
 

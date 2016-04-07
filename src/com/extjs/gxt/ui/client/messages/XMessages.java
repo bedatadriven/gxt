@@ -9,6 +9,7 @@
 
 import com.google.gwt.http.client.URL;
 import com.google.gwt.i18n.client.Messages;
+import com.google.gwt.safehtml.shared.SafeHtml;
 
 /**
  * GXT messages.
@@ -21,27 +22,27 @@ public interface XMessages extends Messages {
 
   String updateManager_indicatorText();
 
-  String grid_ddText(int rows);
+  SafeHtml grid_ddText(int rows);
 
-  String tabPanelItem_closeText();
+  SafeHtml tabPanelItem_closeText();
 
-  String tabPanelItem_closeOtherText();
+  SafeHtml tabPanelItem_closeOtherText();
 
   String field_invalidText();
 
   String loadMask_msg();
 
-  String messageBox_ok();
+  SafeHtml messageBox_ok();
 
-  String messageBox_cancel();
+  SafeHtml messageBox_cancel();
 
-  String messageBox_yes();
+  SafeHtml messageBox_yes();
 
-  String messageBox_no();
+  SafeHtml messageBox_no();
 
   String messageBox_close();
 
-  String datePicker_todayText();
+  SafeHtml datePicker_todayText();
 
   String datePicker_minText();
 
@@ -67,9 +68,9 @@ public interface XMessages extends Messages {
 
   String colorPalette();
 
-  String pagingToolBar_beforePageText();
+  SafeHtml pagingToolBar_beforePageText();
 
-  String pagingToolBar_afterPageText(int pages);
+  SafeHtml pagingToolBar_afterPageText(int pages);
 
   String pagingToolBar_firstText();
 
@@ -85,9 +86,9 @@ public interface XMessages extends Messages {
 
   String panel_collapsePanel();
 
-  String pagingToolBar_displayMsg(int start, int end, int total);
+  SafeHtml pagingToolBar_displayMsg(int start, int end, int total);
 
-  String pagingToolBar_emptyMsg();
+  SafeHtml pagingToolBar_emptyMsg();
 
   String textField_minLengthText(int length);
 
@@ -103,7 +104,7 @@ public interface XMessages extends Messages {
 
   String radioGroup_text(String fieldLabel);
 
-  String uploadField_browseText();
+  SafeHtml uploadField_browseText();
 
   String numberField_minText(double min);
 
@@ -197,11 +198,11 @@ public interface XMessages extends Messages {
 
   String htmlEditor_backColorTipTitle();
 
-  String gridView_sortAscText();
+  SafeHtml gridView_sortAscText();
 
-  String gridView_sortDescText();
+  SafeHtml gridView_sortDescText();
 
-  String gridView_columnsText();
+  SafeHtml gridView_columnsText();
 
   String groupingView_emptyGroupText();
 
@@ -243,9 +244,9 @@ public interface XMessages extends Messages {
 
   String stringFilter_emptyText();
 
-  String booleanFilter_noText();
+  SafeHtml booleanFilter_noText();
 
-  String booleanFilter_yesText();
+  SafeHtml booleanFilter_yesText();
 
   String dateFilter_afterText();
 
@@ -255,5 +256,5 @@ public interface XMessages extends Messages {
 
   String numericFilter_emptyText();
 
-  String gridFilters_filterText();
+  SafeHtml gridFilters_filterText();
 }

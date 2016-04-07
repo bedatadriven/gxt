@@ -22,14 +22,13 @@ import com.extjs.gxt.ui.client.event.Listener;
 import com.extjs.gxt.ui.client.event.MenuEvent;
 import com.extjs.gxt.ui.client.event.PreviewEvent;
 import com.extjs.gxt.ui.client.event.SelectionListener;
-import com.extjs.gxt.ui.client.util.BaseEventPreview;
-import com.extjs.gxt.ui.client.util.IconHelper;
-import com.extjs.gxt.ui.client.util.TextMetrics;
-import com.extjs.gxt.ui.client.util.Util;
+import com.extjs.gxt.ui.client.util.*;
 import com.extjs.gxt.ui.client.widget.BoxComponent;
 import com.extjs.gxt.ui.client.widget.IconSupport;
 import com.extjs.gxt.ui.client.widget.menu.Menu;
 import com.google.gwt.event.dom.client.KeyCodes;
+import com.google.gwt.safehtml.shared.SafeHtml;
+import com.google.gwt.safehtml.shared.SafeHtmlUtils;
 import com.google.gwt.user.client.Command;
 import com.google.gwt.user.client.DeferredCommand;
 import com.google.gwt.user.client.Element;
@@ -88,7 +87,7 @@ public class Button extends BoxComponent implements IconSupport {
   protected Menu menu;
   protected ButtonScale scale = ButtonScale.SMALL;
   protected Template template;
-  protected String html;
+  protected SafeHtml html;
   private ButtonArrowAlign arrowAlign = ButtonArrowAlign.RIGHT;
   private boolean handleMouseEvents = true;
   private IconAlign iconAlign = IconAlign.LEFT;
@@ -121,7 +120,7 @@ public class Button extends BoxComponent implements IconSupport {
    * 
    * @param html the button text as HTML
    */
-  public Button(String html) {
+  public Button(SafeHtml html) {
     this();
     setHtml(html);
   }
@@ -132,7 +131,7 @@ public class Button extends BoxComponent implements IconSupport {
    * @param html the button text as HTML
    * @param icon the icon
    */
-  public Button(String html, AbstractImagePrototype icon) {
+  public Button(SafeHtml html, AbstractImagePrototype icon) {
     this(html);
     setIcon(icon);
   }
@@ -145,7 +144,7 @@ public class Button extends BoxComponent implements IconSupport {
    * @param icon the icon
    * @param listener the selection listener
    */
-  public Button(String html, AbstractImagePrototype icon, SelectionListener<ButtonEvent> listener) {
+  public Button(SafeHtml html, AbstractImagePrototype icon, SelectionListener<ButtonEvent> listener) {
     this(html, icon);
     addSelectionListener(listener);
   }
@@ -156,9 +155,13 @@ public class Button extends BoxComponent implements IconSupport {
    * @param html the button's text as HTML
    * @param listener the selection listener
    */
-  public Button(String html, SelectionListener<ButtonEvent> listener) {
+  public Button(SafeHtml html, SelectionListener<ButtonEvent> listener) {
     this(html);
     addSelectionListener(listener);
+  }
+
+  public Button(String text, SelectionListener<ButtonEvent> listener) {
+    this(SafeGxt.fromNullableString(text), listener);
   }
 
   /**
@@ -247,7 +250,7 @@ public class Button extends BoxComponent implements IconSupport {
    * 
    * @return the button html content
    */
-  public String getHtml() {
+  public SafeHtml getHtml() {
     return html;
   }
 
@@ -461,7 +464,7 @@ public class Button extends BoxComponent implements IconSupport {
    * @param text the new text
    */
   public void setText(String text) {
-    setHtml(El.toSafeHTML(text));
+    setHtml(SafeGxt.fromNullableString(text));
   }
 
   /**
@@ -469,10 +472,10 @@ public class Button extends BoxComponent implements IconSupport {
    * 
    * @param html the new html content
    */
-  public void setHtml(String html) {
+  public void setHtml(SafeHtml html) {
     this.html = html;
     if (rendered) {
-      buttonEl.update(Util.isEmptyString(html) ? "&#160;" : html);
+      buttonEl.update(SafeGxt.emptyToNbSpace(html));
       setIcon(icon);
     }
   }
@@ -733,7 +736,7 @@ public class Button extends BoxComponent implements IconSupport {
     }
 
     setElement(
-        template.create((html != null && html.length() > 0) ? html : "&nbsp;", getType(), baseStyle + "-"
+        template.create(SafeGxt.emptyToNbSpace(html), getType(), baseStyle + "-"
             + scale.name().toLowerCase() + " " + baseStyle + "-icon-" + scale.name().toLowerCase() + "-"
             + iconAlign.name().toLowerCase(), getMenuClass(), baseStyle), target, index);
 

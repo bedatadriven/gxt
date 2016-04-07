@@ -7,6 +7,8 @@
  */
  package com.extjs.gxt.ui.client.data;
 
+import com.google.gwt.safehtml.shared.SafeHtml;
+
 /**
  * Interface for objects that can translate a model's typed values to strings.
  */
@@ -19,6 +21,6 @@ public interface ModelStringProvider<M extends ModelData> {
    * @param property the property name
    * @return the string value
    */
-  public String getStringValue(M model, String property);
+  public SafeHtml getStringValue(M model, String property);
 
 }

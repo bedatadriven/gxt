@@ -23,6 +23,8 @@ import com.extjs.gxt.ui.client.util.Util;
 import com.extjs.gxt.ui.client.widget.tips.Tip;
 import com.extjs.gxt.ui.client.widget.tips.ToolTipConfig;
 import com.google.gwt.event.dom.client.KeyCodes;
+import com.google.gwt.safehtml.shared.SafeHtml;
+import com.google.gwt.safehtml.shared.SafeHtmlUtils;
 import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.Element;
 import com.google.gwt.user.client.Event;
@@ -93,7 +95,6 @@ public class Slider extends BoxComponent {
   private int halfThumb;
   private int increment = 10;
   private int maxValue = 100;
-  private String message = "{0}";
   private int minValue = 0;
   private Thumb thumb;
   private boolean useTip = true;
@@ -129,14 +130,6 @@ public class Slider extends BoxComponent {
     return maxValue;
   }
 
-  /**
-   * Returns the tool tip message.
-   * 
-   * @return the tool tip message
-   */
-  public String getMessage() {
-    return message;
-  }
 
   /**
    * Returns the minimum value (defaults to 0).
@@ -248,15 +241,6 @@ public class Slider extends BoxComponent {
     }
   }
 
-  /**
-   * Sets the tool tip message (defaults to '{0}'). "{0} will be substituted
-   * with the current slider value.
-   * 
-   * @param htmlMessage the tool tip message as an html string
-   */
-  public void setMessage(String htmlMessage) {
-    this.message = htmlMessage;
-  }
 
   /**
    * Sets the minimum value (defaults to 0).
@@ -308,8 +292,8 @@ public class Slider extends BoxComponent {
             thumb.setToolTip(getToolTipConfig(value));
           }
           onValueChange(value);
-          Accessibility.setState(targetEl.dom, "aria-valuenow", "" + value);
-          Accessibility.setState(targetEl.dom, "aria-valuetext", useTip ? onFormatValue(value) : "" + value);
+          Accessibility.setState(targetEl.dom, "aria-valuenow", Integer.toString(value));
+          Accessibility.setState(targetEl.dom, "aria-valuetext", Integer.toString(value));
         }
         if (!supressEvent) {
           fireEvent(Events.Change, se);
@@ -510,7 +494,7 @@ public class Slider extends BoxComponent {
   }
 
   protected String onFormatValue(int value) {
-    return Format.substitute(getMessage(), value);
+    return Integer.toString(value);
   }
 
   protected void onKeyDown(ComponentEvent ce) {
@@ -604,7 +588,7 @@ public class Slider extends BoxComponent {
 
     if (useTip) {
       tip = new Tip();
-      tip.setHeadingHtml("");
+      tip.setHeadingHtml(SafeHtmlUtils.EMPTY_SAFE_HTML);
       tip.setMinWidth(0);
     }
   }
@@ -648,7 +632,7 @@ public class Slider extends BoxComponent {
       if (!tip.isRendered()) {
         tip.showAt(-100, -100);
       }
-      tip.getBody().update(onFormatValue(value));
+      tip.getBody().update(SafeHtmlUtils.fromTrustedString(Integer.toString(value)));
       Point p = tip.el().getAlignToXY(thumb.el().dom, vertical ? "r-l?" : "b-t?",
           vertical ? new int[] {-5, 0} : new int[] {0, -5});
       tip.showAt(p.x, p.y);

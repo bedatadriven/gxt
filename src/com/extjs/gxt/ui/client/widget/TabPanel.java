@@ -34,6 +34,7 @@ import com.extjs.gxt.ui.client.widget.layout.CardLayout;
 import com.extjs.gxt.ui.client.widget.menu.Menu;
 import com.extjs.gxt.ui.client.widget.menu.MenuItem;
 import com.google.gwt.event.dom.client.KeyCodes;
+import com.google.gwt.safehtml.shared.SafeHtml;
 import com.google.gwt.user.client.Command;
 import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.DeferredCommand;
@@ -146,15 +147,15 @@ public class TabPanel extends Container<TabItem> {
    */
   public class TabPanelMessages {
 
-    private String closeOtherText = GXT.MESSAGES.tabPanelItem_closeOtherText();
-    private String closeText = GXT.MESSAGES.tabPanelItem_closeText();
+    private SafeHtml closeOtherText = GXT.MESSAGES.tabPanelItem_closeOtherText();
+    private SafeHtml closeText = GXT.MESSAGES.tabPanelItem_closeText();
 
     /**
      * Returns the close other text.
      * 
      * @return the close other text
      */
-    public String getCloseOtherText() {
+    public SafeHtml getCloseOtherText() {
       return closeOtherText;
     }
 
@@ -163,7 +164,7 @@ public class TabPanel extends Container<TabItem> {
      * 
      * @return the close text
      */
-    public String getCloseText() {
+    public SafeHtml getCloseText() {
       return closeText;
     }
 
@@ -173,7 +174,7 @@ public class TabPanel extends Container<TabItem> {
      * 
      * @param closeOtherText the close other text
      */
-    public void setCloseOtherText(String closeOtherText) {
+    public void setCloseOtherText(SafeHtml closeOtherText) {
       this.closeOtherText = closeOtherText;
     }
 
@@ -183,7 +184,7 @@ public class TabPanel extends Container<TabItem> {
      * 
      * @param closeText the close text
      */
-    public void setCloseText(String closeText) {
+    public void setCloseText(SafeHtml closeText) {
       this.closeText = closeText;
     }
 
@@ -926,7 +927,7 @@ public class TabPanel extends Container<TabItem> {
     }
   }
 
-  protected void onItemTextChange(TabItem tabItem, String oldText, String newText) {
+  protected void onItemTextChange(TabItem tabItem, SafeHtml oldText, SafeHtml newText) {
     delegateUpdates();
   }
 

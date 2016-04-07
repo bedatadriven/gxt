@@ -20,6 +20,7 @@ import com.extjs.gxt.ui.client.js.JsObject;
 import com.extjs.gxt.ui.client.widget.Component;
 import com.google.gwt.core.client.JavaScriptObject;
 import com.google.gwt.dom.client.NodeList;
+import com.google.gwt.safehtml.shared.SafeHtml;
 import com.google.gwt.user.client.Element;
 
 /**
@@ -181,6 +182,10 @@ public class Util {
    */
   public static boolean isEmptyString(String string) {
     return string == null || "".equals(string);
+  }
+
+  public static boolean isEmptyString(SafeHtml html) {
+    return html.asString().length() > 0;
   }
 
   /**

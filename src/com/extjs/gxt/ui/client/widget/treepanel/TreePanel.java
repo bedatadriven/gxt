@@ -42,6 +42,8 @@ import com.extjs.gxt.ui.client.util.Rectangle;
 import com.extjs.gxt.ui.client.widget.BoxComponent;
 import com.extjs.gxt.ui.client.widget.treepanel.TreePanelView.TreeViewRenderMode;
 import com.google.gwt.dom.client.Document;
+import com.google.gwt.safehtml.shared.SafeHtml;
+import com.google.gwt.safehtml.shared.SafeHtmlUtils;
 import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.Element;
 import com.google.gwt.user.client.Event;
@@ -1069,13 +1071,13 @@ public class TreePanel<M extends ModelData> extends BoxComponent implements Chec
     return null;
   }
 
-  protected String getText(M model) {
+  protected SafeHtml getText(M model) {
     if (labelProvider != null) {
       return labelProvider.getStringValue(model, displayProperty);
     } else if (displayProperty != null) {
-      return (String) model.get(displayProperty);
+      return SafeHtmlUtils.fromString((String) model.get(displayProperty));
     }
-    return "";
+    return SafeHtmlUtils.EMPTY_SAFE_HTML;
   }
 
   protected int getVisibleRowCount() {

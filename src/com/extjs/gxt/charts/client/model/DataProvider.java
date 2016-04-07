@@ -148,7 +148,7 @@ public abstract class DataProvider {
   protected String getLabel(ModelData model) {
     String label = null;
     if (labelProvider != null) {
-      label = labelProvider.getStringValue(model, labelProperty);
+      label = labelProvider.getStringValue(model, labelProperty).asString();
     } else if (labelProperty != null) {
       Object o = model.<Object> get(labelProperty);
       label = o != null ? o.toString() : null;
@@ -167,7 +167,7 @@ public abstract class DataProvider {
   protected String getText(ModelData model) {
     String text = null;
     if (textProvider != null) {
-      text = textProvider.getStringValue(model, textProperty);
+      text = textProvider.getStringValue(model, textProperty).asString();
     } else if (textProperty != null) {
       Object o = model.<Object> get(textProperty);
       text = o != null ? o.toString() : null;

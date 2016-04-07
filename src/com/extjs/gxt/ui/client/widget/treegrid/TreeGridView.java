@@ -21,6 +21,7 @@ import com.extjs.gxt.ui.client.event.GridEvent;
 import com.extjs.gxt.ui.client.store.ListStore;
 import com.extjs.gxt.ui.client.store.TreeStore;
 import com.extjs.gxt.ui.client.util.IconHelper;
+import com.extjs.gxt.ui.client.util.SafeGxt;
 import com.extjs.gxt.ui.client.util.Util;
 import com.extjs.gxt.ui.client.widget.grid.BufferView;
 import com.extjs.gxt.ui.client.widget.grid.ColumnConfig;
@@ -32,6 +33,9 @@ import com.extjs.gxt.ui.client.widget.treegrid.TreeGrid.TreeNode;
 import com.extjs.gxt.ui.client.widget.treepanel.TreePanel.Joint;
 import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.i18n.client.NumberFormat;
+import com.google.gwt.safehtml.shared.SafeHtml;
+import com.google.gwt.safehtml.shared.SafeHtmlBuilder;
+import com.google.gwt.safehtml.shared.SafeHtmlUtils;
 import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.Element;
 import com.google.gwt.user.client.ui.AbstractImagePrototype;
@@ -107,10 +111,10 @@ public class TreeGridView extends BufferView {
     return node.joint;
   }
 
-  public String getTemplate(ModelData m, String id, String text, AbstractImagePrototype icon, boolean checkable,
-      Joint joint, int level) {
+  public SafeHtml getTemplate(ModelData m, String id, SafeHtml text, AbstractImagePrototype icon, boolean checkable,
+                              Joint joint, int level) {
 
-    StringBuffer sb = new StringBuffer();
+    StringBuilder sb = new StringBuilder();
     sb.append("<div role=\"presentation\" unselectable=\"on\" id=\"");
     sb.append(id);
     sb.append("\" class=\"x-tree3-node\">");
@@ -164,16 +168,16 @@ public class TreeGridView extends BufferView {
       sb.append("<span class=\"x-tree3-node-icon\"></span>");
     }
     sb.append("<span unselectable=\"on\" class=\"x-tree3-node-text\">");
-    sb.append(text);
+    sb.append(text.asString());
     sb.append("</span>");
 
     sb.append("</div>");
     sb.append("</div>");
 
-    return sb.toString();
+    return SafeHtmlUtils.fromTrustedString(sb.toString());
   }
 
-  public String getWidgetTemplate(ModelData m, String id, String text, AbstractImagePrototype icon, boolean checkable,
+  public SafeHtml getWidgetTemplate(ModelData m, String id, SafeHtml text, AbstractImagePrototype icon, boolean checkable,
       Joint joint, int level) {
 
     StringBuffer sb = new StringBuffer();
@@ -228,14 +232,14 @@ public class TreeGridView extends BufferView {
 
     sb.append("</td><td>");
     sb.append("<span unselectable=\"on\" class=\"x-tree3-node-text\">");
-    sb.append(text);
+    sb.append(text.asString());
     sb.append("</span>");
     sb.append("</td></tr></table>");
 
     sb.append("</div>");
     sb.append("</div>");
 
-    return sb.toString();
+    return SafeHtmlUtils.fromTrustedString(sb.toString());
   }
 
   public boolean isSelectableTarget(ModelData model, Element target) {
@@ -336,30 +340,12 @@ public class TreeGridView extends BufferView {
   }
 
   @Override
-  protected String getRenderedValue(ColumnData data, int rowIndex, int colIndex, ModelData m, String property) {
+  protected SafeHtml getRenderedValue(ColumnData data, int rowIndex, int colIndex, ModelData m, String property) {
     GridCellRenderer<ModelData> r = cm.getRenderer(colIndex);
     List<Widget> rowMap = widgetList.get(rowIndex);
     rowMap.add(colIndex, null);
     if (r != null) {
-      Object o = r.render(ds.getAt(rowIndex), property, data, rowIndex, colIndex, ds, grid);
-      if ((o instanceof Widget && !(r instanceof WidgetTreeGridCellRenderer))
-          || r instanceof WidgetTreeGridCellRenderer) {
-        Widget w = null;
-        if (o instanceof Widget) {
-          w = (Widget) o;
-        } else {
-          w = ((WidgetTreeGridCellRenderer) r).getWidget(ds.getAt(rowIndex), property, data, rowIndex, colIndex, ds,
-              grid);
-        }
-
-        rowMap.set(colIndex, w);
-        if (colIndex == treeColumn) {
-          return o.toString();
-        }
-        return "";
-      } else {
-        return o.toString();
-      }
+      return r.render(ds.getAt(rowIndex), property, data, rowIndex, colIndex, ds, grid);
     }
     Object val = m.get(property);
 
@@ -368,17 +354,18 @@ public class TreeGridView extends BufferView {
     if (val != null && c.getNumberFormat() != null) {
       Number n = (Number) val;
       NumberFormat nf = cm.getColumn(colIndex).getNumberFormat();
-      val = nf.format(n.doubleValue());
+      return SafeHtmlUtils.fromString(nf.format(n.doubleValue()));
+
     } else if (val != null && c.getDateTimeFormat() != null) {
       DateTimeFormat dtf = c.getDateTimeFormat();
-      val = dtf.format((Date) val);
+      return SafeHtmlUtils.fromString(dtf.format((Date) val));
     }
 
     String text = null;
     if (val != null) {
       text = val.toString();
     }
-    return Util.isEmptyString(text) ? "&#160;" : text;
+    return SafeGxt.emptyToNbSpace(text);
   }
 
   protected Element getRowElement(TreeNode node) {

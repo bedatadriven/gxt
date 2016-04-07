@@ -13,10 +13,7 @@ import com.extjs.gxt.ui.client.core.XDOM;
 import com.extjs.gxt.ui.client.event.ComponentEvent;
 import com.extjs.gxt.ui.client.event.MenuEvent;
 import com.extjs.gxt.ui.client.event.SelectionListener;
-import com.extjs.gxt.ui.client.util.IconHelper;
-import com.extjs.gxt.ui.client.util.Point;
-import com.extjs.gxt.ui.client.util.Rectangle;
-import com.extjs.gxt.ui.client.util.Util;
+import com.extjs.gxt.ui.client.util.*;
 import com.extjs.gxt.ui.client.widget.Component;
 import com.extjs.gxt.ui.client.widget.ComponentHelper;
 import com.extjs.gxt.ui.client.widget.IconSupport;
@@ -24,6 +21,8 @@ import com.extjs.gxt.ui.client.widget.Layer;
 import com.google.gwt.i18n.client.BidiUtils;
 import com.google.gwt.i18n.client.HasDirection;
 import com.google.gwt.i18n.shared.WordCountDirectionEstimator;
+import com.google.gwt.safehtml.shared.SafeHtml;
+import com.google.gwt.safehtml.shared.SafeHtmlUtils;
 import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.Element;
 import com.google.gwt.user.client.ui.AbstractImagePrototype;
@@ -41,7 +40,7 @@ public class MenuItem extends Item implements IconSupport {
   protected Menu subMenu;
   protected String itemStyle = "x-menu-item";
   protected AbstractImagePrototype icon;
-  protected String html;
+  protected SafeHtml html;
   protected Widget widget;
   
   private boolean directionEstimated = true;
@@ -60,9 +59,14 @@ public class MenuItem extends Item implements IconSupport {
    * 
    * @param html the item's text as HTML
    */
-  public MenuItem(String html) {
+  public MenuItem(SafeHtml html) {
     this();
     this.html = html;
+  }
+
+  public MenuItem(String text) {
+    this();
+    setText(text);
   }
 
   /**
@@ -71,7 +75,7 @@ public class MenuItem extends Item implements IconSupport {
    * @param html the item's text as HTML
    * @param icon the item's icon
    */
-  public MenuItem(String html, AbstractImagePrototype icon) {
+  public MenuItem(SafeHtml html, AbstractImagePrototype icon) {
     this(html);
     setIcon(icon);
   }
@@ -83,7 +87,7 @@ public class MenuItem extends Item implements IconSupport {
    * @param icon the item's icon
    * @param listener the selection listener
    */
-  public MenuItem(String text, AbstractImagePrototype icon, SelectionListener<? extends MenuEvent> listener) {
+  public MenuItem(SafeHtml text, AbstractImagePrototype icon, SelectionListener<? extends MenuEvent> listener) {
     this(text, icon);
     addSelectionListener(listener);
   }
@@ -94,7 +98,7 @@ public class MenuItem extends Item implements IconSupport {
    * @param text the item text
    * @param listener the selection listener
    */
-  public MenuItem(String text, SelectionListener<? extends MenuEvent> listener) {
+  public MenuItem(SafeHtml text, SelectionListener<? extends MenuEvent> listener) {
     this(text);
     addSelectionListener(listener);
   }
@@ -132,7 +136,7 @@ public class MenuItem extends Item implements IconSupport {
    * 
    * @return the text
    */
-  public String getHtml() {
+  public SafeHtml getHtml() {
     return html;
   }
 
@@ -206,7 +210,7 @@ public class MenuItem extends Item implements IconSupport {
    * @param text the text
    */
   public void setText(String text) {
-    setHtml(El.toSafeHTML(text));
+    setHtml(SafeHtmlUtils.fromString(text));
   }
 
   /**
@@ -214,10 +218,10 @@ public class MenuItem extends Item implements IconSupport {
    * 
    * @param html the text as HTML
    */
-  public void setHtml(String html) {
+  public void setHtml(SafeHtml html) {
     this.html = html;
     if (rendered) {
-      el().update(Util.isEmptyString(html) ? "&#160;" : html);
+      el().update(SafeGxt.emptyToNbSpace(this.html));
       setIcon(icon);
     }
   }
@@ -328,7 +332,7 @@ public class MenuItem extends Item implements IconSupport {
       setWidget(widget);
     } else {
       setHtml(html);
-      if(directionEstimated && html!=null && html.length() > 0) {
+      if(directionEstimated && html!=null && !Util.isEmptyString(html)) {
         BidiUtils.setDirectionOnElement(getElement(), WordCountDirectionEstimator.get().estimateDirection(html));
       }
     }

@@ -17,6 +17,8 @@ import com.extjs.gxt.ui.client.store.ListStore;
 import com.extjs.gxt.ui.client.store.Record;
 import com.extjs.gxt.ui.client.widget.Component;
 import com.extjs.gxt.ui.client.widget.ComponentPlugin;
+import com.google.gwt.safehtml.shared.SafeHtml;
+import com.google.gwt.safehtml.shared.SafeHtmlUtils;
 
 /**
  * A <code>ColumnConfig</code> implementation that renders a checkbox in each
@@ -92,8 +94,8 @@ public class CheckColumnConfig extends ColumnConfig implements ComponentPlugin {
 
   protected void init() {
     setRenderer(new GridCellRenderer<ModelData>() {
-      public String render(ModelData model, String property, ColumnData config, int rowIndex, int colIndex,
-          ListStore<ModelData> store, Grid<ModelData> grid) {
+      public SafeHtml render(ModelData model, String property, ColumnData config, int rowIndex, int colIndex,
+                             ListStore<ModelData> store, Grid<ModelData> grid) {
         return onRender(model, property, config, rowIndex, colIndex, store);
       }
     });
@@ -126,15 +128,16 @@ public class CheckColumnConfig extends ColumnConfig implements ComponentPlugin {
    * @param store the list store
    * @return the rendered HTML
    */
-  protected String onRender(ModelData model, String property, ColumnData config, int rowIndex, int colIndex,
+  protected SafeHtml onRender(ModelData model, String property, ColumnData config, int rowIndex, int colIndex,
       ListStore<ModelData> store) {
     config.css = "x-grid3-check-col-td";
     String checked = getCheckState(model, property, rowIndex, colIndex);
     if (GXT.isAriaEnabled()) {
       config.cellAttr = "aria-checked=" + (checked.equals("-on") ? "true" : "false");
     }
-    return "<div class='x-grid3-check-col" + " x-grid3-check-col" + checked + " x-grid3-cc-" + getId()
-        + "'>&#160;</div>";
+    return SafeHtmlUtils.fromTrustedString("<div class='x-grid3-check-col" +
+            " x-grid3-check-col" + checked + " x-grid3-cc-" + getId()
+        + "'>&#160;</div>");
   }
 
 }

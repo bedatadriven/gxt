@@ -15,10 +15,7 @@ import java.util.List;
 import com.extjs.gxt.ui.client.GXT;
 import com.extjs.gxt.ui.client.Style.SelectionMode;
 import com.extjs.gxt.ui.client.aria.FocusFrame;
-import com.extjs.gxt.ui.client.core.CompositeElement;
-import com.extjs.gxt.ui.client.core.DomQuery;
-import com.extjs.gxt.ui.client.core.XDOM;
-import com.extjs.gxt.ui.client.core.XTemplate;
+import com.extjs.gxt.ui.client.core.*;
 import com.extjs.gxt.ui.client.data.BaseModel;
 import com.extjs.gxt.ui.client.data.ModelData;
 import com.extjs.gxt.ui.client.data.ModelProcessor;
@@ -30,8 +27,12 @@ import com.extjs.gxt.ui.client.store.StoreEvent;
 import com.extjs.gxt.ui.client.store.StoreListener;
 import com.extjs.gxt.ui.client.util.Util;
 import com.extjs.gxt.ui.client.widget.tips.QuickTip;
+import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Node;
 import com.google.gwt.dom.client.NodeList;
+import com.google.gwt.safehtml.client.SafeHtmlTemplates;
+import com.google.gwt.safehtml.shared.SafeHtml;
+import com.google.gwt.safehtml.shared.SafeHtmlUtils;
 import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.Element;
 import com.google.gwt.user.client.Event;
@@ -101,6 +102,13 @@ import com.google.gwt.user.client.Event;
  */
 public class ListView<M extends ModelData> extends BoxComponent {
 
+  interface Templates extends SafeHtmlTemplates {
+    @Template("<div class='loading-indicator'>{0}</div>")
+    SafeHtml loadingHtml(SafeHtml message);
+  }
+
+  private static final Templates TEMPLATES = GWT.create(Templates.class);
+
   protected int rowSelectorDepth = 5;
 
   protected ListStore<M> store;
@@ -108,7 +116,7 @@ public class ListView<M extends ModelData> extends BoxComponent {
   private String displayProperty = "text";
   private boolean enableQuickTip = true;
   private String itemSelector = ".x-view-item";
-  private String loadingText;
+  private SafeHtml loadingText;
   private ModelProcessor<M> modelProcessor;
   private Element overElement;
   private String overStyle = "x-view-item-over";
@@ -224,7 +232,7 @@ public class ListView<M extends ModelData> extends BoxComponent {
    * 
    * @return the loading text
    */
-  public String getLoadingText() {
+  public SafeHtml getLoadingText() {
     return loadingText;
   }
 
@@ -404,7 +412,7 @@ public class ListView<M extends ModelData> extends BoxComponent {
     if (!rendered) {
       return;
     }
-    el().setInnerHtml("");
+    el().setInnerHtml(SafeHtmlUtils.EMPTY_SAFE_HTML);
     repaint();
     List<M> models = store == null ? new ArrayList<M>() : store.getModels();
     all.removeAll();
@@ -464,7 +472,7 @@ public class ListView<M extends ModelData> extends BoxComponent {
    * 
    * @param loadingText the loading text
    */
-  public void setLoadingText(String loadingText) {
+  public void setLoadingText(SafeHtml loadingText) {
     this.loadingText = loadingText;
   }
 
@@ -686,7 +694,7 @@ public class ListView<M extends ModelData> extends BoxComponent {
   protected void onBeforeLoad() {
     if (loadingText != null) {
       if (rendered) {
-        el().setInnerHtml("<div class='loading-indicator'>" + loadingText + "</div>");
+        el().setInnerHtml(TEMPLATES.loadingHtml(loadingText));
       }
       all.removeAll();
     }

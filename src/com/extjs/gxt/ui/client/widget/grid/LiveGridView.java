@@ -26,6 +26,8 @@ import com.extjs.gxt.ui.client.store.StoreEvent;
 import com.extjs.gxt.ui.client.store.StoreListener;
 import com.extjs.gxt.ui.client.util.DelayedTask;
 import com.google.gwt.dom.client.Element;
+import com.google.gwt.safehtml.shared.SafeHtml;
+import com.google.gwt.safehtml.shared.SafeHtmlUtils;
 import com.google.gwt.user.client.Command;
 import com.google.gwt.user.client.DeferredCommand;
 import com.google.gwt.user.client.Event;
@@ -283,7 +285,7 @@ public class LiveGridView extends GridView {
               sb.append(diff);
               sb.append("px;\"></div>");
             }
-            liveScroller.setInnerHtml(sb.toString());
+            liveScroller.setInnerHtml(SafeHtmlUtils.fromTrustedString(sb.toString()));
 
           }
           if (totalCount > 0 && viewIndexReload != -1 && !isCached(viewIndexReload)) {

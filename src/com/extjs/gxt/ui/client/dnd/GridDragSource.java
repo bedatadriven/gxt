@@ -15,6 +15,7 @@ import com.extjs.gxt.ui.client.dnd.DND.Operation;
 import com.extjs.gxt.ui.client.event.DNDEvent;
 import com.extjs.gxt.ui.client.util.Format;
 import com.extjs.gxt.ui.client.widget.grid.Grid;
+import com.google.gwt.safehtml.shared.SafeHtmlUtils;
 import com.google.gwt.user.client.Element;
 
 /**
@@ -78,7 +79,7 @@ public class GridDragSource extends DragSource {
       if (getStatusText() == null) {
         e.getStatus().update(GXT.MESSAGES.grid_ddText(sel.size()));
       } else {
-        e.getStatus().update(Format.substitute(getStatusText(), sel.size()));
+        e.getStatus().update(SafeHtmlUtils.fromString(Format.substitute(getStatusText(), sel.size())));
       }
     }
   }

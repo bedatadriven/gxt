@@ -7,7 +7,10 @@
  */
  package com.extjs.gxt.ui.client.widget.form;
 
+import com.extjs.gxt.ui.client.util.SafeGxt;
 import com.extjs.gxt.ui.client.util.Util;
+import com.google.gwt.safehtml.shared.SafeHtml;
+import com.google.gwt.safehtml.shared.SafeHtmlUtils;
 import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.Element;
 
@@ -42,11 +45,9 @@ import com.google.gwt.user.client.Element;
  * <dd>Component SaveState</dd>
  * </dl>
  */
-public class LabelField extends Field<Object> {
+public class LabelField extends Field<SafeHtml> {
 
-  private String value;
-
-  private boolean useHtml = true;
+  private SafeHtml value;
 
   /**
    * Creates a new label field.
@@ -62,29 +63,24 @@ public class LabelField extends Field<Object> {
    * 
    * @param html the label text as HTML
    */
-  public LabelField(String html) {
+  public LabelField(SafeHtml html) {
     this();
     setValue(html);
   }
 
+  public LabelField(String text) {
+    this();
+    setValue(SafeHtmlUtils.fromString(text));
+  }
+
   @Override
-  public Object getValue() {
+  public SafeHtml getValue() {
     return value;
   }
 
   @Override
   public boolean isDirty() {
     return false;
-  }
-
-  /**
-   * Returns {@code true} if the field's value is treated as HTML (defaults to
-   * true).
-   * 
-   * @return the use HTML state
-   */
-  public boolean isUseHtml() {
-    return useHtml;
   }
 
   @Override
@@ -106,31 +102,13 @@ public class LabelField extends Field<Object> {
     }
   }
 
-  /**
-   * Sets whether the field's value is treated as HTML (defaults to true,
-   * pre-render).
-   * 
-   * @param useHtml {@code true} to treat value as HTML
-   */
-  public void setUseHtml(boolean useHtml) {
-    assertPreRender();
-    this.useHtml = useHtml;
-  }
 
   @Override
-  public void setValue(Object value) {
-    if (value == null) {
-      this.value = null;
-    } else {
-      this.value = value.toString();
-    }
+  public void setValue(SafeHtml value) {
+    this.value = value;
 
     if (rendered) {
-      if (useHtml) {
-        el().update(Util.isEmptyString(this.value) ? "&#160;" : this.value);
-      } else {
-        getElement().setInnerText(this.value);
-      }
+        el().update(SafeGxt.emptyToNbSpace(this.value));
     }
   }
 

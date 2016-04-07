@@ -25,10 +25,7 @@ import com.extjs.gxt.ui.client.event.IconButtonEvent;
 import com.extjs.gxt.ui.client.event.Listener;
 import com.extjs.gxt.ui.client.event.SelectionListener;
 import com.extjs.gxt.ui.client.fx.FxConfig;
-import com.extjs.gxt.ui.client.util.DateWrapper;
-import com.extjs.gxt.ui.client.util.KeyNav;
-import com.extjs.gxt.ui.client.util.Size;
-import com.extjs.gxt.ui.client.util.Util;
+import com.extjs.gxt.ui.client.util.*;
 import com.extjs.gxt.ui.client.widget.button.Button;
 import com.extjs.gxt.ui.client.widget.button.IconButton;
 import com.google.gwt.dom.client.Document;
@@ -38,6 +35,8 @@ import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.i18n.client.LocaleInfo;
 import com.google.gwt.i18n.client.constants.DateTimeConstants;
+import com.google.gwt.safehtml.shared.SafeHtml;
+import com.google.gwt.safehtml.shared.SafeHtmlUtils;
 import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.Element;
 import com.google.gwt.user.client.Event;
@@ -94,7 +93,7 @@ public class DatePicker extends BoxComponent {
     private String nextText = GXT.MESSAGES.datePicker_nextText();
     private String okText = GXT.MESSAGES.datePicker_okText();
     private String prevText = GXT.MESSAGES.datePicker_prevText();
-    private String todayText = GXT.MESSAGES.datePicker_todayText();
+    private SafeHtml todayText = GXT.MESSAGES.datePicker_todayText();
     private String todayTip = GXT.MESSAGES.datePicker_todayTip(DateTimeFormat.getShortDateFormat().format(new Date()));
 
     /**
@@ -165,7 +164,7 @@ public class DatePicker extends BoxComponent {
      * 
      * @return the today text
      */
-    public String getTodayText() {
+    public SafeHtml getTodayText() {
       return todayText;
     }
 
@@ -252,7 +251,7 @@ public class DatePicker extends BoxComponent {
      * 
      * @param todayText the today text
      */
-    public void setTodayText(String todayText) {
+    public void setTodayText(SafeHtml todayText) {
       this.todayText = todayText;
     }
 
@@ -292,7 +291,7 @@ public class DatePicker extends BoxComponent {
       setElement(XDOM.create(sb.toString()));
       el().insertInto(target, index);
 
-      monthBtn = new Button("&#160;", new SelectionListener<ButtonEvent>() {
+      monthBtn = new Button(SafeGxt.NO_BREAK_SPACE, new SelectionListener<ButtonEvent>() {
         public void componentSelected(ButtonEvent ce) {
           showMonthPicker();
         }
@@ -870,7 +869,7 @@ public class DatePicker extends BoxComponent {
     buf.append(messages.getCancelText());
     buf.append("</button></td></tr></table>");
 
-    monthPicker.update(buf.toString());
+    monthPicker.update(SafeHtmlUtils.fromTrustedString(buf.toString()));
 
     mpMonths = new CompositeElement(Util.toElementArray(monthPicker.select("td.x-date-mp-month")));
     mpYears = new CompositeElement(Util.toElementArray(monthPicker.select("td.x-date-mp-year")));
@@ -1061,7 +1060,7 @@ public class DatePicker extends BoxComponent {
 
       int i = 0;
       for (; i < startingPos; i++) {
-        fly(textNodes[i]).update("" + ++prevStart);
+        textNodes[i].setInnerHTML("" + ++prevStart);
         d = d.addDays(1);
         cells[i].setClassName("x-date-prevday");
         if (GXT.isAriaEnabled()) {
@@ -1071,14 +1070,14 @@ public class DatePicker extends BoxComponent {
       }
       for (; i < days; i++) {
         int intDay = i - startingPos + 1;
-        fly(textNodes[i]).update("" + intDay);
+        textNodes[i].setInnerHTML("" + intDay);
         d = d.addDays(1);
         cells[i].setClassName("x-date-active");
         setCellStyle(cells[i], d.asDate(), sel, min, max);
       }
       int extraDays = 0;
       for (; i < 42; i++) {
-        fly(textNodes[i]).update("" + ++extraDays);
+        textNodes[i].setInnerHTML("" + ++extraDays);
         d = d.addDays(1);
         cells[i].setClassName("x-date-nextday");
         if (GXT.isAriaEnabled()) {
@@ -1110,7 +1109,7 @@ public class DatePicker extends BoxComponent {
       } else {
         y2 = (int) (year - (5 - Math.round(i * .5)));
       }
-      td.firstChild().update("" + y2);
+      td.firstChild().update(SafeHtmlUtils.fromTrustedString("" + y2));
       td.dom.setPropertyInt("xyear", y2);
       td.setStyleName("x-date-mp-sel", y2 == mpSelYear);
     }

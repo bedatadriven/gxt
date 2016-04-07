@@ -11,9 +11,11 @@ import com.extjs.gxt.ui.client.event.ComponentEvent;
 import com.extjs.gxt.ui.client.event.EventType;
 import com.extjs.gxt.ui.client.event.Events;
 import com.extjs.gxt.ui.client.event.Listener;
+import com.extjs.gxt.ui.client.util.SafeGxt;
 import com.extjs.gxt.ui.client.util.Util;
 import com.extjs.gxt.ui.client.widget.Component;
 import com.google.gwt.dom.client.EventTarget;
+import com.google.gwt.safehtml.shared.SafeHtmlUtils;
 import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.Element;
 
@@ -172,8 +174,8 @@ public class QuickTip extends ToolTip {
 
   private void updateTargetElement(Element target) {
     targetElem = target;
-    html = getAttributeValue(target, interceptTitles ? "title" : "qtip");
-    titleHtml = interceptTitles ? null : getAttributeValue(target, "qtitle");
+    html = SafeGxt.fromNullableString(getAttributeValue(target, interceptTitles ? "title" : "qtip"));
+    titleHtml = SafeGxt.fromNullableString(interceptTitles ? null : getAttributeValue(target, "qtitle"));
 
     String width = getAttributeValue(target, "qwidth");
     if (width != null && !"".equals(width)) {

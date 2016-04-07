@@ -26,6 +26,7 @@ import com.extjs.gxt.ui.client.widget.button.Button;
 import com.extjs.gxt.ui.client.widget.button.ButtonBar;
 import com.extjs.gxt.ui.client.widget.button.ToolButton;
 import com.extjs.gxt.ui.client.widget.layout.FlowLayout;
+import com.google.gwt.safehtml.shared.SafeHtml;
 import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.Element;
 import com.google.gwt.user.client.Event;
@@ -403,7 +404,7 @@ public class ContentPanel extends LayoutContainer implements IconSupport {
    * 
    * @return the heading
    */
-  public String getHeadingHtml() {
+  public SafeHtml getHeadingHtml() {
     return head.getHtml();
   }
 
@@ -657,7 +658,7 @@ public class ContentPanel extends LayoutContainer implements IconSupport {
    * 
    * @param html the title text as HTML
    */
-  public void setHeadingHtml(String html) {
+  public void setHeadingHtml(SafeHtml html) {
     head.setHtml(html);
   }
   

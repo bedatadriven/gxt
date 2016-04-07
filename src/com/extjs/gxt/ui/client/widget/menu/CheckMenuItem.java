@@ -14,6 +14,7 @@ import com.extjs.gxt.ui.client.event.Events;
 import com.extjs.gxt.ui.client.event.MenuEvent;
 import com.extjs.gxt.ui.client.util.Util;
 import com.extjs.gxt.ui.client.widget.Component;
+import com.google.gwt.safehtml.shared.SafeHtml;
 import com.google.gwt.user.client.Element;
 import com.google.gwt.user.client.ui.Accessibility;
 
@@ -66,9 +67,14 @@ public class CheckMenuItem extends MenuItem {
    * 
    * @param html the text as HTML
    */
-  public CheckMenuItem(String html) {
+  public CheckMenuItem(SafeHtml html) {
     this();
     setHtml(html);
+  }
+
+  public CheckMenuItem(String text) {
+    this();
+    setText(text);
   }
 
   /**

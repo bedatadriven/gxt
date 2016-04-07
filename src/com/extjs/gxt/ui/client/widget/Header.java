@@ -13,7 +13,10 @@ import java.util.List;
 import com.extjs.gxt.ui.client.GXT;
 import com.extjs.gxt.ui.client.core.El;
 import com.extjs.gxt.ui.client.util.IconHelper;
+import com.extjs.gxt.ui.client.util.SafeGxt;
 import com.extjs.gxt.ui.client.util.Util;
+import com.google.gwt.safehtml.shared.SafeHtml;
+import com.google.gwt.safehtml.shared.SafeHtmlUtils;
 import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.Element;
 import com.google.gwt.user.client.ui.AbstractImagePrototype;
@@ -32,7 +35,8 @@ public class Header extends Component implements IconSupport {
   private El contentEl;
   private List<Component> tools = new ArrayList<Component>();
   private HorizontalPanel widgetPanel;
-  private String html, altIconText;
+  private SafeHtml html;
+  private String altIconText;
 
   public Header() {
     getFocusSupport().setIgnore(true);
@@ -61,7 +65,7 @@ public class Header extends Component implements IconSupport {
    * 
    * @return the html drawn in the header
    */
-  public String getHtml() {
+  public SafeHtml getHtml() {
     return html;
   }
 
@@ -200,13 +204,10 @@ public class Header extends Component implements IconSupport {
    * 
    * @param html the new html content
    */
-  public void setHtml(String html) {
+  public void setHtml(SafeHtml html) {
     this.html = html;
     if (rendered) {
-      if (Util.isEmptyString(html)) {
-        html = "&#160;";
-      }
-      contentEl.update(html);
+      contentEl.update(SafeGxt.emptyToNbSpace(html));
     }
   }
 
@@ -216,10 +217,7 @@ public class Header extends Component implements IconSupport {
    * @param text the text
    */
   public void setText(String text) {
-    if (text != null) {
-      text = El.toSafeHTML(text);
-    }
-    setHtml(text);
+    setHtml(SafeGxt.fromNullableString(text));
   }
 
   /**
