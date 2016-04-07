@@ -186,7 +186,7 @@ public class TreePanelView<M extends ModelData> {
         sb.append("<span class=\"x-tree3-node-icon\"></span>");
       }
       sb.append("<span  unselectable=on class=\"x-tree3-node-text\">");
-      sb.append(text);
+      sb.append(text.asString());
       sb.append("</span>");
     }
 

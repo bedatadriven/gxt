@@ -1802,6 +1802,12 @@ public abstract class Component extends Widget implements Observable {
     DOM.insertChild(parent, elem, index);
   }
 
+  protected void setElement(com.google.gwt.dom.client.Element elem, Element parent, int index) {
+    setElement(elem);
+    DOM.insertChild(parent, elem, index);
+  }
+
+
   protected void setFiresEvents(boolean firesEvents) {
     if (observable instanceof BaseObservable) {
       ((BaseObservable) observable).setFiresEvents(firesEvents);

@@ -24,9 +24,13 @@ import com.extjs.gxt.ui.client.event.PreviewEvent;
 import com.extjs.gxt.ui.client.event.SelectionListener;
 import com.extjs.gxt.ui.client.util.*;
 import com.extjs.gxt.ui.client.widget.BoxComponent;
+import com.extjs.gxt.ui.client.widget.Document;
 import com.extjs.gxt.ui.client.widget.IconSupport;
 import com.extjs.gxt.ui.client.widget.menu.Menu;
+import com.google.gwt.core.client.GWT;
+import com.google.gwt.dom.client.DivElement;
 import com.google.gwt.event.dom.client.KeyCodes;
+import com.google.gwt.safehtml.client.SafeHtmlTemplates;
 import com.google.gwt.safehtml.shared.SafeHtml;
 import com.google.gwt.safehtml.shared.SafeHtmlUtils;
 import com.google.gwt.user.cellview.client.SafeHtmlHeader;
@@ -80,6 +84,19 @@ import com.google.gwt.user.client.ui.Accessibility;
 @SuppressWarnings("deprecation")
 public class Button extends BoxComponent implements IconSupport {
 
+  interface Templates extends SafeHtmlTemplates {
+
+    @Template("<table cellspacing=\"0\" role=\"presentation\"><tbody class=\"{2}\" >" +
+            "<tr><td class=\"{4}-tl\"><i>&#160;</i></td><td class=\"{4}-tc\"></td><td class=\"{4}-tr\"><i>&#160;</i></td></tr>" +
+            "<tr><td class=\"{4}-ml\"><i>&#160;</i></td><td class=\"{4}-mc\"><em class=\"{3}\" unselectable=\"on\">" +
+              "<button class=\"{4}-text\" type=\"{1}\" style=\'position: static\'>{0}</button></em></td><td class=\"{4}-mr\"><i>&#160;</i></td></tr>" +
+            "<tr><td class=\"{4}-bl\"><i>&#160;</i></td><td class=\"{4}-bc\"></td><td class=\"{4}-br\"><i>&#160;</i></td></tr>" +
+            "</tbody></table>")
+    SafeHtml button(SafeHtml label, String type, String style, String menuClass, String baseStyle);
+  }
+
+  private static final Templates TEMPLATES = GWT.create(Templates.class);
+
   private static Template buttonTemplate;
 
   protected El buttonEl;
@@ -87,7 +104,6 @@ public class Button extends BoxComponent implements IconSupport {
   protected AbstractImagePrototype icon;
   protected Menu menu;
   protected ButtonScale scale = ButtonScale.SMALL;
-  protected Template template;
   protected SafeHtml html;
   private ButtonArrowAlign arrowAlign = ButtonArrowAlign.RIGHT;
   private boolean handleMouseEvents = true;
@@ -734,24 +750,15 @@ public class Button extends BoxComponent implements IconSupport {
 
   @Override
   protected void onRender(Element target, int index) {
-    if (template == null) {
-      if (buttonTemplate == null) {
-        StringBuffer sb = new StringBuffer();
-        sb.append("<table cellspacing=\"0\" role=\"presentation\"><tbody class=\"{2}\" >");
-        sb.append("<tr><td class=\"{4}-tl\"><i>&#160;</i></td><td class=\"{4}-tc\"></td><td class=\"{4}-tr\"><i>&#160;</i></td></tr>");
-        sb.append("<tr><td class=\"{4}-ml\"><i>&#160;</i></td><td class=\"{4}-mc\"><em class=\"{3}\" unselectable=\"on\"><button class=\"{4}-text\" type=\"{1}\" style='position: static'>{0}</button></em></td><td class=\"{4}-mr\"><i>&#160;</i></td></tr>");
-        sb.append("<tr><td class=\"{4}-bl\"><i>&#160;</i></td><td class=\"{4}-bc\"></td><td class=\"{4}-br\"><i>&#160;</i></td></tr>");
-        sb.append("</tbody></table>");
-
-        buttonTemplate = new Template(sb.toString());
-      }
-      template = buttonTemplate;
-    }
-
-    setElement(
-        template.create(SafeGxt.emptyToNbSpace(html), getType(), baseStyle + "-"
+    SafeHtml label = SafeGxt.emptyToNbSpace(html);
+    String style = baseStyle + "-"
             + scale.name().toLowerCase() + " " + baseStyle + "-icon-" + scale.name().toLowerCase() + "-"
-            + iconAlign.name().toLowerCase(), getMenuClass(), baseStyle), target, index);
+            + iconAlign.name().toLowerCase();
+
+    DivElement element = com.google.gwt.dom.client.Document.get().createDivElement();
+    element.setInnerSafeHtml(TEMPLATES.button(label, getType(), style, getMenuClass(), baseStyle));
+
+    setElement(element, target, index);
 
     super.onRender(target, index);
 

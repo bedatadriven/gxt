@@ -185,7 +185,10 @@ public class Util {
   }
 
   public static boolean isEmptyString(SafeHtml html) {
-    return html.asString().length() > 0;
+    if(html == null) {
+      return true;
+    }
+    return html.asString().length() == 0;
   }
 
   /**
@@ -306,4 +309,11 @@ public class Util {
     return jsArray;
   }
 
+  public static String nullToEmpty(String string) {
+    if(string == null) {
+      return "";
+    } else {
+      return string;
+    }
+  }
 }

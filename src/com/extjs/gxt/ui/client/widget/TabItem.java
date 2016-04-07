@@ -9,12 +9,10 @@
 
 import com.extjs.gxt.ui.client.GXT;
 import com.extjs.gxt.ui.client.core.El;
-import com.extjs.gxt.ui.client.core.Template;
 import com.extjs.gxt.ui.client.event.BaseEvent;
 import com.extjs.gxt.ui.client.event.ComponentEvent;
 import com.extjs.gxt.ui.client.util.IconHelper;
 import com.extjs.gxt.ui.client.util.SafeGxt;
-import com.extjs.gxt.ui.client.util.Util;
 import com.extjs.gxt.ui.client.widget.layout.FlowLayout;
 import com.google.gwt.http.client.RequestBuilder;
 import com.google.gwt.safehtml.shared.SafeHtml;
@@ -192,7 +190,6 @@ public class TabItem extends LayoutContainer implements IconSupport {
     }
   }
 
-  protected Template template;
   protected TabPanel tabPanel;
   protected HeaderItem header;
 

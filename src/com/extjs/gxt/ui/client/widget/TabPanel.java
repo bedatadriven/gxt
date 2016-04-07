@@ -7,40 +7,30 @@
  */
  package com.extjs.gxt.ui.client.widget;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Stack;
-
 import com.extjs.gxt.ui.client.GXT;
 import com.extjs.gxt.ui.client.aria.FocusFrame;
 import com.extjs.gxt.ui.client.aria.FocusManager;
 import com.extjs.gxt.ui.client.core.El;
-import com.extjs.gxt.ui.client.core.Template;
-import com.extjs.gxt.ui.client.event.BaseEvent;
-import com.extjs.gxt.ui.client.event.ComponentEvent;
-import com.extjs.gxt.ui.client.event.ContainerEvent;
-import com.extjs.gxt.ui.client.event.Events;
-import com.extjs.gxt.ui.client.event.FxEvent;
-import com.extjs.gxt.ui.client.event.Listener;
-import com.extjs.gxt.ui.client.event.MenuEvent;
-import com.extjs.gxt.ui.client.event.SelectionListener;
-import com.extjs.gxt.ui.client.event.TabPanelEvent;
+import com.extjs.gxt.ui.client.event.*;
 import com.extjs.gxt.ui.client.fx.FxConfig;
 import com.extjs.gxt.ui.client.util.KeyNav;
-import com.extjs.gxt.ui.client.util.Params;
+import com.extjs.gxt.ui.client.util.SafeGxt;
 import com.extjs.gxt.ui.client.util.Size;
+import com.extjs.gxt.ui.client.util.Util;
 import com.extjs.gxt.ui.client.widget.TabItem.HeaderItem;
 import com.extjs.gxt.ui.client.widget.layout.CardLayout;
 import com.extjs.gxt.ui.client.widget.menu.Menu;
 import com.extjs.gxt.ui.client.widget.menu.MenuItem;
+import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.KeyCodes;
+import com.google.gwt.safehtml.client.SafeHtmlTemplates;
 import com.google.gwt.safehtml.shared.SafeHtml;
-import com.google.gwt.user.client.Command;
-import com.google.gwt.user.client.DOM;
-import com.google.gwt.user.client.DeferredCommand;
-import com.google.gwt.user.client.Element;
-import com.google.gwt.user.client.Event;
+import com.google.gwt.user.client.*;
 import com.google.gwt.user.client.ui.Accessibility;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Stack;
 
 /**
  * A basic tab container.
@@ -142,6 +132,18 @@ import com.google.gwt.user.client.ui.Accessibility;
 @SuppressWarnings("deprecation")
 public class TabPanel extends Container<TabItem> {
 
+  interface Templates extends SafeHtmlTemplates {
+
+    @Template("<li class=\"{2}\" id=\"{0}\" role=\"tab\" tabindex=\"0\"><a class=x-tab-strip-close role=\"presentation\"></a>" +
+            "<a class=\"x-tab-right\" role=\"presentation\"><em role='presentation' class=\"x-tab-left\">" +
+            "<span class=\"x-tab-strip-inner\" role=\"presentation\"><span class=\"x-tab-strip-text {3}\">{1}</span></span>" +
+            "</em></a></li>")
+    SafeHtml tab(String id, SafeHtml text, String style, String textStyle);
+
+  }
+
+  private static final Templates TEMPLATES = GWT.create(Templates.class);
+
   /**
    * TabPanel messages.
    */
@@ -224,10 +226,6 @@ public class TabPanel extends Container<TabItem> {
     }
   }
 
-  /**
-   * Default tab item template.
-   */
-  public static Template itemTemplate;
 
   protected Menu closeContextMenu;
 
@@ -1031,16 +1029,6 @@ public class TabPanel extends Container<TabItem> {
       bar.addStyleName(baseStyle + "-" + p + "-plain");
     }
 
-    if (itemTemplate == null) {
-      StringBuffer sb = new StringBuffer();
-      sb.append("<li class='{style}' id={id} role='tab' tabindex='0'><a class=x-tab-strip-close role='presentation'></a>");
-      sb.append("<a class='x-tab-right' role='presentation'><em role='presentation' class='x-tab-left'>");
-      sb.append("<span class='x-tab-strip-inner' role='presentation'><span class='x-tab-strip-text {textStyle} {iconStyle}'>{text}</span></span>");
-      sb.append("</em></a></li>");
-      itemTemplate = new Template(sb.toString());
-      itemTemplate.compile();
-    }
-
     renderAll();
 
     new KeyNav<ComponentEvent>(this) {
@@ -1118,22 +1106,20 @@ public class TabPanel extends Container<TabItem> {
     if (!item.header.isEnabled()) {
       style += " x-item-disabled";
     }
-    Params p = new Params();
-    p.set("id", getId() + "__" + item.getId());
-    p.set("text", item.getHtml());
-    p.set("style", style);
-    p.set("textStyle", item.getTextStyle());
-    if (item.template == null) {
-      item.template = itemTemplate;
-    }
-    item.header.setElement(item.template.create(p));
+    String tabId = getId() + "__" + item.getId();
+
+    Element element = DOM.createDiv();
+    element.setInnerSafeHtml(TEMPLATES.tab(tabId,
+            SafeGxt.emptyToNbSpace(item.getHtml()),
+            style, Util.nullToEmpty(item.getTextStyle())));
+
+    item.header.setElement(element);
     item.header.sinkEvents(Event.ONCLICK | Event.MOUSEEVENTS | Event.ONCONTEXTMENU);
 
     if (item.getIcon() != null) {
       item.setIcon(item.getIcon());
     }
     DOM.insertChild(target, item.header.getElement(), pos);
-
   }
 
   private void autoScrollTabs() {
