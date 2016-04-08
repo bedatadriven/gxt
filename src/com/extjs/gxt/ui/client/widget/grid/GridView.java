@@ -895,7 +895,7 @@ public class GridView extends BaseObservable {
           }
         }
         for (ColumnConfig c : cm.getColumns()) {
-          if (c instanceof RowExpander || c instanceof RowNumberer) {
+          if (c instanceof RowNumberer) {
             rowBodyColSpanCount--;
           }
         }

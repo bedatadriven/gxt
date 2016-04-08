@@ -7,18 +7,33 @@
  */
  package com.extjs.gxt.ui.client.widget;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import com.extjs.gxt.ui.client.GXT;
-import com.extjs.gxt.ui.client.core.XTemplate;
 import com.extjs.gxt.ui.client.data.ModelData;
+import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.InputElement;
 import com.google.gwt.dom.client.NodeList;
+import com.google.gwt.safehtml.client.SafeHtmlTemplates;
+import com.google.gwt.safehtml.shared.SafeHtml;
+import com.google.gwt.safehtml.shared.SafeHtmlBuilder;
+import com.google.gwt.text.shared.SafeHtmlRenderer;
 import com.google.gwt.user.client.Element;
 import com.google.gwt.user.client.Event;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class CheckBoxListView<M extends ModelData> extends ListView<M> {
+
+  interface Templates extends SafeHtmlTemplates {
+
+    @Template("<div class='x-view-item x-view-item-check'><table cellspacing=\"{0}\"" +
+                 "cellpadding=0><tr><td><input class=\"x-view-item-checkbox\" type=\"checkbox\"/></td><td><td>{1}" +
+                  "</td></tr></table></div>")
+    SafeHtml item(int cellSpacing, SafeHtml content);
+  }
+
+  private static final Templates TEMPLATES = GWT.create(Templates.class);
+
 
   protected List<M> checkedPreRender;
   private String checkBoxSelector = ".x-view-item-checkbox";
@@ -111,12 +126,8 @@ public class CheckBoxListView<M extends ModelData> extends ListView<M> {
 
   @Override
   protected void onRender(Element target, int index) {
-    if (getTemplate() == null) {
-      String spacing = GXT.isIE && !GXT.isStrict ? "0" : "3";
-      setTemplate(XTemplate.create("<tpl for=\".\"><div class='x-view-item x-view-item-check'><table cellspacing='"
-          + spacing
-          + "' cellpadding=0><tr><td><input class=\"x-view-item-checkbox\" type=\"checkbox\" /></td><td><td>{"
-          + getDisplayProperty() + "}</td></tr></table></div></tpl>"));
+    if (getRenderer() == null) {
+      setRenderer(new ListRenderer(new ModelPropertyRenderer<M>(getDisplayProperty())));
     }
     super.onRender(target, index);
   }
@@ -127,6 +138,30 @@ public class CheckBoxListView<M extends ModelData> extends ListView<M> {
     super.onUpdate(model, index);
     if (isChecked) {
       setChecked(model, true);
+    }
+  }
+
+  public class ListRenderer implements SafeHtmlRenderer<List<M>> {
+
+    private SafeHtmlRenderer<M> itemRenderer;
+    private int cellSpacing =  GXT.isIE && !GXT.isStrict ? 0 : 3;
+
+    public ListRenderer(SafeHtmlRenderer<M> itemRenderer) {
+      this.itemRenderer = itemRenderer;
+    }
+
+    @Override
+    public void render(List<M> list, SafeHtmlBuilder builder) {
+      for (M item : list) {
+        builder.append(TEMPLATES.item(cellSpacing, itemRenderer.render(item)));
+      }
+    }
+
+    @Override
+    public SafeHtml render(List<M> list) {
+      SafeHtmlBuilder builder = new SafeHtmlBuilder();
+      render(list, builder);
+      return builder.toSafeHtml();
     }
   }
 }

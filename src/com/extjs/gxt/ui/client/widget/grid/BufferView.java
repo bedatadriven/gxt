@@ -209,7 +209,7 @@ public class BufferView extends GridView {
         }
       }
       for (ColumnConfig c : cm.getColumns()) {
-        if (c instanceof RowExpander || c instanceof RowNumberer) {
+        if (c instanceof RowNumberer) {
           rowBodyColSpanCount--;
         }
       }

@@ -229,7 +229,6 @@ public class FocusManager {
     register(new MenuHandler());
     register(new TabPanelHandler());
     register(new InputSliderHandler());
-    register(new DualListFieldHandler());
     register(new FieldHandler());
     register(new HeaderHandler());
     // always last

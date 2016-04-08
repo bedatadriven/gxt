@@ -7,48 +7,34 @@
  */
  package com.extjs.gxt.ui.client.widget.form;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import com.extjs.gxt.ui.client.GXT;
 import com.extjs.gxt.ui.client.Style.Scroll;
 import com.extjs.gxt.ui.client.core.El;
 import com.extjs.gxt.ui.client.core.XDOM;
-import com.extjs.gxt.ui.client.core.XTemplate;
-import com.extjs.gxt.ui.client.data.BaseLoader;
-import com.extjs.gxt.ui.client.data.BasePagingLoadConfig;
-import com.extjs.gxt.ui.client.data.ModelData;
-import com.extjs.gxt.ui.client.data.PagingLoadConfig;
-import com.extjs.gxt.ui.client.data.PagingLoader;
-import com.extjs.gxt.ui.client.event.BaseEvent;
-import com.extjs.gxt.ui.client.event.ComponentEvent;
-import com.extjs.gxt.ui.client.event.DomEvent;
-import com.extjs.gxt.ui.client.event.Events;
-import com.extjs.gxt.ui.client.event.FieldEvent;
-import com.extjs.gxt.ui.client.event.ListViewEvent;
-import com.extjs.gxt.ui.client.event.Listener;
-import com.extjs.gxt.ui.client.event.PreviewEvent;
-import com.extjs.gxt.ui.client.event.SelectionChangedEvent;
-import com.extjs.gxt.ui.client.event.SelectionChangedListener;
-import com.extjs.gxt.ui.client.event.SelectionProvider;
+import com.extjs.gxt.ui.client.data.*;
+import com.extjs.gxt.ui.client.event.*;
 import com.extjs.gxt.ui.client.store.ListStore;
 import com.extjs.gxt.ui.client.store.StoreEvent;
 import com.extjs.gxt.ui.client.store.StoreListener;
-import com.extjs.gxt.ui.client.util.*;
+import com.extjs.gxt.ui.client.util.BaseEventPreview;
+import com.extjs.gxt.ui.client.util.DelayedTask;
+import com.extjs.gxt.ui.client.util.KeyNav;
+import com.extjs.gxt.ui.client.util.Util;
 import com.extjs.gxt.ui.client.widget.ComponentHelper;
 import com.extjs.gxt.ui.client.widget.LayoutContainer;
 import com.extjs.gxt.ui.client.widget.ListView;
+import com.extjs.gxt.ui.client.widget.ModelPropertyRenderer;
 import com.extjs.gxt.ui.client.widget.toolbar.PagingToolBar;
 import com.google.gwt.dom.client.Document;
 import com.google.gwt.dom.client.InputElement;
 import com.google.gwt.event.dom.client.KeyCodes;
 import com.google.gwt.safehtml.shared.SafeHtmlUtils;
-import com.google.gwt.user.client.Command;
-import com.google.gwt.user.client.DeferredCommand;
-import com.google.gwt.user.client.Element;
-import com.google.gwt.user.client.Event;
-import com.google.gwt.user.client.Window;
+import com.google.gwt.text.shared.SafeHtmlRenderer;
+import com.google.gwt.user.client.*;
 import com.google.gwt.user.client.ui.RootPanel;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * A combobox component.
@@ -58,12 +44,7 @@ import com.google.gwt.user.client.ui.RootPanel;
  * {@link #getValue()} can return null event if the user has typed text into the
  * field if that text cannot be tied to a model from from the combo's store. In
  * this case, you can use {@link #getRawValue()} to get the fields string value.
- * 
- * <p />
- * Combo uses a <code>XTemplate</code> to render it's drop down list. A custom
- * template can be specified to customize the display of the drop down list. See
- * {@link #setTemplate(XTemplate)}.
- * 
+ *
  * <p />
  * A custom <code>PropertyEditor</code> can be used to "format" the value that
  * is displayed in the combo's text field. For example:
@@ -229,7 +210,7 @@ public class ComboBox<D extends ModelData> extends TriggerField<D> implements Se
   private String selectedStyle = "x-combo-selected";
   private StoreListener<D> storeListener;
   private DelayedTask taTask, dqTask;
-  private XTemplate template;
+  private SafeHtmlRenderer<List<D>> renderer;
   private TriggerAction triggerAction = TriggerAction.QUERY;
   private boolean typeAhead;
   private int typeAheadDelay = 250;
@@ -521,15 +502,6 @@ public class ComboBox<D extends ModelData> extends TriggerField<D> implements Se
    */
   public ListStore<D> getStore() {
     return store;
-  }
-
-  /**
-   * Returns the custom template.
-   * 
-   * @return the template
-   */
-  public XTemplate getTemplate() {
-    return template;
   }
 
   /**
@@ -841,20 +813,13 @@ public class ComboBox<D extends ModelData> extends TriggerField<D> implements Se
   }
 
   /**
-   * Sets the template fragment to be used for the text of each combo list item.
-   * 
-   * <pre>
-   * 
-   * &lt;code&gt; combo.setSimpleTemplate(&quot;{abbr} {name}&quot;); &lt;/code&gt;
-   * 
-   * </pre>
-   * 
-   * @param html the html used only for the text of each item in the list
+   * Sets the renderer to be used for the content of each combo list item.
+   *
+   * @param itemRenderer the renderer used only for the content of each item in the list
    */
-  public void setSimpleTemplate(String html) {
+  public void setItemRenderer(SafeHtmlRenderer<D> itemRenderer) {
     assertPreRender();
-    html = "<tpl for=\".\"><div class=x-combo-list-item>" + html + "</div></tpl>";
-    template = XTemplate.create(html);
+    renderer = new ComboBoxListRenderer<>(listStyle, itemRenderer);
   }
 
   /**
@@ -870,28 +835,12 @@ public class ComboBox<D extends ModelData> extends TriggerField<D> implements Se
     }
   }
 
-  /**
-   * Sets the custom template used to render the combo's drop down list.Use this
-   * to create custom UI layouts for items in the list.
-   * <p>
-   * If you wish to preserve the default visual look of list items, add the CSS
-   * class name 'x-combo-list-item' to the template's container element.
-   * 
-   * @param html the html
-   */
-  public void setTemplate(String html) {
-    assertPreRender();
-    template = XTemplate.create(html);
+  public SafeHtmlRenderer<List<D>> getRenderer() {
+    return renderer;
   }
 
-  /**
-   * Sets the custom template used to render the combo's drop down list.
-   * 
-   * @param template the template
-   */
-  public void setTemplate(XTemplate template) {
-    assertPreRender();
-    this.template = template;
+  public void setRenderer(SafeHtmlRenderer<List<D>> renderer) {
+    this.renderer = renderer;
   }
 
   /**
@@ -1195,10 +1144,8 @@ public class ComboBox<D extends ModelData> extends TriggerField<D> implements Se
         onViewClick(le, true);
       }
     });
-    if (template == null) {
-      String html = "<tpl for=\".\"><div role=\"listitem\" class=\"" + style + "-item\">{" + getDisplayField()
-          + "}</div></tpl>";
-      template = XTemplate.create(html);
+    if (renderer == null) {
+      renderer = new ComboBoxListRenderer<>(listStyle, new ModelPropertyRenderer<D>(getDisplayField()));
     }
 
     if (pageTb != null) {
@@ -1247,7 +1194,7 @@ public class ComboBox<D extends ModelData> extends TriggerField<D> implements Se
 
     list.add(listView);
 
-    listView.setTemplate(template);
+    listView.setRenderer(renderer);
     listView.setSelectStyle(selectedStyle);
 
     bindStore(store);

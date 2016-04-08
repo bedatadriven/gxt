@@ -7,14 +7,10 @@
  */
  package com.extjs.gxt.ui.client.widget;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import com.extjs.gxt.ui.client.GXT;
 import com.extjs.gxt.ui.client.aria.FocusFrame;
 import com.extjs.gxt.ui.client.core.El;
 import com.extjs.gxt.ui.client.core.XDOM;
-import com.extjs.gxt.ui.client.core.XTemplate;
 import com.extjs.gxt.ui.client.event.ColorPaletteEvent;
 import com.extjs.gxt.ui.client.event.ComponentEvent;
 import com.extjs.gxt.ui.client.event.Events;
@@ -24,6 +20,9 @@ import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.Element;
 import com.google.gwt.user.client.Event;
 import com.google.gwt.user.client.ui.Grid;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Basic color component.
@@ -203,7 +202,6 @@ public class ColorPalette extends Component {
 
   private NodeList<Element> elements;
   private int rowCount;
-  private XTemplate template;
 
   private String value;
 
@@ -230,15 +228,6 @@ public class ColorPalette extends Component {
    */
   public int getColumnCount() {
     return columnCount;
-  }
-
-  /**
-   * Returns the xtemplate.
-   * 
-   * @return the template
-   */
-  public XTemplate getTemplate() {
-    return template;
   }
 
   /**
@@ -354,14 +343,6 @@ public class ColorPalette extends Component {
     this.columnCount = columnCount;
   }
 
-  /**
-   * Optionally, sets the xtemplate to be used to render the component.
-   * 
-   * @param template the xtemplate
-   */
-  public void setTemplate(XTemplate template) {
-    this.template = template;
-  }
 
   /**
    * Sets the selected color.

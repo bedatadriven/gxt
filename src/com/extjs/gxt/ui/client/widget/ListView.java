@@ -32,14 +32,16 @@ import com.google.gwt.dom.client.Node;
 import com.google.gwt.dom.client.NodeList;
 import com.google.gwt.safehtml.client.SafeHtmlTemplates;
 import com.google.gwt.safehtml.shared.SafeHtml;
+import com.google.gwt.safehtml.shared.SafeHtmlBuilder;
 import com.google.gwt.safehtml.shared.SafeHtmlUtils;
+import com.google.gwt.text.shared.SafeHtmlRenderer;
 import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.Element;
 import com.google.gwt.user.client.Event;
 
 /**
  * A mechanism for displaying data using custom layout templates. ListView uses
- * an {@link XTemplate} as its internal templating mechanism.
+ * a {@link SafeHtmlRenderer} as its internal templating mechanism.
  * 
  * <p />
  * <b>In order to use these features, an {@link #setItemSelector(String)} must
@@ -126,7 +128,7 @@ public class ListView<M extends ModelData> extends BoxComponent {
   private ListViewSelectionModel<M> sm;
   private StoreListener<M> storeListener;
 
-  private XTemplate template;
+  private SafeHtmlRenderer<List<M>> renderer;
 
   /**
    * Creates a new view.
@@ -145,16 +147,6 @@ public class ListView<M extends ModelData> extends BoxComponent {
   public ListView(ListStore<M> store) {
     this();
     setStore(store);
-  }
-
-  /**
-   * Creates a new template list.
-   * 
-   * @param template the template
-   */
-  public ListView(ListStore<M> store, XTemplate template) {
-    this(store);
-    this.template = template;
   }
 
   /**
@@ -299,13 +291,19 @@ public class ListView<M extends ModelData> extends BoxComponent {
     return store;
   }
 
+
+  public SafeHtmlRenderer<List<M>> getRenderer() {
+    return renderer;
+  }
+
   /**
-   * Returns the list's template.
-   * 
-   * @return the template
+   * Sets the SafeHtmlRenderer used to render this list, including
+   * for example the outer {@code <ul></ul>} elements if necessary.
+   *
+   * @param renderer
    */
-  public XTemplate getTemplate() {
-    return template;
+  public void setRenderer(SafeHtmlRenderer<List<M>> renderer) {
+    this.renderer = renderer;
   }
 
   /**
@@ -416,7 +414,12 @@ public class ListView<M extends ModelData> extends BoxComponent {
     repaint();
     List<M> models = store == null ? new ArrayList<M>() : store.getModels();
     all.removeAll();
-    template.overwrite(getElement(), Util.getJsObjects(collectData(models, 0), template.getMaxDepth()));
+
+    SafeHtmlBuilder html = new SafeHtmlBuilder();
+    renderer.render(collectData(models, 0), html);
+
+    getElement().setInnerSafeHtml(html.toSafeHtml());
+
     all = new CompositeElement(Util.toElementArray(el().select(itemSelector)));
     if (GXT.isAriaEnabled()) {
       for (int i = 0; i < all.getCount(); i++) {
@@ -530,22 +533,6 @@ public class ListView<M extends ModelData> extends BoxComponent {
     this.selectStyle = selectStyle;
   }
 
-  /**
-   * Sets the template fragment to be used for the text of each listview item.
-   * 
-   * <pre>
-   * &lt;code&gt;
-   * listview.setSimpleTemplate(&quot;{abbr} {name}&quot;);
-   * &lt;/code&gt;
-   * </pre>
-   * 
-   * @param html the html used only for the text of each item in the list
-   */
-  public void setSimpleTemplate(String html) {
-    assertPreRender();
-    html = "<tpl for=\".\"><div class=x-view-item>" + html + "</div></tpl>";
-    template = XTemplate.create(html);
-  }
 
   /**
    * Changes the data store bound to this view and refreshes it.
@@ -565,24 +552,6 @@ public class ListView<M extends ModelData> extends BoxComponent {
     if (store != null && isRendered()) {
       refresh();
     }
-  }
-
-  /**
-   * Sets the view's template.
-   * 
-   * @param html the HTML fragment
-   */
-  public void setTemplate(String html) {
-    setTemplate(XTemplate.create(html));
-  }
-
-  /**
-   * Sets the view's template.
-   * 
-   * @param template the template
-   */
-  public void setTemplate(XTemplate template) {
-    this.template = template;
   }
 
   @Override
@@ -779,9 +748,8 @@ public class ListView<M extends ModelData> extends BoxComponent {
 
     String aria = GXT.isAriaEnabled() ? " role='option' aria-selected='false' " : "";
 
-    if (template == null) {
-      template = XTemplate.create("<tpl for=\".\"><div class='x-view-item' " + aria + ">{" + displayProperty
-          + "}</div></tpl>");
+    if (renderer == null) {
+      renderer = new DefaultListItemRenderer<>(new ModelPropertyRenderer<M>(displayProperty));
     }
 
     if (enableQuickTip) {
@@ -853,7 +821,7 @@ public class ListView<M extends ModelData> extends BoxComponent {
 
   private NodeList<Element> bufferRender(List<M> models) {
     Element div = DOM.createDiv();
-    template.overwrite(div, Util.getJsObjects(collectData(models, 0), template.getMaxDepth()));
+    div.setInnerSafeHtml(renderer.render(collectData(models, 0)));
     return DomQuery.select(itemSelector, div);
   }
 
