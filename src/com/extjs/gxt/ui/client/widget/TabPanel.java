@@ -22,6 +22,7 @@ import com.extjs.gxt.ui.client.widget.layout.CardLayout;
 import com.extjs.gxt.ui.client.widget.menu.Menu;
 import com.extjs.gxt.ui.client.widget.menu.MenuItem;
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.dom.client.LIElement;
 import com.google.gwt.event.dom.client.KeyCodes;
 import com.google.gwt.safehtml.client.SafeHtmlTemplates;
 import com.google.gwt.safehtml.shared.SafeHtml;
@@ -1113,7 +1114,9 @@ public class TabPanel extends Container<TabItem> {
             SafeGxt.emptyToNbSpace(item.getHtml()),
             style, Util.nullToEmpty(item.getTextStyle())));
 
-    item.header.setElement(element);
+    Element listItem = element.getFirstChild().cast();
+
+    item.header.setElement(listItem);
     item.header.sinkEvents(Event.ONCLICK | Event.MOUSEEVENTS | Event.ONCONTEXTMENU);
 
     if (item.getIcon() != null) {
