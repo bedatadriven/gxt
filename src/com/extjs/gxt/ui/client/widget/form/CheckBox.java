@@ -14,11 +14,12 @@ import com.extjs.gxt.ui.client.core.XDOM;
 import com.extjs.gxt.ui.client.event.ComponentEvent;
 import com.google.gwt.dom.client.InputElement;
 import com.google.gwt.safehtml.shared.SafeHtml;
-import com.google.gwt.safehtml.shared.SafeHtmlUtils;
 import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.Element;
 import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.ui.Accessibility;
+
+import static com.extjs.gxt.ui.client.util.SafeGxt.fromNullableString;
 
 /**
  * Single checkbox field. Unlike other fields, checkbox fires change events when
@@ -123,7 +124,7 @@ public class CheckBox extends Field<Boolean> {
   }
 
   public void setBoxLabel(String boxLabel) {
-    setBoxLabel(SafeHtmlUtils.fromString(boxLabel));
+    setBoxLabel(fromNullableString(boxLabel));
   }
 
   @Override

@@ -15,16 +15,9 @@ import com.extjs.gxt.ui.client.Style.IconAlign;
 import com.extjs.gxt.ui.client.aria.FocusFrame;
 import com.extjs.gxt.ui.client.core.El;
 import com.extjs.gxt.ui.client.core.Template;
-import com.extjs.gxt.ui.client.event.ButtonEvent;
-import com.extjs.gxt.ui.client.event.ComponentEvent;
-import com.extjs.gxt.ui.client.event.Events;
-import com.extjs.gxt.ui.client.event.Listener;
-import com.extjs.gxt.ui.client.event.MenuEvent;
-import com.extjs.gxt.ui.client.event.PreviewEvent;
-import com.extjs.gxt.ui.client.event.SelectionListener;
+import com.extjs.gxt.ui.client.event.*;
 import com.extjs.gxt.ui.client.util.*;
 import com.extjs.gxt.ui.client.widget.BoxComponent;
-import com.extjs.gxt.ui.client.widget.Document;
 import com.extjs.gxt.ui.client.widget.IconSupport;
 import com.extjs.gxt.ui.client.widget.menu.Menu;
 import com.google.gwt.core.client.GWT;
@@ -33,7 +26,6 @@ import com.google.gwt.event.dom.client.KeyCodes;
 import com.google.gwt.safehtml.client.SafeHtmlTemplates;
 import com.google.gwt.safehtml.shared.SafeHtml;
 import com.google.gwt.safehtml.shared.SafeHtmlUtils;
-import com.google.gwt.user.cellview.client.SafeHtmlHeader;
 import com.google.gwt.user.client.Command;
 import com.google.gwt.user.client.DeferredCommand;
 import com.google.gwt.user.client.Element;
@@ -143,7 +135,7 @@ public class Button extends BoxComponent implements IconSupport {
   }
 
   public Button(String text) {
-    this(SafeHtmlUtils.fromString(text));
+    this(SafeGxt.fromNullableString(text));
   }
 
   /**

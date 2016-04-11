@@ -7,12 +7,6 @@
  */
  package com.extjs.gxt.ui.client.core;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
 import com.extjs.gxt.ui.client.GXT;
 import com.extjs.gxt.ui.client.Style;
 import com.extjs.gxt.ui.client.Style.Direction;
@@ -22,17 +16,8 @@ import com.extjs.gxt.ui.client.fx.BaseEffect;
 import com.extjs.gxt.ui.client.fx.Fx;
 import com.extjs.gxt.ui.client.fx.FxConfig;
 import com.extjs.gxt.ui.client.fx.Move;
-import com.extjs.gxt.ui.client.util.Format;
-import com.extjs.gxt.ui.client.util.Margins;
+import com.extjs.gxt.ui.client.util.*;
 import com.extjs.gxt.ui.client.util.Markup;
-import com.extjs.gxt.ui.client.util.Padding;
-import com.extjs.gxt.ui.client.util.Point;
-import com.extjs.gxt.ui.client.util.Rectangle;
-import com.extjs.gxt.ui.client.util.Region;
-import com.extjs.gxt.ui.client.util.Scroll;
-import com.extjs.gxt.ui.client.util.Size;
-import com.extjs.gxt.ui.client.util.TextMetrics;
-import com.extjs.gxt.ui.client.util.Util;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.core.client.JavaScriptObject;
 import com.google.gwt.dom.client.Document;
@@ -47,6 +32,10 @@ import com.google.gwt.user.client.Command;
 import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.DeferredCommand;
 import com.google.gwt.user.client.Element;
+
+import java.util.*;
+
+import static com.extjs.gxt.ui.client.util.SafeGxt.fromNullableString;
 
 /**
  * Represents an Element in the DOM.
@@ -2048,7 +2037,7 @@ public class El {
       builder.setCallback(new RequestCallback() {
 
         public void onError(Request request, Throwable exception) {
-          setInnerHtml(SafeHtmlUtils.fromString(exception.getMessage()));
+          setInnerHtml(fromNullableString(exception.getMessage()));
         }
 
         public void onResponseReceived(Request request, Response response) {
@@ -2105,7 +2094,7 @@ public class El {
   }
 
   public El mask(String message) {
-    return mask(SafeHtmlUtils.fromString(message), null);
+    return mask(SafeGxt.fromNullableString(message), null);
   }
 
   /**

@@ -7,21 +7,19 @@
  */
  package com.extjs.gxt.ui.client.widget;
 
-import java.util.ArrayList;
-import java.util.Stack;
-
 import com.extjs.gxt.ui.client.GXT;
 import com.extjs.gxt.ui.client.core.XDOM;
-import com.extjs.gxt.ui.client.util.Format;
-import com.extjs.gxt.ui.client.util.Params;
 import com.extjs.gxt.ui.client.util.Point;
+import com.extjs.gxt.ui.client.util.SafeGxt;
 import com.extjs.gxt.ui.client.util.Size;
 import com.google.gwt.safehtml.shared.SafeHtml;
-import com.google.gwt.safehtml.shared.SafeHtmlUtils;
 import com.google.gwt.user.client.Element;
 import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.ui.Accessibility;
 import com.google.gwt.user.client.ui.RootPanel;
+
+import java.util.ArrayList;
+import java.util.Stack;
 
 /**
  * Displays a message in the bottom right region of the browser for a specified
@@ -85,7 +83,7 @@ public class Info extends ContentPanel {
   }
 
   public static void displayText(String title, String text) {
-    display(new InfoConfig(SafeHtmlUtils.fromString(title), SafeHtmlUtils.fromString(text)));
+    display(new InfoConfig(SafeGxt.fromNullableString(title), SafeGxt.fromNullableString(text)));
   }
 
   private static int firstAvail() {

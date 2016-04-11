@@ -7,9 +7,9 @@
  */
  package com.extjs.gxt.ui.client.widget.toolbar;
 
+import com.extjs.gxt.ui.client.util.SafeGxt;
 import com.extjs.gxt.ui.client.widget.Html;
 import com.google.gwt.safehtml.shared.SafeHtml;
-import com.google.gwt.safehtml.shared.SafeHtmlUtils;
 import com.google.gwt.user.client.Element;
 
 /**
@@ -35,7 +35,7 @@ public class LabelToolItem extends Html {
   }
 
   public LabelToolItem(String text) {
-    this(SafeHtmlUtils.fromString(text));
+    this(SafeGxt.fromNullableString(text));
   }
 
   @Override

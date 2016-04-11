@@ -18,12 +18,9 @@ import com.extjs.gxt.ui.client.widget.Component;
 import com.extjs.gxt.ui.client.widget.ComponentHelper;
 import com.extjs.gxt.ui.client.widget.IconSupport;
 import com.extjs.gxt.ui.client.widget.Layer;
-import com.google.gwt.aria.client.MenuitemcheckboxRole;
 import com.google.gwt.i18n.client.BidiUtils;
-import com.google.gwt.i18n.client.HasDirection;
 import com.google.gwt.i18n.shared.WordCountDirectionEstimator;
 import com.google.gwt.safehtml.shared.SafeHtml;
-import com.google.gwt.safehtml.shared.SafeHtmlUtils;
 import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.Element;
 import com.google.gwt.user.client.ui.AbstractImagePrototype;
@@ -82,7 +79,7 @@ public class MenuItem extends Item implements IconSupport {
   }
 
   public MenuItem(String text, AbstractImagePrototype icon) {
-    this(SafeHtmlUtils.fromString(text), icon);
+    this(SafeGxt.fromNullableString(text), icon);
   }
 
   /**
@@ -98,7 +95,7 @@ public class MenuItem extends Item implements IconSupport {
   }
 
   public MenuItem(String text, AbstractImagePrototype icon, SelectionListener<? extends MenuEvent> listener) {
-    this(SafeHtmlUtils.fromString(text), icon, listener);
+    this(SafeGxt.fromNullableString(text), icon, listener);
   }
 
   /**
@@ -113,7 +110,7 @@ public class MenuItem extends Item implements IconSupport {
   }
 
   public MenuItem(String text, SelectionListener<? extends MenuEvent> listener) {
-    this(SafeHtmlUtils.fromString(text), listener);
+    this(SafeGxt.fromNullableString(text), listener);
   }
 
   /**
@@ -223,7 +220,7 @@ public class MenuItem extends Item implements IconSupport {
    * @param text the text
    */
   public void setText(String text) {
-    setHtml(SafeHtmlUtils.fromString(text));
+    setHtml(SafeGxt.fromNullableString(text));
   }
 
   /**

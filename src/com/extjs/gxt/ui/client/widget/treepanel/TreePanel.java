@@ -7,31 +7,14 @@
  */
  package com.extjs.gxt.ui.client.widget.treepanel;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 import com.extjs.gxt.ui.client.GXT;
 import com.extjs.gxt.ui.client.aria.FocusFrame;
 import com.extjs.gxt.ui.client.core.DomHelper;
 import com.extjs.gxt.ui.client.core.El;
 import com.extjs.gxt.ui.client.core.FastMap;
 import com.extjs.gxt.ui.client.core.XDOM;
-import com.extjs.gxt.ui.client.data.BaseModel;
-import com.extjs.gxt.ui.client.data.ModelData;
-import com.extjs.gxt.ui.client.data.ModelIconProvider;
-import com.extjs.gxt.ui.client.data.ModelProcessor;
-import com.extjs.gxt.ui.client.data.ModelStringProvider;
-import com.extjs.gxt.ui.client.data.TreeLoader;
-import com.extjs.gxt.ui.client.event.BaseEvent;
-import com.extjs.gxt.ui.client.event.CheckChangedEvent;
-import com.extjs.gxt.ui.client.event.CheckChangedListener;
-import com.extjs.gxt.ui.client.event.CheckProvider;
-import com.extjs.gxt.ui.client.event.ComponentEvent;
-import com.extjs.gxt.ui.client.event.Events;
-import com.extjs.gxt.ui.client.event.Listener;
-import com.extjs.gxt.ui.client.event.TreePanelEvent;
+import com.extjs.gxt.ui.client.data.*;
+import com.extjs.gxt.ui.client.event.*;
 import com.extjs.gxt.ui.client.store.StoreEvent;
 import com.extjs.gxt.ui.client.store.StoreListener;
 import com.extjs.gxt.ui.client.store.TreeStore;
@@ -39,6 +22,7 @@ import com.extjs.gxt.ui.client.store.TreeStoreEvent;
 import com.extjs.gxt.ui.client.util.DelayedTask;
 import com.extjs.gxt.ui.client.util.KeyNav;
 import com.extjs.gxt.ui.client.util.Rectangle;
+import com.extjs.gxt.ui.client.util.SafeGxt;
 import com.extjs.gxt.ui.client.widget.BoxComponent;
 import com.extjs.gxt.ui.client.widget.treepanel.TreePanelView.TreeViewRenderMode;
 import com.google.gwt.dom.client.Document;
@@ -50,6 +34,11 @@ import com.google.gwt.user.client.Event;
 import com.google.gwt.user.client.ui.AbstractImagePrototype;
 import com.google.gwt.user.client.ui.Accessibility;
 import com.google.gwt.user.client.ui.impl.FocusImpl;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * A hierarchical tree widget bound directly to a @link {@link TreeStore}.
@@ -1075,7 +1064,7 @@ public class TreePanel<M extends ModelData> extends BoxComponent implements Chec
     if (labelProvider != null) {
       return labelProvider.getStringValue(model, displayProperty);
     } else if (displayProperty != null) {
-      return SafeHtmlUtils.fromString((String) model.get(displayProperty));
+      return SafeGxt.fromNullableString((String) model.get(displayProperty));
     }
     return SafeHtmlUtils.EMPTY_SAFE_HTML;
   }

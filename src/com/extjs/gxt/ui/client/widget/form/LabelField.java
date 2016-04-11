@@ -8,9 +8,7 @@
  package com.extjs.gxt.ui.client.widget.form;
 
 import com.extjs.gxt.ui.client.util.SafeGxt;
-import com.extjs.gxt.ui.client.util.Util;
 import com.google.gwt.safehtml.shared.SafeHtml;
-import com.google.gwt.safehtml.shared.SafeHtmlUtils;
 import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.Element;
 
@@ -70,7 +68,7 @@ public class LabelField extends Field<SafeHtml> {
 
   public LabelField(String text) {
     this();
-    setValue(SafeHtmlUtils.fromString(text));
+    setText(text);
   }
 
   @Override
@@ -103,7 +101,7 @@ public class LabelField extends Field<SafeHtml> {
   }
 
   public void setText(String text) {
-    setValue(SafeHtmlUtils.fromString(text));
+    setValue(SafeGxt.fromNullableString(text));
   }
 
   @Override

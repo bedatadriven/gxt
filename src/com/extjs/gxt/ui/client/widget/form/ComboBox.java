@@ -16,10 +16,7 @@ import com.extjs.gxt.ui.client.event.*;
 import com.extjs.gxt.ui.client.store.ListStore;
 import com.extjs.gxt.ui.client.store.StoreEvent;
 import com.extjs.gxt.ui.client.store.StoreListener;
-import com.extjs.gxt.ui.client.util.BaseEventPreview;
-import com.extjs.gxt.ui.client.util.DelayedTask;
-import com.extjs.gxt.ui.client.util.KeyNav;
-import com.extjs.gxt.ui.client.util.Util;
+import com.extjs.gxt.ui.client.util.*;
 import com.extjs.gxt.ui.client.widget.ComponentHelper;
 import com.extjs.gxt.ui.client.widget.LayoutContainer;
 import com.extjs.gxt.ui.client.widget.ListView;
@@ -28,7 +25,6 @@ import com.extjs.gxt.ui.client.widget.toolbar.PagingToolBar;
 import com.google.gwt.dom.client.Document;
 import com.google.gwt.dom.client.InputElement;
 import com.google.gwt.event.dom.client.KeyCodes;
-import com.google.gwt.safehtml.shared.SafeHtmlUtils;
 import com.google.gwt.text.shared.SafeHtmlRenderer;
 import com.google.gwt.user.client.*;
 import com.google.gwt.user.client.ui.RootPanel;
@@ -1128,7 +1124,7 @@ public class ComboBox<D extends ModelData> extends TriggerField<D> implements Se
     listView.setItemSelector(itemSelector != null ? itemSelector : "." + style + "-item");
     listView.setSelectOnOver(true);
     listView.setBorders(false);
-    listView.setLoadingText(SafeHtmlUtils.fromString(getMessages().getLoadingText()));
+    listView.setLoadingText(SafeGxt.fromNullableString(getMessages().getLoadingText()));
     listView.getSelectionModel().addListener(Events.SelectionChange, new Listener<SelectionChangedEvent<D>>() {
       public void handleEvent(SelectionChangedEvent<D> se) {
         selectedItem = listView.getSelectionModel().getSelectedItem();

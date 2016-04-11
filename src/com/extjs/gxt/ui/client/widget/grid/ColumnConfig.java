@@ -8,14 +8,12 @@
  package com.extjs.gxt.ui.client.widget.grid;
 
 import com.extjs.gxt.ui.client.Style.HorizontalAlignment;
-import com.extjs.gxt.ui.client.core.El;
 import com.extjs.gxt.ui.client.data.ModelData;
 import com.extjs.gxt.ui.client.event.BaseObservable;
 import com.extjs.gxt.ui.client.util.SafeGxt;
 import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.i18n.client.NumberFormat;
 import com.google.gwt.safehtml.shared.SafeHtml;
-import com.google.gwt.safehtml.shared.SafeHtmlUtils;
 import com.google.gwt.user.client.ui.Widget;
 
 /**
@@ -362,7 +360,7 @@ public class ColumnConfig extends BaseObservable {
    * @param headerText the header text
    */
   public void setHeaderText(String headerText) {
-    setHeaderHtml(SafeHtmlUtils.fromString(headerText));
+    setHeaderHtml(SafeGxt.fromNullableString(headerText));
   }
 
   /**

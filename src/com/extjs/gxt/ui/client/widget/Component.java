@@ -7,10 +7,6 @@
  */
  package com.extjs.gxt.ui.client.widget;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-
 import com.extjs.gxt.ui.client.GXT;
 import com.extjs.gxt.ui.client.Style;
 import com.extjs.gxt.ui.client.Style.HideMode;
@@ -20,16 +16,10 @@ import com.extjs.gxt.ui.client.core.FastMap;
 import com.extjs.gxt.ui.client.core.FastSet;
 import com.extjs.gxt.ui.client.core.XDOM;
 import com.extjs.gxt.ui.client.data.ModelData;
-import com.extjs.gxt.ui.client.event.BaseEvent;
-import com.extjs.gxt.ui.client.event.BaseObservable;
-import com.extjs.gxt.ui.client.event.ComponentEvent;
-import com.extjs.gxt.ui.client.event.EventType;
-import com.extjs.gxt.ui.client.event.Events;
-import com.extjs.gxt.ui.client.event.Listener;
-import com.extjs.gxt.ui.client.event.Observable;
-import com.extjs.gxt.ui.client.event.WidgetListener;
+import com.extjs.gxt.ui.client.event.*;
 import com.extjs.gxt.ui.client.state.StateManager;
 import com.extjs.gxt.ui.client.util.DelayedTask;
+import com.extjs.gxt.ui.client.util.SafeGxt;
 import com.extjs.gxt.ui.client.util.SwallowEvent;
 import com.extjs.gxt.ui.client.widget.menu.Menu;
 import com.extjs.gxt.ui.client.widget.tips.ToolTip;
@@ -40,16 +30,15 @@ import com.google.gwt.event.logical.shared.ResizeEvent;
 import com.google.gwt.event.logical.shared.ResizeHandler;
 import com.google.gwt.event.shared.HandlerRegistration;
 import com.google.gwt.safehtml.shared.SafeHtml;
-import com.google.gwt.safehtml.shared.SafeHtmlUtils;
-import com.google.gwt.user.client.Command;
-import com.google.gwt.user.client.DOM;
-import com.google.gwt.user.client.DeferredCommand;
-import com.google.gwt.user.client.Element;
-import com.google.gwt.user.client.Event;
+import com.google.gwt.user.client.*;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Accessibility;
 import com.google.gwt.user.client.ui.Panel;
 import com.google.gwt.user.client.ui.Widget;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Base class for GXT components. All subclasses of Component can automatically
@@ -796,7 +785,7 @@ public abstract class Component extends Widget implements Observable {
    * @return the mask element
    */
   public El mask(String message) {
-    return mask(SafeHtmlUtils.fromString(message), null);
+    return mask(SafeGxt.fromNullableString(message), null);
   }
 
   /**

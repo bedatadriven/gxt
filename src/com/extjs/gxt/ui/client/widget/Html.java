@@ -7,8 +7,8 @@
  */
  package com.extjs.gxt.ui.client.widget;
 
+import com.extjs.gxt.ui.client.util.SafeGxt;
 import com.google.gwt.safehtml.shared.SafeHtml;
-import com.google.gwt.safehtml.shared.SafeHtmlUtils;
 import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.Element;
 
@@ -75,7 +75,7 @@ public class Html extends BoxComponent {
   }
 
   public Html(String text) {
-    this(SafeHtmlUtils.fromString(text));
+    this(SafeGxt.fromNullableString(text));
   }
 
   /**
@@ -107,7 +107,7 @@ public class Html extends BoxComponent {
   }
 
   public void setText(String text) {
-    setHtml(SafeHtmlUtils.fromString(text));
+    setHtml(SafeGxt.fromNullableString(text));
   }
 
   /**

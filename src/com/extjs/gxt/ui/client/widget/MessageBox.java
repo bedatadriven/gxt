@@ -7,23 +7,18 @@
  */
  package com.extjs.gxt.ui.client.widget;
 
+import com.extjs.gxt.ui.client.Style.HorizontalAlignment;
+import com.extjs.gxt.ui.client.core.El;
+import com.extjs.gxt.ui.client.event.*;
+import com.extjs.gxt.ui.client.widget.form.TextArea;
+import com.extjs.gxt.ui.client.widget.form.TextField;
+import com.google.gwt.safehtml.shared.SafeHtml;
+import com.google.gwt.user.client.Element;
+
 import java.util.HashMap;
 import java.util.Map;
 
-import com.extjs.gxt.ui.client.Style.HorizontalAlignment;
-import com.extjs.gxt.ui.client.core.El;
-import com.extjs.gxt.ui.client.event.ComponentEvent;
-import com.extjs.gxt.ui.client.event.EventType;
-import com.extjs.gxt.ui.client.event.Events;
-import com.extjs.gxt.ui.client.event.Listener;
-import com.extjs.gxt.ui.client.event.MessageBoxEvent;
-import com.extjs.gxt.ui.client.event.WindowEvent;
-import com.extjs.gxt.ui.client.widget.form.TextArea;
-import com.extjs.gxt.ui.client.widget.form.TextField;
-import com.gargoylesoftware.htmlunit.javascript.host.MessageEvent;
-import com.google.gwt.safehtml.shared.SafeHtml;
-import com.google.gwt.safehtml.shared.SafeHtmlUtils;
-import com.google.gwt.user.client.Element;
+import static com.extjs.gxt.ui.client.util.SafeGxt.fromNullableString;
 
 /**
  * Utility class for generating different styles of message boxes.
@@ -109,7 +104,7 @@ public class MessageBox {
   }
 
   public static MessageBox alert(String title, String message, Listener<MessageBoxEvent> callback) {
-    return alert(SafeHtmlUtils.fromString(title), SafeHtmlUtils.fromString(message), callback);
+    return alert(fromNullableString(title), fromNullableString(message), callback);
   }
 
   /**
@@ -133,7 +128,7 @@ public class MessageBox {
   }
 
   public static MessageBox confirm(String title, String message, Listener<MessageBoxEvent> callback) {
-    return confirm(SafeHtmlUtils.fromString(title), SafeHtmlUtils.fromString(message), callback);
+    return confirm(fromNullableString(title), fromNullableString(message), callback);
   }
 
   /**
@@ -227,7 +222,7 @@ public class MessageBox {
   }
 
   public static MessageBox promptText(String text, String message, Listener<MessageBoxEvent> callback) {
-    return prompt(SafeHtmlUtils.fromString(text), SafeHtmlUtils.fromString(message), callback);
+    return prompt(fromNullableString(text), fromNullableString(message), callback);
   }
 
   /**
@@ -737,7 +732,7 @@ public class MessageBox {
   }
 
   public void setTitle(String text) {
-    setTitleHtml(SafeHtmlUtils.fromString(text));
+    setTitleHtml(fromNullableString(text));
   }
 
   /**
