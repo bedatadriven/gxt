@@ -1,8 +1,8 @@
 <module>
   <inherits name='com.extjs.gxt.ui.GXT' />
 
-  <script src="gxt231/flash/swfobject.js"></script>
-  
   <public path="assets"/>
+
+  <entry-point class="com.extjs.gxt.charts.client.ChartEntryPoint"/>
 
 </module>
