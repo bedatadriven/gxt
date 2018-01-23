@@ -58,6 +58,6 @@ public class TreeGridCellRenderer<M extends ModelData> implements GridCellRender
   }
 
   protected SafeHtml getText(TreeGrid<M> grid, M model, String property, int rowIndex, int colIndex) {
-    return SafeHtmlUtils.fromString(String.valueOf(model.get(property)));
+    return SafeHtmlUtils.fromString(String.valueOf(model.<Object>get(property)));
   }
 }

@@ -54,7 +54,7 @@ public class BeanModel extends BaseModel {
   public Map<String, Object> getProperties() {
     Map<String, Object> newMap = new FastMap<Object>();
     for (String s : getPropertyNames()) {
-      newMap.put(s, get(s));
+      newMap.put(s, this.<Object>get(s));
     }
     return newMap;
   }
