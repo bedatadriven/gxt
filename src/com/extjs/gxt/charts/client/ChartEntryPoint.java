@@ -21,5 +21,5 @@ public class ChartEntryPoint implements EntryPoint {
    * Finds the outer window. THis is where the rest of the chart library expects swfobject
    * to be.
    */
-  private static native JavaScriptObject getOuterWindow() /*-{ return $wnd; } -*/;
+  private static native JavaScriptObject getOuterWindow() /*-{ return $wnd; }-*/;
 }
